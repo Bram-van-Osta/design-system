@@ -1,0 +1,6 @@
+/* The design system in a Tailwind 4 app, imported after tailwindcss: the tokens as the theme, the
+   identity's fonts, and the components' classes for the app's build to generate. */
+@import '@bram-van-osta/tokens/fonts.css';
+@import '@bram-van-osta/tokens/tailwind.css';
+
+@source './';
