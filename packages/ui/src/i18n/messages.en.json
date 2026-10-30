@@ -3,5 +3,9 @@
   "field.optional": "(optional)",
   "passwordInput.show": "Show the password",
   "passwordInput.hide": "Hide the password",
-  "select.placeholder": "Choose…"
+  "select.placeholder": "Choose…",
+  "dialog.cancel": "Cancel",
+  "toast.close": "Close",
+  "skeleton.loading": "Loading…",
+  "toast.region": "Notifications"
 }

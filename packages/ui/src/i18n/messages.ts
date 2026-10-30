@@ -15,6 +15,10 @@ export const MESSAGE_KEYS = [
   'passwordInput.show',
   'passwordInput.hide',
   'select.placeholder',
+  'dialog.cancel',
+  'toast.region',
+  'toast.close',
+  'skeleton.loading',
 ] as const;
 export type MessageKey = (typeof MESSAGE_KEYS)[number];
 
