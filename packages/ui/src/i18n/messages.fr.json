@@ -1,0 +1,11 @@
+{
+  "field.required": "(obligatoire)",
+  "field.optional": "(facultatif)",
+  "passwordInput.show": "Afficher le mot de passe",
+  "passwordInput.hide": "Masquer le mot de passe",
+  "select.placeholder": "Choisir…",
+  "dialog.cancel": "Annuler",
+  "toast.close": "Fermer",
+  "skeleton.loading": "Chargement…",
+  "toast.region": "Notifications"
+}

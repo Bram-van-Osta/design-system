@@ -2,3 +2,4 @@
 @import '@bram-van-osta/ui/styles.css';
 
 @source '../src';
+@source '../../../packages/ui/src';

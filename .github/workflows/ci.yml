@@ -43,7 +43,10 @@ jobs:
       - name: Types
         run: pnpm typecheck
 
-      - name: Unit tests
+      - name: Browser for the Storybook tests
+        run: pnpm --filter @bram-van-osta/storybook exec playwright install --with-deps chromium
+
+      - name: Tests
         run: pnpm test
 
       - name: Build
