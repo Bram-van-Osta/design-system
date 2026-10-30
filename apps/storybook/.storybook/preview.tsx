@@ -1,5 +1,8 @@
 import type { Decorator, Preview } from '@storybook/react-vite';
 import { type ReactNode, useLayoutEffect } from 'react';
+// The provider of the sources the stories render, not of the built package: one React context.
+import { Locale } from '../../../packages/ui/src/i18n/messages.ts';
+import { UiProvider } from '../../../packages/ui/src/i18n/UiProvider.tsx';
 import './preview.css';
 
 const Theme = {
@@ -32,9 +35,15 @@ const withTheme: Decorator = (Story, { globals }) => (
   </Themed>
 );
 
+const withLocale: Decorator = (Story, { globals }) => (
+  <UiProvider locale={globals.locale === Locale.fr ? Locale.fr : Locale.en}>
+    <Story />
+  </UiProvider>
+);
+
 const preview: Preview = {
   tags: ['autodocs'],
-  decorators: [withTheme],
+  decorators: [withTheme, withLocale],
   globalTypes: {
     theme: {
       description: 'The theme of the stories',
@@ -48,14 +57,29 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    locale: {
+      description: 'The language of the texts the components show',
+      toolbar: {
+        title: 'Language',
+        icon: 'globe',
+        items: [
+          { value: Locale.en, title: 'English' },
+          { value: Locale.fr, title: 'French' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     theme: Theme.light,
+    locale: Locale.en,
   },
   parameters: {
     layout: 'fullscreen',
     a11y: {
       test: 'error',
+      // The whole page, for what a component renders in a portal.
+      context: 'body',
     },
     options: {
       storySort: {

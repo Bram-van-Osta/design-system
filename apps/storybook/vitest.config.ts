@@ -12,11 +12,11 @@ interface Run {
 }
 
 // Every story is a test in Chromium: its play function, then the accessibility checks (axe). Each
-// run pins the theme and the screen.
+// run pins the theme, the language of the components' texts and the screen.
 const RUNS: readonly Run[] = [
-  { name: 'light', globals: { theme: 'light' }, viewport: DESKTOP },
-  { name: 'dark', globals: { theme: 'dark' }, viewport: DESKTOP },
-  { name: 'phone', globals: { theme: 'light' }, viewport: PHONE },
+  { name: 'light', globals: { theme: 'light', locale: 'en' }, viewport: DESKTOP },
+  { name: 'dark', globals: { theme: 'dark', locale: 'fr' }, viewport: DESKTOP },
+  { name: 'phone', globals: { theme: 'light', locale: 'fr' }, viewport: PHONE },
 ];
 
 function project({ name, globals, viewport }: Run): TestProjectInlineConfiguration {
@@ -36,6 +36,11 @@ function project({ name, globals, viewport }: Run): TestProjectInlineConfigurati
 }
 
 export default defineConfig({
+  // Every dependency of the stories is bundled before the run: one found during it reloads the
+  // tests, which then fail at random.
+  optimizeDeps: {
+    entries: ['../../packages/ui/src/**/*.stories.tsx'],
+  },
   test: {
     projects: RUNS.map(project),
   },

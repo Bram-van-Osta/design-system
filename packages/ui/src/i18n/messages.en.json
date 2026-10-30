@@ -1,0 +1,7 @@
+{
+  "field.required": "(required)",
+  "field.optional": "(optional)",
+  "passwordInput.show": "Show the password",
+  "passwordInput.hide": "Hide the password",
+  "select.placeholder": "Choose…"
+}
