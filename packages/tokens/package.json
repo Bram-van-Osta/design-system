@@ -1,0 +1,47 @@
+{
+  "name": "@bram-van-osta/tokens",
+  "version": "0.1.0",
+  "description": "The Bram van Osta design tokens: CSS variables in light and dark, a Tailwind 4 theme, the fonts and the JSON.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bram-van-Osta/design-system.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://bram-van-osta.github.io/design-system/",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind.css": "./dist/tailwind.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./tokens.json": "./dist/tokens.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node src/build.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/inter": "5.3.0",
+    "@fontsource/inter-tight": "5.3.0",
+    "@fontsource/newsreader": "5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "zod": "4.6.7"
+  }
+}
