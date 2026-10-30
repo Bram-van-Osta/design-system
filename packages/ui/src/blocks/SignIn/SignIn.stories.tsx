@@ -1,6 +1,7 @@
 import { GoogleLogoIcon, KeyIcon } from '@phosphor-icons/react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
+import { UiProvider } from '../../i18n/UiProvider.tsx';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { PageFrame } from '../../testing/PageFrame.tsx';
 import { SignIn } from './SignIn.tsx';
@@ -113,6 +114,24 @@ export const ProviderPending: Story = {
   args: { providers: [{ ...google, onSelect: fn(), isPending: true }] },
   play: async ({ canvas }) => {
     await expect(canvas.getByRole('button', { name: /sign in|se connecter/i })).toBeDisabled();
+  },
+};
+
+// The app replaces any of the package's texts through UiProvider, in the reader's language.
+export const WithTheAppsTexts: Story = {
+  globals: { locale: 'en' },
+  decorators: [
+    (Story) => (
+      <UiProvider locale="en" messages={{ 'signIn.heading': 'Sign in to the workshop.' }}>
+        <Story />
+      </UiProvider>
+    ),
+  ],
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Sign in to the workshop.',
+    );
+    await expect(canvas.getByRole('button', { name: 'Sign in' })).toBeVisible();
   },
 };
 
