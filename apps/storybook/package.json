@@ -1,0 +1,28 @@
+{
+  "name": "@bram-van-osta/storybook",
+  "private": true,
+  "description": "The living documentation of the design system, deployed to GitHub Pages.",
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev --port 6006 --no-open",
+    "build": "storybook build --output-dir storybook-static",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@base-ui/react": "catalog:",
+    "@bram-van-osta/tokens": "workspace:*",
+    "@bram-van-osta/ui": "workspace:*",
+    "@storybook/addon-docs": "10.6.2",
+    "@storybook/react-vite": "10.6.2",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "10.6.2",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "8.3.4"
+  }
+}

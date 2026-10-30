@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# Bram van Osta design system
+
+The identity of Bram van Osta as code, for every product that carries it. Two packages, published to GitHub Packages:
+
+- `@bram-van-osta/tokens`: the tokens, without React. CSS variables in light and dark, a Tailwind 4 theme, the fonts and the JSON.
+- `@bram-van-osta/ui`: the React components, on Base UI, styled with Tailwind on the tokens.
+
+## In a Tailwind 4 app
+
+```css
+@import 'tailwindcss';
+@import '@bram-van-osta/ui/styles.css';
+```
+
+The tokens become the theme: `bg-delft`, `text-ink-muted`, `font-display`, `text-heading-xl`, `p-space-5`. Tailwind's own palette, type scale, radii and shadows are gone, so a utility outside the identity does not exist.
+
+## Without Tailwind
+
+```css
+@import '@bram-van-osta/tokens/fonts.css';
+@import '@bram-van-osta/tokens/tokens.css';
+```
+
+Every token is a CSS variable: `var(--delft)`, `var(--space-5)`, `var(--text-body)`.
+
+## Themes
+
+Light by default, dark when the system asks for it. `data-theme="light"` or `data-theme="dark"` forces a theme, on `<html>` or on any element.
+
+## Overriding a token
+
+A product redefines the variable after the import, and every utility follows:
+
+```css
+:root {
+  --delft: #1d3a8a;
+}
+```
