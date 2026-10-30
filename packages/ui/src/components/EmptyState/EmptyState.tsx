@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
-import { hasContent } from '../Field/has-content.ts';
+import { hasContent } from '../../utils/has-content.ts';
 import { Heading, type HeadingLevel, HeadingSize } from '../Heading/Heading.tsx';
 import { Text, TextTone } from '../Text/Text.tsx';
 

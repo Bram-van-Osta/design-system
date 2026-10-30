@@ -23,16 +23,18 @@ export const Neutral: Story = {
   args: { children: 'analysis running' },
 };
 
+const ROW_CLASSES = 'flex items-center justify-between border-t-hair border-line py-space-3';
+
 export const InAList: Story = {
   render: () => (
     <ul className="flex max-w-reading-width flex-col">
-      <li className="flex items-center justify-between border-t-hair border-line py-space-3">
+      <li className={ROW_CLASSES}>
         Boulangerie du Port <Badge tone={BadgeTone.attention}>pre-analysis ready</Badge>
       </li>
-      <li className="flex items-center justify-between border-t-hair border-line py-space-3">
+      <li className={ROW_CLASSES}>
         Jeanne Martin <Badge>analysis running</Badge>
       </li>
-      <li className="flex items-center justify-between border-y-hair border-line py-space-3">
+      <li className={`${ROW_CLASSES} border-b-hair`}>
         To review <Badge tone={BadgeTone.attention}>3</Badge>
       </li>
     </ul>

@@ -1,10 +1,10 @@
 import { Field as BaseField } from '@base-ui/react/field';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
+import { hasContent } from '../../utils/has-content.ts';
 import { FieldError } from './FieldError.tsx';
 import { FieldMarkerText } from './FieldMarkerText.tsx';
 import type { FieldMarker } from './field-marker.ts';
-import { hasContent } from './has-content.ts';
 
 export interface FieldProps {
   readonly label: ReactNode;

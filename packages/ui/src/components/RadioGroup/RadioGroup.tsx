@@ -4,10 +4,16 @@ import { Radio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
+import { hasContent } from '../../utils/has-content.ts';
+import { CHOICE_CONTROL_CLASSES, CHOICE_LABEL_CLASSES } from '../Field/choice-classes.ts';
 import { FieldError } from '../Field/FieldError.tsx';
 import { FieldMarkerText } from '../Field/FieldMarkerText.tsx';
 import type { FieldMarker } from '../Field/field-marker.ts';
-import { hasContent } from '../Field/has-content.ts';
+
+const RADIO_CLASSES = classNames(
+  CHOICE_CONTROL_CLASSES,
+  'rounded-round data-checked:border-select data-checked:border-delft',
+);
 
 export interface RadioOption {
   readonly value: string;
@@ -71,21 +77,35 @@ export function RadioGroup({
         }
         className="flex flex-col gap-space-1"
       >
-        <Fieldset.Legend className="mb-space-1 text-label text-ink">
-          {legend}
-          {marker && <FieldMarkerText marker={marker} />}
-        </Fieldset.Legend>
-        {hasContent(description) && (
-          <BaseField.Description className="mb-space-1 text-body-s text-ink-muted">
-            {description}
-          </BaseField.Description>
-        )}
+        <RadioGroupLegend legend={legend} marker={marker} description={description} />
         {options.map((option) => (
           <RadioItem key={option.value} option={option} />
         ))}
       </Fieldset.Root>
       {isInvalid && <FieldError>{error}</FieldError>}
     </BaseField.Root>
+  );
+}
+
+interface RadioGroupLegendProps {
+  readonly legend: ReactNode;
+  readonly marker: FieldMarker | undefined;
+  readonly description: ReactNode;
+}
+
+function RadioGroupLegend({ legend, marker, description }: RadioGroupLegendProps) {
+  return (
+    <>
+      <Fieldset.Legend className="mb-space-1 text-label text-ink">
+        {legend}
+        {marker && <FieldMarkerText marker={marker} />}
+      </Fieldset.Legend>
+      {hasContent(description) && (
+        <BaseField.Description className="mb-space-1 text-body-s text-ink-muted">
+          {description}
+        </BaseField.Description>
+      )}
+    </>
   );
 }
 
@@ -96,11 +116,8 @@ interface RadioItemProps {
 function RadioItem({ option }: RadioItemProps) {
   return (
     <BaseField.Item disabled={option.disabled}>
-      <BaseField.Label className="flex min-h-target-min cursor-pointer items-start gap-space-3 py-space-2 text-body text-ink data-disabled:cursor-not-allowed data-disabled:text-ink-muted">
-        <Radio.Root
-          value={option.value}
-          className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-round border-hair border-ink-muted bg-bg data-checked:border-select data-checked:border-delft data-disabled:border-line data-disabled:bg-surface"
-        >
+      <BaseField.Label className={CHOICE_LABEL_CLASSES}>
+        <Radio.Root value={option.value} className={RADIO_CLASSES}>
           <Radio.Indicator className="size-2.5 rounded-round bg-delft data-unchecked:hidden" />
         </Radio.Root>
         <span className="flex flex-col">

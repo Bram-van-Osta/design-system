@@ -61,26 +61,36 @@ export function Select({
           <CaretDownIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />
         </BaseSelect.Icon>
       </BaseSelect.Trigger>
-      <BaseSelect.Portal>
-        <BaseSelect.Positioner className="z-10">
-          <BaseSelect.Popup className="min-w-(--anchor-width) border-hair border-ink bg-bg">
-            <BaseSelect.List className="max-h-(--available-height) overflow-y-auto">
-              {options.map((option) => (
-                <BaseSelect.Item
-                  key={option.value}
-                  value={option.value}
-                  className="flex min-h-target-min cursor-pointer items-center gap-space-3 px-space-4 text-body text-ink focus-visible:-outline-offset-2 data-highlighted:bg-surface data-selected:font-semibold"
-                >
-                  <BaseSelect.ItemText className="flex-1">{option.label}</BaseSelect.ItemText>
-                  <BaseSelect.ItemIndicator className="flex text-delft">
-                    <CheckIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />
-                  </BaseSelect.ItemIndicator>
-                </BaseSelect.Item>
-              ))}
-            </BaseSelect.List>
-          </BaseSelect.Popup>
-        </BaseSelect.Positioner>
-      </BaseSelect.Portal>
+      <SelectPopup options={options} />
     </BaseSelect.Root>
+  );
+}
+
+interface SelectPopupProps {
+  readonly options: readonly SelectOption[];
+}
+
+function SelectPopup({ options }: SelectPopupProps) {
+  return (
+    <BaseSelect.Portal>
+      <BaseSelect.Positioner className="z-10">
+        <BaseSelect.Popup className="min-w-(--anchor-width) border-hair border-ink bg-bg">
+          <BaseSelect.List className="max-h-(--available-height) overflow-y-auto">
+            {options.map((option) => (
+              <BaseSelect.Item
+                key={option.value}
+                value={option.value}
+                className="flex min-h-target-min cursor-pointer items-center gap-space-3 px-space-4 text-body text-ink focus-visible:-outline-offset-2 data-highlighted:bg-surface data-selected:font-semibold"
+              >
+                <BaseSelect.ItemText className="flex-1">{option.label}</BaseSelect.ItemText>
+                <BaseSelect.ItemIndicator className="flex text-delft">
+                  <CheckIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />
+                </BaseSelect.ItemIndicator>
+              </BaseSelect.Item>
+            ))}
+          </BaseSelect.List>
+        </BaseSelect.Popup>
+      </BaseSelect.Positioner>
+    </BaseSelect.Portal>
   );
 }

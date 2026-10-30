@@ -1,8 +1,8 @@
 import { AlertDialog } from '@base-ui/react/alert-dialog';
 import type { ReactNode } from 'react';
 import { useMessages } from '../../i18n/use-messages.ts';
+import { hasContent } from '../../utils/has-content.ts';
 import { Button, ButtonVariant } from '../Button/Button.tsx';
-import { hasContent } from '../Field/has-content.ts';
 
 export interface DialogProps {
   readonly open: boolean;
