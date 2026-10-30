@@ -5,7 +5,7 @@ import { mergeConfig } from 'vite';
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   stories: ['../src/**/*.mdx', '../../../packages/ui/src/**/*.stories.tsx'],
-  addons: ['@storybook/addon-docs'],
+  addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@storybook/addon-vitest'],
   core: {
     disableTelemetry: true,
   },

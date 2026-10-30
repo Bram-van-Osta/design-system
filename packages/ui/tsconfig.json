@@ -2,7 +2,12 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["es2024", "dom"],
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    // Phosphor's declarations re-export each icon from a path without its extension, which Node's
+    // resolution drops: every icon would be missing, and its `Icon` type `any`. The package is
+    // built for bundlers, so it resolves as they do.
+    "module": "preserve",
+    "moduleResolution": "bundler"
   },
   "include": ["src"]
 }

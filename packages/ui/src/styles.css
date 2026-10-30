@@ -1,6 +1,13 @@
 /* The design system in a Tailwind 4 app, imported after tailwindcss: the tokens as the theme, the
-   identity's fonts, and the components' classes for the app's build to generate. */
+   identity's fonts, the keyboard focus, and the components' classes for the app's build to generate. */
 @import '@bram-van-osta/tokens/fonts.css';
 @import '@bram-van-osta/tokens/tailwind.css';
 
 @source './';
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
