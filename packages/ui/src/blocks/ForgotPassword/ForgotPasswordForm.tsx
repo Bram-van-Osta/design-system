@@ -2,7 +2,9 @@ import { Button } from '../../components/Button/Button.tsx';
 import { Field } from '../../components/Field/Field.tsx';
 import { TextInput } from '../../components/TextInput/TextInput.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
+import { classNames } from '../../utils/class-names.ts';
 import { FormField } from '../shared/form-fields.ts';
+import { SUBMIT_CLASSES } from '../shared/submit-classes.ts';
 import type { useForgotPasswordForm } from './use-forgot-password-form.ts';
 
 interface ForgotPasswordFormProps {
@@ -27,7 +29,11 @@ export function ForgotPasswordForm({ form, defaultEmail, isPending }: ForgotPass
           onChange={form.clearError}
         />
       </Field>
-      <Button type="submit" isPending={isPending} className="w-full md:w-auto md:self-start">
+      <Button
+        type="submit"
+        isPending={isPending}
+        className={classNames(SUBMIT_CLASSES, 'md:self-start')}
+      >
         {messages['forgotPassword.submit']}
       </Button>
     </form>

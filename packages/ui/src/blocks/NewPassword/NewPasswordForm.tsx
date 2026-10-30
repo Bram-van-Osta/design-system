@@ -4,7 +4,9 @@ import { PasswordInput } from '../../components/PasswordInput/PasswordInput.tsx'
 import { Text, TextTone, TextVariant } from '../../components/Text/Text.tsx';
 import { interpolate } from '../../i18n/interpolate.ts';
 import { useMessages } from '../../i18n/use-messages.ts';
+import { classNames } from '../../utils/class-names.ts';
 import { FormField } from '../shared/form-fields.ts';
+import { SUBMIT_CLASSES } from '../shared/submit-classes.ts';
 import type { NewPasswordTexts, NewPasswordValues, PasswordRule } from './new-password.ts';
 import { PasswordRules } from './PasswordRules.tsx';
 import { useNewPasswordForm } from './use-new-password-form.ts';
@@ -46,7 +48,11 @@ export function NewPasswordForm({
           onValueChange={form.handleChange}
         />
       </Field>
-      <Button type="submit" isPending={isPending} className="w-full md:w-auto md:self-start">
+      <Button
+        type="submit"
+        isPending={isPending}
+        className={classNames(SUBMIT_CLASSES, 'md:self-start')}
+      >
         {messages[texts.submit]}
       </Button>
     </form>

@@ -5,6 +5,7 @@ import { PasswordInput } from '../../components/PasswordInput/PasswordInput.tsx'
 import { TextInput } from '../../components/TextInput/TextInput.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
 import { FormField } from '../shared/form-fields.ts';
+import { SUBMIT_CLASSES } from '../shared/submit-classes.ts';
 import { type SignInCredentials, useSignInForm } from './use-sign-in-form.ts';
 
 interface SignInFormProps {
@@ -50,7 +51,7 @@ export function SignInForm({
           type="submit"
           isPending={isPending}
           disabled={isDisabled}
-          className="w-full md:w-auto"
+          className={SUBMIT_CLASSES}
         >
           {messages['signIn.submit']}
         </Button>
