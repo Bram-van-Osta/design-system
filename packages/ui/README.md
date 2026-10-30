@@ -9,6 +9,7 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 | Layout | `Stack`, `Container` (the 720 px reading column) |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo` |
 | Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`), `Skeleton`, `EmptyState`, `Badge` |
+| Blocks | `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail` |
 
 ## Using
 
@@ -35,12 +36,30 @@ import { ToastProvider, UiProvider } from '@bram-van-osta/ui';
 </UiProvider>;
 ```
 
-## Texts
+## Blocks
 
-The few texts the components show themselves (a field's "(optional)", "Show the password", "Cancel", "Loading…") come in French and English, from `src/i18n/messages.fr.json` and `messages.en.json`. The app replaces any of them, in the reader's language, through `UiProvider`'s `messages`:
+The blocks are screens assembled from the components, purely visual: they know nothing of an authentication library, an API or a router, and the lint keeps them so.
+
+- **An action is a prop**, and its state too: `SignIn` calls `onSubmit({ email, password })` once both fields are filled in, and shows what the app says through `status` (`pending`, `invalid-credentials`, `locked`, `no-account`).
+- **A link is the app's**: `forgotPasswordLink={{ href: '/forgot-password' }}`, or `{{ render: <RouterLink to="/forgot-password" /> }}`.
+- **The external providers are the app's**, with their labels from its texts: `providers={[{ id: 'google', label: t('signIn.google'), icon: GoogleLogoIcon, onSelect }]}`. Without `onSubmit`, `SignIn` offers the providers only.
+- **The password policy is the app's**: `SetPassword` and `ResetPassword` take its `minLength` and its `extraRules`, and tick each rule as the reader types.
 
 ```tsx
-<UiProvider locale="fr" messages={{ 'dialog.cancel': 'Revenir' }}>
+<SignIn
+  onSubmit={signIn}
+  status={status}
+  providers={[{ id: 'google', label: t('signIn.google'), icon: GoogleLogoIcon, onSelect }]}
+  forgotPasswordLink={{ render: <RouterLink to="/forgot-password" /> }}
+/>
+```
+
+## Texts
+
+The texts the components and the blocks show themselves (a field's "(optional)", "Show the password", "Cancel", "Sign in to your space.") come in French and English, from `src/i18n/messages.fr.json` and `messages.en.json`. The app replaces any of them, in the reader's language, through `UiProvider`'s `messages`:
+
+```tsx
+<UiProvider locale="fr" messages={{ 'signIn.heading': t('signIn.heading') }}>
 ```
 
 Every other text is a prop, given by the app from its own translations.

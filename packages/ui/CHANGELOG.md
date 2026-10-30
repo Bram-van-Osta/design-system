@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.3.0
+
+### Minor Changes
+
+- The authentication blocks, `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword` and `VerifyEmail`, purely visual and with their texts in French and English; `Container` keeps its reading column inside a flex column, and its `className` now styles that column.
+
 ## 0.2.0
 
 ### Minor Changes

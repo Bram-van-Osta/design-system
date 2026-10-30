@@ -64,8 +64,8 @@ They are the factory's (`docs/rules.md` in `Bram-van-Osta/Factory`), kept to wha
 ## 6. Components
 
 - **On Base UI's primitives**, styled with Tailwind on the tokens. No shadcn.
-- **No business logic**: no translation library, no data access, no router, no network. An action is a prop (`onSubmit`), its state too (`isPending`).
-- **One component per file**, in `packages/ui/src/components/<Name>/`, with its stories next to it. The package's entry exports it.
+- **No business logic**: no translation library, no data access, no router, no network. An action is a prop (`onSubmit`), its state too (`isPending`), and a link the app's (`{ href }` or `{ render }`). Biome holds the package to React, Base UI and Phosphor, and refuses `fetch` and the other network globals.
+- **One component per file**, in `packages/ui/src/components/<Name>/`, with its stories next to it. A block, a screen assembled from the components (`SignIn`), lives in `packages/ui/src/blocks/<Name>/`. The package's entry exports them.
 - **The logic in hooks**, not in the JSX.
 - **The identity** (the artifact's brand book):
   - colors through the tokens, never in hexadecimal;
