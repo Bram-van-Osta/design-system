@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency dashboard",
+  "dependencyDashboardApproval": true,
+  "minimumReleaseAge": "14 days",
+  "timezone": "Europe/Paris",
+  "schedule": ["before 6am on monday"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "packageRules": [
+    {
+      "groupName": "commitlint",
+      "matchPackageNames": ["@commitlint/**"]
+    },
+    {
+      "groupName": "types",
+      "matchPackageNames": ["@types/**"]
+    },
+    {
+      "groupName": "React",
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"]
+    },
+    {
+      "groupName": "Storybook",
+      "matchPackageNames": ["storybook", "@storybook/**"]
+    },
+    {
+      "groupName": "Tailwind CSS",
+      "matchPackageNames": ["tailwindcss", "@tailwindcss/**"]
+    },
+    {
+      "groupName": "Fontsource",
+      "matchPackageNames": ["@fontsource/**"]
+    },
+    {
+      "description": "@types/node follows the Node version of .nvmrc, not the latest release",
+      "matchPackageNames": ["@types/node"],
+      "allowedVersions": "<25"
+    },
+    {
+      "description": "A published package widens its peer ranges, so that its consumers keep their versions",
+      "matchDepTypes": ["peerDependencies"],
+      "rangeStrategy": "widen"
+    }
+  ]
+}

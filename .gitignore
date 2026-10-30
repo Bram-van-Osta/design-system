@@ -1,0 +1,11 @@
+node_modules/
+dist/
+storybook-static/
+coverage/
+.turbo/
+*.tsbuildinfo
+*.log
+.env
+.env.*
+.DS_Store
+.claude/settings.local.json
