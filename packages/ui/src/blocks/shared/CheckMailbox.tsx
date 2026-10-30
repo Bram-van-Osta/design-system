@@ -1,0 +1,23 @@
+import type { ReactNode } from 'react';
+import { Text, TextTone } from '../../components/Text/Text.tsx';
+import { useMessages } from '../../i18n/use-messages.ts';
+import { AuthBlock } from './AuthBlock.tsx';
+
+interface CheckMailboxProps {
+  /** What was sent, and where. */
+  readonly lead: string;
+  readonly className: string | undefined;
+  /** What the reader can do from here. */
+  readonly children?: ReactNode;
+}
+
+/** "Check your mailbox": a link was sent, and where to look when it does not arrive. */
+export function CheckMailbox({ lead, className, children }: CheckMailboxProps) {
+  const messages = useMessages();
+  return (
+    <AuthBlock heading={messages['mailbox.heading']} lead={lead} className={className}>
+      <Text tone={TextTone.muted}>{messages['mailbox.help']}</Text>
+      {children}
+    </AuthBlock>
+  );
+}
