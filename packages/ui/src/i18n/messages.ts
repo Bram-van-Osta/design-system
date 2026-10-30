@@ -19,6 +19,18 @@ export const MESSAGE_KEYS = [
   'toast.region',
   'toast.close',
   'skeleton.loading',
+  'form.email',
+  'form.emailMissing',
+  'form.emailInvalid',
+  'form.passwordMissing',
+  'signIn.heading',
+  'signIn.password',
+  'signIn.submit',
+  'signIn.forgotPassword',
+  'signIn.or',
+  'signIn.invalidCredentials',
+  'signIn.locked',
+  'signIn.noAccount',
 ] as const;
 export type MessageKey = (typeof MESSAGE_KEYS)[number];
 

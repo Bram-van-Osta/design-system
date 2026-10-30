@@ -7,5 +7,17 @@
   "dialog.cancel": "Annuler",
   "toast.close": "Fermer",
   "skeleton.loading": "Chargement…",
-  "toast.region": "Notifications"
+  "toast.region": "Notifications",
+  "form.email": "Votre adresse mail",
+  "form.emailMissing": "Saisissez votre adresse mail.",
+  "form.emailInvalid": "Cette adresse mail est incomplète.",
+  "form.passwordMissing": "Saisissez votre mot de passe.",
+  "signIn.heading": "Connectez-vous à votre espace.",
+  "signIn.password": "Votre mot de passe",
+  "signIn.submit": "Se connecter",
+  "signIn.forgotPassword": "Mot de passe oublié ?",
+  "signIn.or": "ou",
+  "signIn.invalidCredentials": "Cette adresse mail et ce mot de passe ne vont pas ensemble. Vérifiez-les, puis réessayez.",
+  "signIn.locked": "Trop de tentatives : votre compte est bloqué pour un moment. Revenez un peu plus tard, ou choisissez un nouveau mot de passe.",
+  "signIn.noAccount": "Ce compte n'a pas d'accès ici. Connectez-vous avec l'adresse à laquelle votre invitation a été envoyée."
 }
