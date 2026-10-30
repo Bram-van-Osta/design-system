@@ -51,7 +51,7 @@ export function Field({
       {children}
       {isInvalid && <FieldError>{error}</FieldError>}
       {hasContent(description) && (
-        <BaseField.Description className="text-body-s text-ink-muted">
+        <BaseField.Description render={<div />} className="text-body-s text-ink-muted">
           {description}
         </BaseField.Description>
       )}

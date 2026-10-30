@@ -1,3 +1,7 @@
+export type { SignInProvider } from './blocks/SignIn/ProviderButtons.tsx';
+export { SignIn, type SignInProps } from './blocks/SignIn/SignIn.tsx';
+export { SignInStatus } from './blocks/SignIn/sign-in-status.ts';
+export type { SignInCredentials } from './blocks/SignIn/use-sign-in-form.ts';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
