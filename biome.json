@@ -67,5 +67,50 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "packages/ui/src/**",
+        "!**/*.stories.tsx",
+        "!**/*.test.ts",
+        "!packages/ui/src/testing/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**",
+                      "!react",
+                      "!@base-ui/react/*",
+                      "!@phosphor-icons/react",
+                      "!./**",
+                      "!../**"
+                    ],
+                    "message": "A component imports only React, Base UI, Phosphor and the package itself: its data, its navigation and its network are the app's, through its props."
+                  }
+                ]
+              }
+            },
+            "noRestrictedGlobals": {
+              "level": "error",
+              "options": {
+                "deniedGlobals": {
+                  "fetch": "The network is the app's: the component receives the action as a prop.",
+                  "XMLHttpRequest": "The network is the app's: the component receives the action as a prop.",
+                  "WebSocket": "The network is the app's: the component receives the action as a prop.",
+                  "EventSource": "The network is the app's: the component receives the action as a prop."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
