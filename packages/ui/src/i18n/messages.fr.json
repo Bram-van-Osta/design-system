@@ -44,5 +44,8 @@
   "forgotPassword.sentLead": "Si un compte correspond à {email}, un lien pour choisir un nouveau mot de passe vous attend dans votre boîte mail.",
   "forgotPassword.backToSignIn": "Retour à la connexion",
   "mailbox.heading": "Consultez votre boîte mail.",
-  "mailbox.help": "Rien après quelques minutes ? Regardez dans vos courriers indésirables."
+  "mailbox.help": "Rien après quelques minutes ? Regardez dans vos courriers indésirables.",
+  "verifyEmail.lead": "Nous avons envoyé un lien à {email}. Ouvrez-le pour confirmer votre adresse.",
+  "verifyEmail.resend": "Renvoyer le lien",
+  "verifyEmail.resent": "Lien renvoyé"
 }

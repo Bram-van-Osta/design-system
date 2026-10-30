@@ -56,6 +56,9 @@ export const MESSAGE_KEYS = [
   'forgotPassword.backToSignIn',
   'mailbox.heading',
   'mailbox.help',
+  'verifyEmail.lead',
+  'verifyEmail.resend',
+  'verifyEmail.resent',
 ] as const;
 export type MessageKey = (typeof MESSAGE_KEYS)[number];
 

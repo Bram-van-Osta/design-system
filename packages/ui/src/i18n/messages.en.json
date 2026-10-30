@@ -44,5 +44,8 @@
   "forgotPassword.sentLead": "If an account matches {email}, a link to choose a new password is waiting in your mailbox.",
   "forgotPassword.backToSignIn": "Back to sign-in",
   "mailbox.heading": "Check your mailbox.",
-  "mailbox.help": "Nothing after a few minutes? Check your spam folder."
+  "mailbox.help": "Nothing after a few minutes? Check your spam folder.",
+  "verifyEmail.lead": "We sent a link to {email}. Open it to confirm your address.",
+  "verifyEmail.resend": "Send the link again",
+  "verifyEmail.resent": "Link sent again"
 }
