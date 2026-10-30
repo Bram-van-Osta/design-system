@@ -22,8 +22,8 @@ Changes come from a ticket of a product (FX-n for the factory), with its goal an
 1. A branch `type/fx-n-short-subject` from an up-to-date `main`. Never a direct push to `main`.
 2. Implement according to `docs/rules.md`, then `pnpm typecheck && pnpm lint && pnpm test && pnpm build`.
 3. A change to a published package comes with its changeset, versioned in the same pull request (`.changeset/README.md`).
-4. Present the manual validation (👤) and wait for the go-ahead before committing.
-5. Push, open the PR, and squash-merge it once the CI is green and the manual validations are done. Merging publishes the new versions and the Storybook.
+4. Try what can be tried without starting a server, then commit. During the alpha (until the factory's MVP is online), the manual validations (👤) do not block: the ticket's "Delivered" section says which ones were checked, and Bram runs them all in one test pass.
+5. Push, open the PR, and squash-merge it once the CI is green. Merging publishes the new versions and the Storybook. From the factory's first production release on, committing before the manual validations, pushing and merging need Bram's explicit approval.
 
 **Never start a server**: not `pnpm storybook`, not through the preview panel. To see the Storybook, ask Bram to start it and attach to its address, or read the online one.
 
@@ -56,12 +56,12 @@ pnpm storybook        # Bram only: the Storybook on port 6006
 ## What Claude must never do
 
 - Commit if `pnpm typecheck`, `pnpm lint`, `pnpm test` or `pnpm build` fails.
-- Commit before Bram's manual validation (👤), unless explicitly asked.
 - Edit a generated file (`dist/`, a `CHANGELOG.md`) by hand, or publish a package by hand.
 - Write a stub, a TODO or placeholder code.
 - Use an `any`, an `as` cast or a `!` assertion to unblock a type, or a `console.log`.
 - Write a color in hexadecimal outside `tokens.json`, or a business rule in a component.
 - Use icons other than Phosphor, or shadcn.
 - Push directly to `main`, use `--force`, or enable an auto-merge.
+- After the factory's first production release: commit before Bram's manual validation (👤), push or merge without Bram's explicit approval.
 - Mention Claude or add an attribution in a commit, a PR or a document.
 - Start a server, by command or through the preview panel.
