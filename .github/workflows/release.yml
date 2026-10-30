@@ -1,0 +1,46 @@
+name: Release
+
+# On every push on main, publishes to GitHub Packages the versions that the registry does not hold
+# yet, with their tags and their GitHub releases. The versions are set in the pull requests, with
+# Changesets (.changeset/README.md): the organization lets no workflow open a pull request.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Publish
+        uses: changesets/action/publish@v2
+        with:
+          script: pnpm release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

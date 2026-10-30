@@ -1,0 +1,68 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { ColorTokens } from './ColorTokens.tsx';
+import { LengthTokens } from './LengthTokens.tsx';
+import { TypeStyles } from './TypeStyles.tsx';
+
+<Meta title="Foundations/Tokens" />
+
+# Tokens
+
+The tokens of `@bram-van-osta/tokens`, read from its `tokens.json` and drawn with its CSS variables: this page shows what a product gets.
+
+## Colors
+
+Three roles. Delft blue acts, chooses and moves forward. Vermilion calls for attention, rarely: one or two touches per screen, plus the tulip, and never a button. Ink carries the text and the structure. Each color in the light theme and in the dark theme.
+
+In Tailwind, every color utility: `bg-delft`, `text-ink-muted`, `border-line`, `fill-tulip-flower`.
+
+<Unstyled>
+  <ColorTokens />
+</Unstyled>
+
+## Type
+
+Newsreader for the name in the logo only, Inter Tight for the headings, Inter for the text, IBM Plex Mono to situate. The reading column is 720 px at most.
+
+In Tailwind, the family and the style: `font-display text-heading-xl`. A style sets the size, the line height, the weight and the letter spacing.
+
+<Unstyled>
+  <TypeStyles />
+</Unstyled>
+
+## Spacing
+
+Room to breathe: one thing at a time, sections apart by `space-7` to `space-9`.
+
+In Tailwind, by name, next to the numeric scale: `p-space-5`, `gap-space-3`.
+
+<Unstyled>
+  <LengthTokens family="spacing" />
+</Unstyled>
+
+## Sizes
+
+Every target is 44 px high at least, the primary button 56 px.
+
+In Tailwind, with the spacing and size utilities: `min-h-target-min`, `h-button-height`, `max-w-reading-width`.
+
+<Unstyled>
+  <LengthTokens family="size" />
+</Unstyled>
+
+## Radii
+
+Square corners everywhere. Only the avatars, the numbered dots and the tile of the icon are rounded. No shadow in the interface.
+
+In Tailwind: `rounded-none`, `rounded-round`, `rounded-icon`.
+
+<Unstyled>
+  <LengthTokens family="radius" />
+</Unstyled>
+
+## Borders
+
+In Tailwind, the border widths: `border-hair`, `border-select`, `border-t-attention`.
+
+<Unstyled>
+  <LengthTokens family="border" />
+</Unstyled>

@@ -1,0 +1,74 @@
+name: CI
+
+# The checks of the code, on every pull request and every push on main, on GitHub's hosted runners.
+# Publishing and the Storybook run in their own workflows, on main.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Code checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Format and lint
+        run: pnpm exec biome ci
+
+      - name: Types
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Versions applied
+        run: |
+          pending=$(find .changeset -name '*.md' ! -name README.md)
+          if [ -n "$pending" ]; then
+            echo "::error::Changesets left unversioned: run pnpm changeset version in this pull request."
+            echo "$pending"
+            exit 1
+          fi
+
+      - name: Vulnerable dependencies
+        run: pnpm audit --audit-level high
+
+  secrets:
+    name: Secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks
+        run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo --redact --no-banner

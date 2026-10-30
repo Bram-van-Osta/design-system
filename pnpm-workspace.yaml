@@ -1,0 +1,23 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+
+savePrefix: ''
+
+# Install scripts run only for the packages listed true. lefthook's stays off: the prepare script
+# of the root installs the hooks. esbuild (Storybook's) ships its binary as an optional dependency.
+allowBuilds:
+  esbuild: false
+  lefthook: false
+
+# One version per tool across the workspace: a package asks for "catalog:".
+catalog:
+  '@base-ui/react': 1.9.0
+  '@types/node': 24.19.2
+  '@types/react': 19.3.0
+  '@types/react-dom': 19.3.0
+  react: 19.3.1
+  react-dom: 19.3.1
+  tailwindcss: 4.3.3
+  typescript: 7.0.2
+  vitest: 5.0.5

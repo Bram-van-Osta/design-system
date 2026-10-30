@@ -1,0 +1,41 @@
+# Git hooks, installed by `pnpm install` (the prepare script).
+# pre-commit: Biome on the staged files (safe fixes re-staged), the types of the whole workspace when
+# code changes, and no French in TS/TSX (docs/rules.md, section 1: visible texts live in the
+# translations).
+# commit-msg: commitlint, `type(scope): FX-n description` on one line (CLAUDE.md).
+# pre-push: the unit tests.
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: '*.{ts,tsx,js,jsx,json,jsonc,css}'
+      run: pnpm biome check --write --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+
+    typecheck:
+      glob: '*.{ts,tsx,json}'
+      run: pnpm typecheck
+
+    no-french:
+      glob: '*.{ts,tsx}'
+      env:
+        LC_ALL: en_US.UTF-8
+      run: |
+        matches=$(grep -lE '[àâäçéèêëîïôöùûüÿœæÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒÆ]' {staged_files} 2>/dev/null || true)
+        if [ -n "$matches" ]; then
+          echo "Hardcoded French characters in staged TS/TSX files:"
+          echo "$matches" | sed 's/^/  - /'
+          echo "Visible texts go through the translations (docs/rules.md, section 1)."
+          exit 1
+        fi
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit {1}
+
+pre-push:
+  commands:
+    test:
+      run: pnpm test
