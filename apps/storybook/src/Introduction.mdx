@@ -18,6 +18,20 @@ The identity of Bram van Osta as code, for every product that carries it. Two pa
 
 The tokens become the theme: `bg-delft`, `text-ink-muted`, `font-display`, `text-heading-xl`, `p-space-5`. Tailwind's own palette, type scale, radii and shadows are gone, so a utility outside the identity does not exist.
 
+## In a React app
+
+```tsx
+import { ToastProvider, UiProvider } from '@bram-van-osta/ui';
+
+<UiProvider locale="fr">
+  <ToastProvider>
+    <App />
+  </ToastProvider>
+</UiProvider>;
+```
+
+`UiProvider` gives the components the language of the few texts they show themselves, in French or English; its `messages` replace any of them. Every other text is a prop. The toolbar above the stories switches the theme, that language and the screen's width.
+
 ## Without Tailwind
 
 ```css

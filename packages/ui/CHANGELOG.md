@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.2.0
+
+### Minor Changes
+
+- The base components, from the buttons to the logo, with `UiProvider` for their texts in French or English and the identity's keyboard focus in `styles.css`.
+
 ## 0.1.0
 
 ### Minor Changes
