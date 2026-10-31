@@ -98,6 +98,7 @@ export {
   type TableRow,
 } from './components/Table/Table.tsx';
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
+export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
 export { ToastProvider, type ToastProviderProps } from './components/Toast/ToastProvider.tsx';
 export { type ToastContent, useToast } from './components/Toast/use-toast.ts';
