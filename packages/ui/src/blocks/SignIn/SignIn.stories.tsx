@@ -80,8 +80,11 @@ export const Pending: Story = {
 
 export const InvalidCredentials: Story = {
   args: { status: SignInStatus.invalidCredentials, defaultEmail: 'jeanne.martin@example.com' },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByRole('alert')).toBeVisible();
+  play: async ({ canvasElement, globals }) => {
+    await expectFormAlert(canvasElement, {
+      locale: globals.locale,
+      key: 'signIn.invalidCredentials',
+    });
   },
 };
 

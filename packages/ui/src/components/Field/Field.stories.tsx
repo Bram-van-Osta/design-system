@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent } from 'storybook/test';
+import { expectErrorColors } from '../../testing/expect-error-colors.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { TextInput } from '../TextInput/TextInput.tsx';
@@ -69,6 +70,7 @@ export const WithError: Story = {
     await expect(input).toHaveAccessibleDescription(
       expect.stringContaining('Enter an email address'),
     );
+    await expectErrorColors(canvas.getByText(/^Enter an email address/));
   },
 };
 
