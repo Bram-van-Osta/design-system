@@ -69,11 +69,15 @@ function visibleCount(elements: readonly HTMLElement[]): number {
 
 export const ClientSignIn: Story = {
   play: async ({ canvas }) => {
+    const languageLink = canvas.getByRole('link', { name: 'English' });
+    // The panel shows on a computer only: the switch sits in it there, in the top bar on a phone.
+    const panel = canvas.queryByRole('complementary');
+    await expect(panel ?? canvas.getByRole('banner')).toContainElement(languageLink);
     await expect(visibleCount(canvas.getAllByText(CLIENT_STATEMENT))).toBe(1);
     await expect(canvas.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     await expectWidthAtMost(canvas.getByRole('main'), 'form-width');
     await userEvent.tab();
-    await expectFocusRing(canvas.getByRole('link', { name: 'English' }));
+    await expectFocusRing(languageLink);
     await userEvent.tab();
     await expect(canvas.getByRole('textbox')).toHaveFocus();
   },
