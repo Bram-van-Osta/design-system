@@ -81,6 +81,12 @@ export {
   StackDirection,
   StackJustify,
 } from './components/Stack/stack-classes.ts';
+export {
+  Table,
+  type TableColumn,
+  type TableProps,
+  type TableRow,
+} from './components/Table/Table.tsx';
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
 export { ToastProvider, type ToastProviderProps } from './components/Toast/ToastProvider.tsx';

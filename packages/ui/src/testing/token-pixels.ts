@@ -2,6 +2,7 @@ export type SizeToken =
   | 'target-min'
   | 'button-height'
   | 'form-width'
+  | 'reading-width'
   | 'border-attention'
   | 'account-name-width';
 
