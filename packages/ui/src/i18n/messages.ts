@@ -65,6 +65,7 @@ export const MESSAGE_KEYS = [
   'verifyEmail.lead',
   'verifyEmail.resend',
   'verifyEmail.resent',
+  'errorPage.places',
 ] as const;
 export type MessageKey = (typeof MESSAGE_KEYS)[number];
 

@@ -53,5 +53,6 @@
   "verifyEmail.kicker": "Your address",
   "verifyEmail.lead": "We sent a link to {email}. Open it to confirm your address.",
   "verifyEmail.resend": "Send the link again",
-  "verifyEmail.resent": "Link sent again"
+  "verifyEmail.resent": "Link sent again",
+  "errorPage.places": "Or go straight to"
 }
