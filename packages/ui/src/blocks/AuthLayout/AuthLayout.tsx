@@ -15,8 +15,8 @@ export interface AuthLayoutProps {
   /** Beside the logo: the app's role, such as "operator". */
   readonly role?: ReactNode;
   /**
-   * The language switch: on a computer, at the top right of the panel, across from the large tulip;
-   * on a phone, at the end of the top bar.
+   * The language switch: on a computer, at the top right of the panel, on the logo's row; on a
+   * phone, at the end of the top bar.
    */
   readonly headerEnd?: ReactNode;
   /** The authentication block. */
@@ -40,11 +40,14 @@ export function AuthLayout({
 }: AuthLayoutProps) {
   return (
     <div className="flex min-h-dvh flex-col bg-bg lg:flex-row-reverse">
-      <aside className="hidden flex-1 flex-col justify-between gap-space-7 bg-surface p-space-9 lg:flex">
-        <div className="flex items-start justify-between gap-space-4">
-          <Tulip size={PANEL_TULIP_SIZE} className="block shrink-0" />
-          {headerEnd}
-        </div>
+      <aside className="relative hidden flex-1 flex-col justify-between gap-space-7 bg-surface p-space-9 lg:flex">
+        {hasContent(headerEnd) && (
+          // On the row of the column's logo, which sits at the column's padding, not the panel's.
+          <div className="absolute top-space-6 right-space-9 flex min-h-target-min items-center">
+            {headerEnd}
+          </div>
+        )}
+        <Tulip size={PANEL_TULIP_SIZE} className="block shrink-0" />
         <div className="flex max-w-reading-width flex-col gap-space-5">
           <Kicker tone={KickerTone.muted}>{statementKicker}</Kicker>
           <p className="text-balance font-display text-heading-xl text-ink">{statement}</p>

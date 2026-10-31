@@ -1,6 +1,6 @@
 import { GoogleLogoIcon, KeyIcon } from '@phosphor-icons/react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { Link } from '../../components/Link/Link.tsx';
 import { Locale, type Messages } from '../../i18n/messages.ts';
 import { UiProvider } from '../../i18n/UiProvider.tsx';
@@ -67,12 +67,36 @@ function visibleCount(elements: readonly HTMLElement[]): number {
   return elements.filter((element) => element.checkVisibility()).length;
 }
 
+const BRAND_NAME = 'Bram van Osta';
+const ROW_ALIGNMENT_TOLERANCE = 1;
+
+function verticalCenter(element: Element): number {
+  const { top, height } = element.getBoundingClientRect();
+  return top + height / 2;
+}
+
+// The panel shows on a computer only: the switch sits in it there, on the logo's row, and in the
+// top bar on a phone.
+async function expectLanguageSwitchPlaced(canvasElement: HTMLElement): Promise<HTMLElement> {
+  const canvas = within(canvasElement);
+  const languageLink = canvas.getByRole('link', { name: 'English' });
+  const panel = canvas.queryByRole('complementary');
+  if (panel === null) {
+    await expect(canvas.getByRole('banner')).toContainElement(languageLink);
+    return languageLink;
+  }
+  await expect(panel).toContainElement(languageLink);
+  const lockup = canvas.getAllByText(BRAND_NAME).find((name) => name.checkVisibility());
+  const logoCenter = verticalCenter(lockup?.parentElement ?? panel);
+  await expect(Math.abs(verticalCenter(languageLink) - logoCenter)).toBeLessThanOrEqual(
+    ROW_ALIGNMENT_TOLERANCE,
+  );
+  return languageLink;
+}
+
 export const ClientSignIn: Story = {
-  play: async ({ canvas }) => {
-    const languageLink = canvas.getByRole('link', { name: 'English' });
-    // The panel shows on a computer only: the switch sits in it there, in the top bar on a phone.
-    const panel = canvas.queryByRole('complementary');
-    await expect(panel ?? canvas.getByRole('banner')).toContainElement(languageLink);
+  play: async ({ canvas, canvasElement }) => {
+    const languageLink = await expectLanguageSwitchPlaced(canvasElement);
     await expect(visibleCount(canvas.getAllByText(CLIENT_STATEMENT))).toBe(1);
     await expect(canvas.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     await expectWidthAtMost(canvas.getByRole('main'), 'form-width');
@@ -88,7 +112,6 @@ export const OperatorSignIn: Story = {
     statement: OPERATOR_STATEMENT,
     statementKicker: 'Operator',
     role: 'operator',
-    headerEnd: undefined,
     children: (
       <SignIn
         providers={[
@@ -109,11 +132,14 @@ export const OperatorSignIn: Story = {
       <AuthLayout {...args} />
     </UiProvider>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement }) => {
+    const languageLink = await expectLanguageSwitchPlaced(canvasElement);
     await expect(canvas.getByText('operator')).toBeVisible();
     await expect(canvas.getByRole('heading', { level: 1 })).toHaveTextContent('Sign in.');
     await expect(visibleCount(canvas.getAllByText(OPERATOR_STATEMENT))).toBe(1);
     await expect(canvas.getByText("Only the operator's account has access here.")).toBeVisible();
+    await userEvent.tab();
+    await expectFocusRing(languageLink);
     await userEvent.tab();
     await expectFocusRing(canvas.getByRole('button', { name: 'Continue with Pocket ID' }));
   },

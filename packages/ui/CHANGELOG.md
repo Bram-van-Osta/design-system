@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.6.2
+
+### Patch Changes
+
+- On a computer, `AuthLayout`'s language switch in the grey panel now sits on the row of the column's logo, vertically centered with it, instead of at the top of the large tulip.
+
 ## 0.6.1
 
 ### Patch Changes
