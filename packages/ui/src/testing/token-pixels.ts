@@ -1,4 +1,9 @@
-export type SizeToken = 'target-min' | 'button-height' | 'form-width' | 'border-attention';
+export type SizeToken =
+  | 'target-min'
+  | 'button-height'
+  | 'form-width'
+  | 'border-attention'
+  | 'account-name-width';
 
 /** A size token's value, in pixels, as the page's tokens give it. */
 export function tokenPixels(token: SizeToken): number {
