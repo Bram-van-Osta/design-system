@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.6.0
+
+### Minor Changes
+
+- On a computer, `AuthLayout` shows its `headerEnd` (the language switch) at the top right of the grey panel, across from the large tulip, instead of in the top bar beside the logo; on a phone it stays at the end of the top bar.
+
 ## 0.5.0
 
 ### Minor Changes
