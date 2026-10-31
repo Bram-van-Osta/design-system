@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectWidthAtMost } from '../../testing/expect-width.ts';
 import { PageFrame } from '../../testing/PageFrame.tsx';
 import { NewPasswordStatus } from './new-password.ts';
 import { SetPassword } from './SetPassword.tsx';
@@ -84,10 +85,18 @@ export const InvalidLink: Story = {
   },
 };
 
+// In the reading column, the form keeps a short form's width; the heading may go wider.
 export const InAPage: Story = {
   render: (args) => (
     <PageFrame>
       <SetPassword {...args} />
     </PageFrame>
   ),
+  play: async ({ canvasElement }) => {
+    const form = canvasElement.querySelector('form');
+    await expect(form).not.toBeNull();
+    if (form !== null) {
+      await expectWidthAtMost(form, 'form-width');
+    }
+  },
 };

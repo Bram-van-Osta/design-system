@@ -11,7 +11,7 @@ interface AuthBlockProps {
   readonly children?: ReactNode;
 }
 
-/** An authentication screen: its heading, the sentence under it, then its form. */
+/** An authentication screen: its heading, the sentence under it, then its form, as wide as a short form. */
 export function AuthBlock({ heading, lead, className, children }: AuthBlockProps) {
   const headingId = useId();
   return (
@@ -25,7 +25,7 @@ export function AuthBlock({ heading, lead, className, children }: AuthBlockProps
         </Heading>
         {hasContent(lead) && <Text variant={TextVariant.lead}>{lead}</Text>}
       </div>
-      {children}
+      <div className="flex max-w-form-width flex-col gap-space-6">{children}</div>
     </section>
   );
 }

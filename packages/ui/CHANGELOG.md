@@ -1,5 +1,13 @@
 # @bram-van-osta/ui
 
+## 0.4.1
+
+### Patch Changes
+
+- `form-width` (420 px), the width of a short form on a computer; the authentication blocks keep their fields and buttons within it, under a heading and a lead that keep the reading column.
+- Updated dependencies
+  - @bram-van-osta/tokens@0.2.0
+
 ## 0.4.0
 
 ### Minor Changes
