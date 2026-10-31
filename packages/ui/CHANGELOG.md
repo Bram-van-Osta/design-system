@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.4.0
+
+### Minor Changes
+
+- `Avatar`, a person by the initials of their name in a circle, and `Menu`, a few actions behind one button, such as the account's behind its avatar.
+
 ## 0.3.1
 
 ### Patch Changes
