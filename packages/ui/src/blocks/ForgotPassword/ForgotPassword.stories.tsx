@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectFormAlert } from '../../testing/expect-form-alert.ts';
 import { PageFrame } from '../../testing/PageFrame.tsx';
 import { ForgotPassword, type ForgotPasswordProps } from './ForgotPassword.tsx';
 import { ForgotPasswordStatus } from './forgot-password-status.ts';
@@ -57,6 +58,27 @@ export const IncompleteEmail: Story = {
 
 export const Pending: Story = {
   args: { status: ForgotPasswordStatus.pending, defaultEmail: 'jeanne.martin@example.com' },
+};
+
+export const TooManyRequests: Story = {
+  args: { status: ForgotPasswordStatus.tooManyRequests, defaultEmail: 'jeanne.martin@example.com' },
+  play: async ({ canvas, canvasElement, args, globals }) => {
+    await expectFormAlert(canvasElement, {
+      locale: globals.locale,
+      key: 'sendLink.tooManyRequests',
+    });
+    await userEvent.click(canvas.getByRole('button', { name: /send the link|envoyer le lien/i }));
+    await expect(args.onSubmit).toHaveBeenCalledWith({ email: 'jeanne.martin@example.com' });
+  },
+};
+
+export const Failed: Story = {
+  args: { status: ForgotPasswordStatus.failed, defaultEmail: 'jeanne.martin@example.com' },
+  play: async ({ canvas, canvasElement, args, globals }) => {
+    await expectFormAlert(canvasElement, { locale: globals.locale, key: 'sendLink.failed' });
+    await userEvent.click(canvas.getByRole('button', { name: /send the link|envoyer le lien/i }));
+    await expect(args.onSubmit).toHaveBeenCalledWith({ email: 'jeanne.martin@example.com' });
+  },
 };
 
 export const Sent: Story = {

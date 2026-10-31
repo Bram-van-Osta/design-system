@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import { UiProvider } from '../../i18n/UiProvider.tsx';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectFormAlert } from '../../testing/expect-form-alert.ts';
 import { expectWidthAtMost } from '../../testing/expect-width.ts';
 import { PageFrame } from '../../testing/PageFrame.tsx';
 import { SignIn } from './SignIn.tsx';
@@ -90,6 +91,32 @@ export const Locked: Story = {
 
 export const NoAccount: Story = {
   args: { status: SignInStatus.noAccount },
+};
+
+// The app could not sign in: the reader tries again from the same form.
+export const Failed: Story = {
+  args: { status: SignInStatus.failed, defaultEmail: 'jeanne.martin@example.com' },
+  play: async ({ canvas, canvasElement, args, globals }) => {
+    await expectFormAlert(canvasElement, { locale: globals.locale, key: 'signIn.failed' });
+    await userEvent.type(
+      canvas.getByLabelText(/^your password|^votre mot de passe/i),
+      'tulips-in-may{Enter}',
+    );
+    await expect(args.onSubmit).toHaveBeenCalledWith({
+      email: 'jeanne.martin@example.com',
+      password: 'tulips-in-may',
+    });
+  },
+};
+
+// A mailed link sent the browser back refused: signing in sends a new one if needed.
+export const LinkRefused: Story = {
+  args: { status: SignInStatus.linkRefused },
+  play: async ({ canvas, canvasElement, args, globals }) => {
+    await expectFormAlert(canvasElement, { locale: globals.locale, key: 'signIn.linkRefused' });
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue with Google' }));
+    await expect(args.providers?.[0]?.onSelect).toHaveBeenCalledOnce();
+  },
 };
 
 export const Operator: Story = {

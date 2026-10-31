@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectFormAlert } from '../../testing/expect-form-alert.ts';
 import { expectWidthAtMost } from '../../testing/expect-width.ts';
 import { PageFrame } from '../../testing/PageFrame.tsx';
 import { NewPasswordStatus } from './new-password.ts';
@@ -74,6 +75,33 @@ export const WithTheAppsRules: Story = {
 
 export const Pending: Story = {
   args: { status: NewPasswordStatus.pending },
+};
+
+export const TooManyAttempts: Story = {
+  args: { status: NewPasswordStatus.tooManyAttempts },
+  play: async ({ canvas, canvasElement, args, globals }) => {
+    await expectFormAlert(canvasElement, {
+      locale: globals.locale,
+      key: 'newPassword.tooManyAttempts',
+    });
+    await userEvent.type(
+      canvas.getByLabelText(/^your password|^votre mot de passe/i),
+      `${SAMPLE_PHRASE}{Enter}`,
+    );
+    await expect(args.onSubmit).toHaveBeenCalledWith({ password: SAMPLE_PHRASE });
+  },
+};
+
+export const Failed: Story = {
+  args: { status: NewPasswordStatus.failed },
+  play: async ({ canvas, canvasElement, args, globals }) => {
+    await expectFormAlert(canvasElement, { locale: globals.locale, key: 'newPassword.failed' });
+    await userEvent.type(
+      canvas.getByLabelText(/^your password|^votre mot de passe/i),
+      `${SAMPLE_PHRASE}{Enter}`,
+    );
+    await expect(args.onSubmit).toHaveBeenCalledWith({ password: SAMPLE_PHRASE });
+  },
 };
 
 export const InvalidLink: Story = {

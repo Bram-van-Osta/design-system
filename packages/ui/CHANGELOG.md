@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.7.0
+
+### Minor Changes
+
+- The authentication blocks show every failure of their action in their own alert, with new statuses: `SignInStatus.failed` and `linkRefused`, `ForgotPasswordStatus` and `ResendStatus` `tooManyRequests` and `failed`, and `NewPasswordStatus` `tooManyAttempts` and `failed`.
+
 ## 0.6.2
 
 ### Patch Changes

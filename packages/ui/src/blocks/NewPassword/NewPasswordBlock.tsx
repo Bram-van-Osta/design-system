@@ -1,9 +1,11 @@
 import type { LinkProps } from '../../components/Link/Link.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
 import { AuthBlock } from '../shared/AuthBlock.tsx';
+import { FormAlert } from '../shared/FormAlert.tsx';
 import { ExpiredLink } from './ExpiredLink.tsx';
 import { NewPasswordForm } from './NewPasswordForm.tsx';
 import {
+  NEW_PASSWORD_ALERTS,
   NewPasswordStatus,
   type NewPasswordTexts,
   type NewPasswordValues,
@@ -21,6 +23,7 @@ export interface NewPasswordProps {
   readonly extraRules?: readonly PasswordRule[];
   /** The account's address, shown and given to password managers. */
   readonly email?: string;
+  /** Where the app stands: saving, the link refused, or why saving failed. */
   readonly status?: NewPasswordStatus;
   /** The app's link to the forgotten password, offered when the link no longer works. */
   readonly forgotPasswordLink?: Omit<LinkProps, 'children'>;
@@ -46,6 +49,7 @@ export function NewPasswordBlock({
   if (status === NewPasswordStatus.invalidLink) {
     return <ExpiredLink forgotPasswordLink={forgotPasswordLink} className={className} />;
   }
+  const alert = NEW_PASSWORD_ALERTS[status];
   return (
     <AuthBlock
       kicker={messages[texts.kicker]}
@@ -53,6 +57,7 @@ export function NewPasswordBlock({
       lead={messages[texts.lead]}
       className={className}
     >
+      {alert && <FormAlert>{messages[alert]}</FormAlert>}
       <NewPasswordForm
         texts={texts}
         onSubmit={onSubmit}

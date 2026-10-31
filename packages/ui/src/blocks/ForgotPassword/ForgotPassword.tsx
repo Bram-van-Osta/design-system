@@ -3,13 +3,15 @@ import { interpolate } from '../../i18n/interpolate.ts';
 import { useMessages } from '../../i18n/use-messages.ts';
 import { AuthBlock } from '../shared/AuthBlock.tsx';
 import { CheckMailbox } from '../shared/CheckMailbox.tsx';
+import { FormAlert } from '../shared/FormAlert.tsx';
 import { ForgotPasswordForm } from './ForgotPasswordForm.tsx';
-import { ForgotPasswordStatus } from './forgot-password-status.ts';
+import { FORGOT_PASSWORD_ALERTS, ForgotPasswordStatus } from './forgot-password-status.ts';
 import { type ForgotPasswordValues, useForgotPasswordForm } from './use-forgot-password-form.ts';
 
 export interface ForgotPasswordProps {
   /** Asks the app to send a link to choose a new password. */
   readonly onSubmit: (values: ForgotPasswordValues) => void;
+  /** Where the app stands: sending the link, sent, or why it failed. */
   readonly status?: ForgotPasswordStatus;
   readonly defaultEmail?: string;
   /** The app's link back to signing in. */
@@ -44,6 +46,7 @@ export function ForgotPassword({
       </CheckMailbox>
     );
   }
+  const alert = FORGOT_PASSWORD_ALERTS[status];
   return (
     <AuthBlock
       kicker={messages['forgotPassword.kicker']}
@@ -51,6 +54,7 @@ export function ForgotPassword({
       lead={messages['forgotPassword.lead']}
       className={className}
     >
+      {alert && <FormAlert>{messages[alert]}</FormAlert>}
       <ForgotPasswordForm
         form={form}
         defaultEmail={defaultEmail}
