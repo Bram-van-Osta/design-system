@@ -1,5 +1,14 @@
 # @bram-van-osta/ui
 
+## 0.10.0
+
+### Minor Changes
+
+- 622b4fd: `AuthLayout` takes a `footer`, such as the links to the legal texts: at the bottom of the block's column on a computer, under the block on a phone.
+- b5384cc: `Disclosure` folds content under its summary, such as a long page's contents on a phone, on Base UI's Collapsible.
+- 8329c02: `Link` takes `isInline` for a link inside a sentence: the sentence's size and line, underlined, with no minimum height.
+- 15c2dd4: `Table` sets facts side by side, such as a legal text's processors or retention periods, under a caption for screen readers; wider than the screen, it scrolls sideways in its own box, which the keyboard then reaches.
+
 ## 0.9.0
 
 ### Minor Changes
