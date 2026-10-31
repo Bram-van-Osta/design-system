@@ -1,7 +1,7 @@
+import { FormAlert } from '../../components/FormAlert/FormAlert.tsx';
 import type { LinkProps } from '../../components/Link/Link.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
-import { AuthBlock } from '../shared/AuthBlock.tsx';
-import { FormAlert } from '../shared/FormAlert.tsx';
+import { AuthBlock } from '../AuthBlock/AuthBlock.tsx';
 import { ExpiredLink } from './ExpiredLink.tsx';
 import { NewPasswordForm } from './NewPasswordForm.tsx';
 import {

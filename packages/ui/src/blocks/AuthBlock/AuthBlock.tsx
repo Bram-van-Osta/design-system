@@ -5,7 +5,7 @@ import { Text, TextVariant } from '../../components/Text/Text.tsx';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
 
-interface AuthBlockProps {
+export interface AuthBlockProps {
   /** The line above the heading, which says where the reader is: their space, their invitation. */
   readonly kicker: ReactNode;
   readonly heading: ReactNode;

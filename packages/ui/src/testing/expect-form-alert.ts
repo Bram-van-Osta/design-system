@@ -12,9 +12,14 @@ export async function expectFormAlert(
 ): Promise<void> {
   const text = MESSAGES[locale === Locale.fr ? Locale.fr : Locale.en][key];
   const alert = within(canvasElement).getByRole('alert');
-  await expect(alert).toBeVisible();
   // Compared as is: the matchers turn the French typography's non-breaking spaces into spaces.
   await expect(alert.textContent).toBe(text);
+  await expectFormAlertBox(alert);
+}
+
+/** An alert in its box: on surface, under a vermillion rule, its icon on its first line. */
+export async function expectFormAlertBox(alert: HTMLElement): Promise<void> {
+  await expect(alert).toBeVisible();
   const style = getComputedStyle(alert);
   await expect(style.backgroundColor).toBe(tokenColor('surface', alert));
   await expect(style.borderTopColor).toBe(tokenColor('vermillion', alert));

@@ -1,4 +1,9 @@
+export { AuthBlock, type AuthBlockProps } from './blocks/AuthBlock/AuthBlock.tsx';
 export { AuthLayout, type AuthLayoutProps } from './blocks/AuthLayout/AuthLayout.tsx';
+export {
+  CheckMailbox,
+  type CheckMailboxProps,
+} from './blocks/CheckMailbox/CheckMailbox.tsx';
 export {
   ErrorPage,
   type ErrorPageDetail,
@@ -48,6 +53,7 @@ export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyS
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
 export { FileInput, type FileInputProps } from './components/FileInput/FileInput.tsx';
+export { FormAlert, type FormAlertProps } from './components/FormAlert/FormAlert.tsx';
 export {
   Heading,
   type HeadingLevel,

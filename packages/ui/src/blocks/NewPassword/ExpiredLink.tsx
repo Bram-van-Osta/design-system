@@ -1,6 +1,6 @@
 import { Link, type LinkProps } from '../../components/Link/Link.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
-import { AuthBlock } from '../shared/AuthBlock.tsx';
+import { AuthBlock } from '../AuthBlock/AuthBlock.tsx';
 
 interface ExpiredLinkProps {
   /** The app's link to the forgotten password, where a new link is asked for. */
