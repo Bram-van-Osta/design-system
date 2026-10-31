@@ -5,6 +5,7 @@ import { Link } from '../../components/Link/Link.tsx';
 import { Locale, type Messages } from '../../i18n/messages.ts';
 import { UiProvider } from '../../i18n/UiProvider.tsx';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { expectWidthAtMost } from '../../testing/expect-width.ts';
 import { ForgotPassword } from '../ForgotPassword/ForgotPassword.tsx';
 import { NewPasswordStatus } from '../NewPassword/new-password.ts';
@@ -25,6 +26,16 @@ const languageSwitch = (
   <Link href="#en" lang="en">
     English
   </Link>
+);
+
+const LEGAL_LINK_NAMES = ['Legal notice', 'Terms', 'Privacy'] as const;
+
+const legalLinks = (
+  <nav aria-label="Legal texts" className="flex flex-wrap gap-x-space-5">
+    <Link href="#legal-notice">Legal notice</Link>
+    <Link href="#terms">Terms</Link>
+    <Link href="#privacy">Privacy</Link>
+  </nav>
 );
 
 const google = {
@@ -49,6 +60,7 @@ const meta = {
     statement: CLIENT_STATEMENT,
     statementKicker: 'Sites for small businesses and freelancers',
     headerEnd: languageSwitch,
+    footer: legalLinks,
     children: (
       <SignIn
         onSubmit={fn()}
@@ -142,6 +154,25 @@ export const OperatorSignIn: Story = {
     await expectFocusRing(languageLink);
     await userEvent.tab();
     await expectFocusRing(canvas.getByRole('button', { name: 'Continue with Pocket ID' }));
+  },
+};
+
+// REF-T8-01: the legal links end the form's column on a computer, and follow the form on a phone.
+export const LegalLinks: Story = {
+  play: async ({ canvas }) => {
+    const main = canvas.getByRole('main');
+    const footer = canvas.getByRole('contentinfo');
+    await expect(footer.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      main.getBoundingClientRect().bottom,
+    );
+    await expect(footer.getBoundingClientRect().left).toBe(main.getBoundingClientRect().left);
+    const links = within(footer).getAllByRole('link');
+    await expect(links.map((link) => link.textContent)).toEqual([...LEGAL_LINK_NAMES]);
+    for (const link of links) {
+      await expectHeightAtLeast(link, 'target-min');
+    }
+    await userEvent.tab({ shift: true });
+    await expectFocusRing(canvas.getByRole('link', { name: 'Privacy' }));
   },
 };
 
