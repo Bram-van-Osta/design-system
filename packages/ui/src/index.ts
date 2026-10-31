@@ -33,6 +33,10 @@ export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx'
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
 export {
+  CheckboxCards,
+  type CheckboxCardsProps,
+} from './components/CheckboxCards/CheckboxCards.tsx';
+export {
   type ChoiceCardOption,
   type ChoiceDetail,
   ChoiceDetailPlacement,
