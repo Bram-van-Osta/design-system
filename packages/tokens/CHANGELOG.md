@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.4.0
+
+### Minor Changes
+
+- 604d059: A new size token, `progress-height` (3 px): the height of a progress bar's segments, across the page under its header.
+
 ## 0.3.0
 
 ### Minor Changes
