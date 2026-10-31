@@ -92,6 +92,10 @@ export {
   StackJustify,
 } from './components/Stack/stack-classes.ts';
 export {
+  StepProgress,
+  type StepProgressProps,
+} from './components/StepProgress/StepProgress.tsx';
+export {
   Table,
   type TableColumn,
   type TableProps,
