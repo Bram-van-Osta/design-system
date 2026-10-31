@@ -32,6 +32,11 @@ export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
+export {
+  type ChoiceCardOption,
+  type ChoiceDetail,
+  ChoiceDetailPlacement,
+} from './components/ChoiceCard/choice-card.ts';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
 export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclosure.tsx';
@@ -63,6 +68,7 @@ export {
   PasswordInput,
   type PasswordInputProps,
 } from './components/PasswordInput/PasswordInput.tsx';
+export { RadioCards, type RadioCardsProps } from './components/RadioCards/RadioCards.tsx';
 export {
   RadioGroup,
   type RadioGroupProps,
