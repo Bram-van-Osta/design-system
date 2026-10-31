@@ -1,6 +1,6 @@
 {
   "name": "@bram-van-osta/ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "The Bram van Osta React components, on Base UI and the tokens, styled with Tailwind 4.",
   "type": "module",
   "repository": {
@@ -50,6 +50,7 @@
     "react-dom": "catalog:",
     "storybook": "10.6.2",
     "typescript": "catalog:",
+    "vite": "8.3.4",
     "vitest": "catalog:"
   }
 }

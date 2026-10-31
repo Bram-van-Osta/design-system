@@ -1,7 +1,22 @@
+export {
+  ForgotPassword,
+  type ForgotPasswordProps,
+} from './blocks/ForgotPassword/ForgotPassword.tsx';
+export { ForgotPasswordStatus } from './blocks/ForgotPassword/forgot-password-status.ts';
+export type { ForgotPasswordValues } from './blocks/ForgotPassword/use-forgot-password-form.ts';
+export {
+  NewPasswordStatus,
+  type NewPasswordValues,
+  type PasswordRule,
+} from './blocks/NewPassword/new-password.ts';
+export { ResetPassword, type ResetPasswordProps } from './blocks/NewPassword/ResetPassword.tsx';
+export { SetPassword, type SetPasswordProps } from './blocks/NewPassword/SetPassword.tsx';
 export type { SignInProvider } from './blocks/SignIn/ProviderButtons.tsx';
 export { SignIn, type SignInProps } from './blocks/SignIn/SignIn.tsx';
 export { SignInStatus } from './blocks/SignIn/sign-in-status.ts';
 export type { SignInCredentials } from './blocks/SignIn/use-sign-in-form.ts';
+export { ResendStatus } from './blocks/VerifyEmail/resend-status.ts';
+export { VerifyEmail, type VerifyEmailProps } from './blocks/VerifyEmail/VerifyEmail.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
