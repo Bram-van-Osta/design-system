@@ -66,6 +66,7 @@ export function SignIn({
         <ProviderButtons
           providers={providers}
           isDisabled={status === SignInStatus.pending || isProviderPending}
+          isFirstPrimary={onSubmit === undefined}
         />
       )}
       {hasContent(note) && (

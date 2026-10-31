@@ -46,7 +46,7 @@ export function SignInForm({
           onChange={() => clearError(FormField.password)}
         />
       </Field>
-      <div className="flex flex-col gap-space-3 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-space-3">
         <Button
           type="submit"
           isPending={isPending}
@@ -56,7 +56,9 @@ export function SignInForm({
           {messages['signIn.submit']}
         </Button>
         {forgotPasswordLink && (
-          <Link {...forgotPasswordLink}>{messages['signIn.forgotPassword']}</Link>
+          <Link {...forgotPasswordLink} className="self-start">
+            {messages['signIn.forgotPassword']}
+          </Link>
         )}
       </div>
     </form>

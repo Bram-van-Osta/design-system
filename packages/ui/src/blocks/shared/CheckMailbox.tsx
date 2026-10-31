@@ -23,8 +23,8 @@ export function CheckMailbox({ kicker, lead, className, children }: CheckMailbox
       lead={lead}
       className={className}
     >
-      <Text tone={TextTone.muted}>{messages['mailbox.help']}</Text>
       {children}
+      <Text tone={TextTone.muted}>{messages['mailbox.help']}</Text>
     </AuthBlock>
   );
 }
