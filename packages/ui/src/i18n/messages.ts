@@ -19,6 +19,8 @@ export const MESSAGE_KEYS = [
   'toast.region',
   'toast.close',
   'skeleton.loading',
+  'fileInput.choose',
+  'fileInput.remove',
   'form.email',
   'form.emailMissing',
   'form.emailInvalid',

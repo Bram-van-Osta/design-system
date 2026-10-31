@@ -47,6 +47,7 @@ export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclo
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
+export { FileInput, type FileInputProps } from './components/FileInput/FileInput.tsx';
 export {
   Heading,
   type HeadingLevel,
