@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import { UiProvider } from '../../i18n/UiProvider.tsx';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectWidthAtMost } from '../../testing/expect-width.ts';
 import { PageFrame } from '../../testing/PageFrame.tsx';
 import { SignIn } from './SignIn.tsx';
 import { SignInStatus } from './sign-in-status.ts';
@@ -135,10 +136,15 @@ export const WithTheAppsTexts: Story = {
   },
 };
 
+// In the reading column, the form keeps a short form's width; the heading may go wider.
 export const InAPage: Story = {
   render: (args) => (
     <PageFrame>
       <SignIn {...args} />
     </PageFrame>
   ),
+  play: async ({ canvas }) => {
+    await expectWidthAtMost(canvas.getByRole('textbox'), 'form-width');
+    await expectWidthAtMost(canvas.getByRole('button', { name: google.label }), 'form-width');
+  },
 };
