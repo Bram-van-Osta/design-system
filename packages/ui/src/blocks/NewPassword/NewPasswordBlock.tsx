@@ -47,7 +47,12 @@ export function NewPasswordBlock({
     return <ExpiredLink forgotPasswordLink={forgotPasswordLink} className={className} />;
   }
   return (
-    <AuthBlock heading={messages[texts.heading]} lead={messages[texts.lead]} className={className}>
+    <AuthBlock
+      kicker={messages[texts.kicker]}
+      heading={messages[texts.heading]}
+      lead={messages[texts.lead]}
+      className={className}
+    >
       <NewPasswordForm
         texts={texts}
         onSubmit={onSubmit}

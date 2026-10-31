@@ -1,3 +1,10 @@
+export { AuthLayout, type AuthLayoutProps } from './blocks/AuthLayout/AuthLayout.tsx';
+export {
+  ErrorPage,
+  type ErrorPageDetail,
+  type ErrorPagePlace,
+  type ErrorPageProps,
+} from './blocks/ErrorPage/ErrorPage.tsx';
 export {
   ForgotPassword,
   type ForgotPasswordProps,

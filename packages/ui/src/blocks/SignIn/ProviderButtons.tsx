@@ -16,25 +16,44 @@ export interface SignInProvider {
 interface ProviderButtonsProps {
   readonly providers: readonly SignInProvider[];
   readonly isDisabled: boolean;
+  /** Without a password, the first provider is what the page expects: the primary button. */
+  readonly isFirstPrimary: boolean;
 }
 
-export function ProviderButtons({ providers, isDisabled }: ProviderButtonsProps) {
+export function ProviderButtons({ providers, isDisabled, isFirstPrimary }: ProviderButtonsProps) {
   return (
     <ul className="flex flex-col gap-space-3">
-      {providers.map((provider) => (
+      {providers.map((provider, index) => (
         <li key={provider.id}>
-          <Button
-            variant={ButtonVariant.secondary}
-            icon={provider.icon}
-            isPending={provider.isPending}
-            disabled={isDisabled}
-            onClick={provider.onSelect}
-            className="w-full"
-          >
-            {provider.label}
-          </Button>
+          <ProviderButton
+            provider={provider}
+            isDisabled={isDisabled}
+            isPrimary={isFirstPrimary && index === 0}
+          />
         </li>
       ))}
     </ul>
+  );
+}
+
+interface ProviderButtonProps {
+  readonly provider: SignInProvider;
+  readonly isDisabled: boolean;
+  readonly isPrimary: boolean;
+}
+
+function ProviderButton({ provider, isDisabled, isPrimary }: ProviderButtonProps) {
+  return (
+    <Button
+      variant={isPrimary ? ButtonVariant.primary : ButtonVariant.secondary}
+      hasArrow={isPrimary}
+      icon={isPrimary ? undefined : provider.icon}
+      isPending={provider.isPending}
+      disabled={isDisabled}
+      onClick={provider.onSelect}
+      className="w-full"
+    >
+      {provider.label}
+    </Button>
   );
 }

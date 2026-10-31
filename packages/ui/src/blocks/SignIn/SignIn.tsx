@@ -1,5 +1,8 @@
+import type { ReactNode } from 'react';
 import type { LinkProps } from '../../components/Link/Link.tsx';
+import { Text, TextTone, TextVariant } from '../../components/Text/Text.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
+import { hasContent } from '../../utils/has-content.ts';
 import { AuthBlock } from '../shared/AuthBlock.tsx';
 import { FormAlert } from '../shared/FormAlert.tsx';
 import { OrSeparator } from './OrSeparator.tsx';
@@ -20,6 +23,10 @@ export interface SignInProps {
   readonly defaultEmail?: string;
   /** The app's link to the forgotten password: `{ href }`, or `{ render: <RouterLink to="…" /> }`. */
   readonly forgotPasswordLink?: Omit<LinkProps, 'children'>;
+  /** The sentence under the heading, from the app: how this app signs in. */
+  readonly lead?: ReactNode;
+  /** A sentence under the buttons, from the app: who has access here. */
+  readonly note?: ReactNode;
   readonly className?: string;
 }
 
@@ -30,13 +37,20 @@ export function SignIn({
   status = SignInStatus.idle,
   defaultEmail,
   forgotPasswordLink,
+  lead,
+  note,
   className,
 }: SignInProps) {
   const messages = useMessages();
   const alert = SIGN_IN_ALERTS[status];
   const isProviderPending = providers.some((provider) => provider.isPending === true);
   return (
-    <AuthBlock heading={messages['signIn.heading']} className={className}>
+    <AuthBlock
+      kicker={messages['signIn.kicker']}
+      heading={messages['signIn.heading']}
+      lead={lead}
+      className={className}
+    >
       {alert && <FormAlert>{messages[alert]}</FormAlert>}
       {onSubmit && (
         <SignInForm
@@ -52,7 +66,13 @@ export function SignIn({
         <ProviderButtons
           providers={providers}
           isDisabled={status === SignInStatus.pending || isProviderPending}
+          isFirstPrimary={onSubmit === undefined}
         />
+      )}
+      {hasContent(note) && (
+        <Text variant={TextVariant.bodySmall} tone={TextTone.muted}>
+          {note}
+        </Text>
       )}
     </AuthBlock>
   );

@@ -13,6 +13,7 @@ export function ExpiredLink({ forgotPasswordLink, className }: ExpiredLinkProps)
   const messages = useMessages();
   return (
     <AuthBlock
+      kicker={messages['expiredLink.kicker']}
       heading={messages['expiredLink.heading']}
       lead={messages['expiredLink.lead']}
       className={className}

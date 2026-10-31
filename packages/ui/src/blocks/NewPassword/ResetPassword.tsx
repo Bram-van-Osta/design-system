@@ -2,6 +2,7 @@ import { NewPasswordBlock, type NewPasswordProps } from './NewPasswordBlock.tsx'
 import type { NewPasswordTexts } from './new-password.ts';
 
 const TEXTS: NewPasswordTexts = {
+  kicker: 'resetPassword.kicker',
   heading: 'resetPassword.heading',
   lead: 'resetPassword.lead',
   label: 'resetPassword.label',

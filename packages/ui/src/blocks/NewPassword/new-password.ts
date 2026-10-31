@@ -26,6 +26,7 @@ export interface NewPasswordValues {
 
 /** The texts that tell a first password from a new one. */
 export interface NewPasswordTexts {
+  readonly kicker: MessageKey;
   readonly heading: MessageKey;
   readonly lead: MessageKey;
   readonly label: MessageKey;

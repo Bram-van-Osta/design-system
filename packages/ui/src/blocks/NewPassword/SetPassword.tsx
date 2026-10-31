@@ -2,6 +2,7 @@ import { NewPasswordBlock, type NewPasswordProps } from './NewPasswordBlock.tsx'
 import type { NewPasswordTexts } from './new-password.ts';
 
 const TEXTS: NewPasswordTexts = {
+  kicker: 'setPassword.kicker',
   heading: 'setPassword.heading',
   lead: 'setPassword.lead',
   label: 'setPassword.label',
