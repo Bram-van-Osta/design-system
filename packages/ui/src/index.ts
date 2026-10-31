@@ -1,3 +1,4 @@
+export { AuthLayout, type AuthLayoutProps } from './blocks/AuthLayout/AuthLayout.tsx';
 export {
   ForgotPassword,
   type ForgotPasswordProps,

@@ -36,6 +36,7 @@ export function ForgotPassword({
     const email = form.submittedEmail ?? defaultEmail ?? '';
     return (
       <CheckMailbox
+        kicker={messages['forgotPassword.kicker']}
         lead={interpolate(messages['forgotPassword.sentLead'], { email })}
         className={className}
       >
@@ -45,6 +46,7 @@ export function ForgotPassword({
   }
   return (
     <AuthBlock
+      kicker={messages['forgotPassword.kicker']}
       heading={messages['forgotPassword.heading']}
       lead={messages['forgotPassword.lead']}
       className={className}

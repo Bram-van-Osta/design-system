@@ -22,7 +22,11 @@ export function VerifyEmail({
 }: VerifyEmailProps) {
   const messages = useMessages();
   return (
-    <CheckMailbox lead={interpolate(messages['verifyEmail.lead'], { email })} className={className}>
+    <CheckMailbox
+      kicker={messages['verifyEmail.kicker']}
+      lead={interpolate(messages['verifyEmail.lead'], { email })}
+      className={className}
+    >
       {onResend && <ResendAction onResend={onResend} status={resendStatus} />}
     </CheckMailbox>
   );
