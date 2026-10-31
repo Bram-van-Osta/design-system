@@ -24,6 +24,10 @@ export { SignInStatus } from './blocks/SignIn/sign-in-status.ts';
 export type { SignInCredentials } from './blocks/SignIn/use-sign-in-form.ts';
 export { ResendStatus } from './blocks/VerifyEmail/resend-status.ts';
 export { VerifyEmail, type VerifyEmailProps } from './blocks/VerifyEmail/VerifyEmail.tsx';
+export {
+  AccountMenu,
+  type AccountMenuProps,
+} from './components/AccountMenu/AccountMenu.tsx';
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
@@ -48,7 +52,12 @@ export { Kicker, type KickerProps, KickerTone } from './components/Kicker/Kicker
 export { Link, type LinkProps } from './components/Link/Link.tsx';
 export { Logo, type LogoProps } from './components/Logo/Logo.tsx';
 export { BRAND_NAME, LogoVariant } from './components/Logo/logo-geometry.ts';
-export { Menu, type MenuItem, type MenuProps } from './components/Menu/Menu.tsx';
+export {
+  Menu,
+  type MenuItem,
+  type MenuProps,
+  MenuTriggerVariant,
+} from './components/Menu/Menu.tsx';
 export {
   PasswordInput,
   type PasswordInputProps,

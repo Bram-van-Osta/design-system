@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.9.0
+
+### Minor Changes
+
+- `AccountMenu` puts the account's actions behind an outlined button with its avatar and its name (the avatar alone on a phone), and `Menu` takes a `triggerVariant`, `quiet` or `outlined`.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.3.0
+
 ## 0.8.1
 
 ### Patch Changes

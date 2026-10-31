@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.3.0
+
+### Minor Changes
+
+- A new size token, `account-name-width` (160 px): the maximum width of the account's name in the header's account button.
+
 ## 0.2.1
 
 ### Patch Changes
