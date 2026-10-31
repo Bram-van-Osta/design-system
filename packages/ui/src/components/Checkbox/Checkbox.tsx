@@ -3,6 +3,7 @@ import { Field as BaseField } from '@base-ui/react/field';
 import { CheckIcon } from '@phosphor-icons/react';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
+import { FIRST_LINE_SLOT_CLASSES } from '../../utils/first-line.ts';
 import { hasContent } from '../../utils/has-content.ts';
 import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
 import { CHOICE_CONTROL_CLASSES, CHOICE_LABEL_CLASSES } from '../Field/choice-classes.ts';
@@ -33,11 +34,13 @@ export function Checkbox({ label, error, name, disabled, className, ...props }: 
       className={classNames('flex flex-col gap-space-1', className)}
     >
       <BaseField.Label className={CHOICE_LABEL_CLASSES}>
-        <BaseCheckbox.Root {...props} className={BOX_CLASSES}>
-          <BaseCheckbox.Indicator className="flex data-unchecked:hidden">
-            <CheckIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />
-          </BaseCheckbox.Indicator>
-        </BaseCheckbox.Root>
+        <span className={FIRST_LINE_SLOT_CLASSES}>
+          <BaseCheckbox.Root {...props} className={BOX_CLASSES}>
+            <BaseCheckbox.Indicator className="flex data-unchecked:hidden">
+              <CheckIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />
+            </BaseCheckbox.Indicator>
+          </BaseCheckbox.Root>
+        </span>
         {label}
       </BaseField.Label>
       {isInvalid && <FieldError>{error}</FieldError>}

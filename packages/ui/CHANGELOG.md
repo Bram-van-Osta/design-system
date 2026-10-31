@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.8.1
+
+### Patch Changes
+
+- The error icon, the password rules' icons and the Checkbox and Radio boxes are centered on the first line of their text, whatever its size or line height, and stay at the top when it wraps.
+
 ## 0.8.0
 
 ### Minor Changes
