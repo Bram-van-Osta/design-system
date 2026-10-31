@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.5.0
+
+### Minor Changes
+
+- `AuthLayout` frames the authentication blocks as round 7 draws them, each block shows its kicker, `SignIn` takes a `lead` and a `note` and makes its first provider the primary button when it has no password form, the submit buttons span the form, and `ErrorPage` is new: a page centered outside the app's frame, with its details and its places.
+
 ## 0.4.1
 
 ### Patch Changes
