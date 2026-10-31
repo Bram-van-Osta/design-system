@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
+import { expectOnFirstLine } from '../../testing/expect-first-line.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectFormAlert } from '../../testing/expect-form-alert.ts';
 import { expectWidthAtMost } from '../../testing/expect-width.ts';
@@ -39,6 +40,7 @@ export const Typing: Story = {
     await userEvent.keyboard('tulips');
     const rule = canvas.getByRole('listitem');
     await expect(rule).toHaveTextContent(RULE_UNMET);
+    await expectOnFirstLine(rule, rule.querySelector('svg'));
     await userEvent.keyboard('{Enter}');
     await expect(password).toHaveAttribute('aria-invalid', 'true');
     await expect(args.onSubmit).not.toHaveBeenCalled();

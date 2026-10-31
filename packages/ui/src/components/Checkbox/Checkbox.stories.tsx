@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
+import { expectOnFirstLine } from '../../testing/expect-first-line.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { Checkbox } from './Checkbox.tsx';
@@ -23,6 +24,7 @@ export const Unchecked: Story = {
   play: async ({ canvas, args }) => {
     const checkbox = canvas.getByRole('checkbox', { name: CONSENT });
     await expectHeightAtLeast(checkbox.closest('label') ?? checkbox, 'target-min');
+    await expectOnFirstLine(checkbox.closest('label') ?? checkbox, checkbox);
     await userEvent.tab();
     await expectFocusRing(checkbox);
     await userEvent.keyboard(' ');

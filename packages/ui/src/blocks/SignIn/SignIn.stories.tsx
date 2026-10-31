@@ -2,6 +2,7 @@ import { GoogleLogoIcon, KeyIcon } from '@phosphor-icons/react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import { UiProvider } from '../../i18n/UiProvider.tsx';
+import { lineCount } from '../../testing/expect-first-line.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectFormAlert } from '../../testing/expect-form-alert.ts';
 import { expectWidthAtMost } from '../../testing/expect-width.ts';
@@ -80,11 +81,13 @@ export const Pending: Story = {
 
 export const InvalidCredentials: Story = {
   args: { status: SignInStatus.invalidCredentials, defaultEmail: 'jeanne.martin@example.com' },
-  play: async ({ canvasElement, globals }) => {
+  // A message on two lines at least: its icon stays on the first one.
+  play: async ({ canvas, canvasElement, globals }) => {
     await expectFormAlert(canvasElement, {
       locale: globals.locale,
       key: 'signIn.invalidCredentials',
     });
+    await expect(lineCount(canvas.getByRole('alert'))).toBeGreaterThanOrEqual(2);
   },
 };
 

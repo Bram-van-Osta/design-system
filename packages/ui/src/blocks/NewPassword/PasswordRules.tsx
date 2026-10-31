@@ -1,6 +1,7 @@
 import { CheckCircleIcon, CircleIcon } from '@phosphor-icons/react';
 import { useMessages } from '../../i18n/use-messages.ts';
 import { classNames } from '../../utils/class-names.ts';
+import { FIRST_LINE_SLOT_CLASSES } from '../../utils/first-line.ts';
 import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
 import type { CheckedPasswordRule } from './new-password.ts';
 
@@ -40,11 +41,13 @@ interface RuleIconProps {
 function RuleIcon({ isMet }: RuleIconProps) {
   const Icon = isMet ? CheckCircleIcon : CircleIcon;
   return (
-    <Icon
-      size={ICON_SIZE.inline}
-      weight={ICON_WEIGHT}
-      className={classNames('mt-0.5 shrink-0', isMet && 'text-delft')}
-      aria-hidden
-    />
+    <span className={FIRST_LINE_SLOT_CLASSES}>
+      <Icon
+        size={ICON_SIZE.inline}
+        weight={ICON_WEIGHT}
+        className={classNames(isMet && 'text-delft')}
+        aria-hidden
+      />
+    </span>
   );
 }

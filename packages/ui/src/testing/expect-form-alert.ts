@@ -1,6 +1,7 @@
 import { expect, within } from 'storybook/test';
 import { Locale, MESSAGES, type MessageKey } from '../i18n/messages.ts';
 import { expectErrorColors } from './expect-error-colors.ts';
+import { expectOnFirstLine } from './expect-first-line.ts';
 import { tokenColor } from './token-color.ts';
 import { tokenPixels } from './token-pixels.ts';
 
@@ -19,4 +20,5 @@ export async function expectFormAlert(
   await expect(style.borderTopColor).toBe(tokenColor('vermillion', alert));
   await expect(Number.parseFloat(style.borderTopWidth)).toBe(tokenPixels('border-attention'));
   await expectErrorColors(alert);
+  await expectOnFirstLine(alert, alert.querySelector('svg'));
 }

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
+import { expectOnFirstLine } from '../../testing/expect-first-line.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { FieldMarker } from '../Field/field-marker.ts';
 import { RadioGroup } from './RadioGroup.tsx';
@@ -27,6 +28,7 @@ export const Default: Story = {
       canvas.getByRole('radiogroup', { name: 'To come back to your space' }),
     ).toBeVisible();
     const first = canvas.getByRole('radio', { name: 'With Face ID or your fingerprint' });
+    await expectOnFirstLine(first.closest('label') ?? first, first);
     await userEvent.tab();
     await expectFocusRing(first);
     await userEvent.keyboard('{ArrowDown}');

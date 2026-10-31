@@ -4,6 +4,7 @@ import { Radio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
+import { FIRST_LINE_SLOT_CLASSES } from '../../utils/first-line.ts';
 import { hasContent } from '../../utils/has-content.ts';
 import { CHOICE_CONTROL_CLASSES, CHOICE_LABEL_CLASSES } from '../Field/choice-classes.ts';
 import { FieldError } from '../Field/FieldError.tsx';
@@ -117,9 +118,11 @@ function RadioItem({ option }: RadioItemProps) {
   return (
     <BaseField.Item disabled={option.disabled}>
       <BaseField.Label className={CHOICE_LABEL_CLASSES}>
-        <Radio.Root value={option.value} className={RADIO_CLASSES}>
-          <Radio.Indicator className="size-2.5 rounded-round bg-delft data-unchecked:hidden" />
-        </Radio.Root>
+        <span className={FIRST_LINE_SLOT_CLASSES}>
+          <Radio.Root value={option.value} className={RADIO_CLASSES}>
+            <Radio.Indicator className="size-2.5 rounded-round bg-delft data-unchecked:hidden" />
+          </Radio.Root>
+        </span>
         <span className="flex flex-col">
           {option.label}
           {hasContent(option.description) && (
