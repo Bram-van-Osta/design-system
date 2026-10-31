@@ -28,7 +28,14 @@ export const Lockup: Story = {
 export const Tulip: Story = {
   args: { variant: LogoVariant.tulip },
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole('img', { name: 'Bram van Osta' })).toBeVisible();
+    const tulip = canvas.getByRole('img', { name: 'Bram van Osta' });
+    await expect(tulip).toBeVisible();
+    // Two shapes, the flower over the stem: a notch or a seam shows otherwise.
+    const shapes = [...tulip.children].map((shape) => [shape.tagName, shape.getAttribute('class')]);
+    await expect(shapes).toEqual([
+      ['path', 'fill-tulip-stem'],
+      ['path', 'fill-tulip-flower'],
+    ]);
   },
 };
 

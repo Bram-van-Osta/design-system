@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.6.1
+
+### Patch Changes
+
+- The tulip is drawn with its stem and leaf as one outline under the flower, so it shows no notch under the flower and no seam along the stem, at any size.
+
 ## 0.6.0
 
 ### Minor Changes
