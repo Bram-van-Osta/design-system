@@ -34,6 +34,7 @@ export { Button, type ButtonProps, ButtonVariant } from './components/Button/But
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
+export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclosure.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
