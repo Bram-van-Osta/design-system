@@ -5,8 +5,15 @@ export const NewPasswordStatus = {
   pending: 'pending',
   /** The link that led here was already used, or expired. */
   invalidLink: 'invalid-link',
+  tooManyAttempts: 'too-many-attempts',
+  failed: 'failed',
 } as const;
 export type NewPasswordStatus = (typeof NewPasswordStatus)[keyof typeof NewPasswordStatus];
+
+export const NEW_PASSWORD_ALERTS: Readonly<Partial<Record<NewPasswordStatus, MessageKey>>> = {
+  'too-many-attempts': 'newPassword.tooManyAttempts',
+  failed: 'newPassword.failed',
+};
 
 /** A rule of the app's password policy, beyond its minimum length. */
 export interface PasswordRule {
