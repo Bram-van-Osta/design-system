@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.8.0
+
+### Minor Changes
+
+- Errors stand out more: the error icon is vermillion under a field and in a form alert, and the authentication blocks' form alert is a box on `surface` under a vermillion `border-attention` top rule, its words still in ink.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.2.1
+
 ## 0.7.0
 
 ### Minor Changes

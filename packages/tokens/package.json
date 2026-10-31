@@ -1,6 +1,6 @@
 {
   "name": "@bram-van-osta/tokens",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The Bram van Osta design tokens: CSS variables in light and dark, a Tailwind 4 theme, the fonts and the JSON.",
   "type": "module",
   "repository": {

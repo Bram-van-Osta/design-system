@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.2.1
+
+### Patch Changes
+
+- The usage notes of `vermillion` and `border-attention` name their new uses: the icon of an error and the top rule of a form alert.
+
 ## 0.2.0
 
 ### Minor Changes
