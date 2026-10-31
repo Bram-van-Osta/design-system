@@ -21,12 +21,17 @@ export interface AuthLayoutProps {
   readonly headerEnd?: ReactNode;
   /** The authentication block. */
   readonly children: ReactNode;
+  /**
+   * The links to the legal texts: on a computer, at the bottom of the block's column; on a phone,
+   * under the block.
+   */
+  readonly footer?: ReactNode;
 }
 
 /**
  * The frame of the authentication blocks: on a computer, the block in a column at a short form's
  * width, beside a grey panel with the large tulip and the statement; on a phone, the statement in a
- * grey band above the block.
+ * grey band above the block. The footer, when there is one, ends the block's column.
  *
  * The panel comes first in the DOM and last on screen, so that on a computer the keyboard reaches
  * its language switch, on the top row, before the form.
@@ -37,6 +42,7 @@ export function AuthLayout({
   role,
   headerEnd,
   children,
+  footer,
 }: AuthLayoutProps) {
   return (
     <div className="flex min-h-dvh flex-col bg-bg lg:flex-row-reverse">
@@ -66,6 +72,7 @@ export function AuthLayout({
         <main className="flex flex-1 flex-col px-space-4 pt-space-6 pb-space-7 lg:w-form-width lg:justify-center lg:px-0 lg:py-space-7">
           {children}
         </main>
+        {hasContent(footer) && <footer className="px-space-4 pb-space-6 lg:p-0">{footer}</footer>}
       </div>
     </div>
   );
