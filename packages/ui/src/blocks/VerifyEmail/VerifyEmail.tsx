@@ -1,7 +1,7 @@
+import { FormAlert } from '../../components/FormAlert/FormAlert.tsx';
 import { interpolate } from '../../i18n/interpolate.ts';
 import { useMessages } from '../../i18n/use-messages.ts';
-import { CheckMailbox } from '../shared/CheckMailbox.tsx';
-import { FormAlert } from '../shared/FormAlert.tsx';
+import { CheckMailbox } from '../CheckMailbox/CheckMailbox.tsx';
 import { ResendAction } from './ResendAction.tsx';
 import { RESEND_ALERTS, ResendStatus } from './resend-status.ts';
 

@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { ERROR_MESSAGE_CLASSES, ErrorIcon } from '../../components/Field/ErrorIcon.tsx';
 import { classNames } from '../../utils/class-names.ts';
+import { ERROR_MESSAGE_CLASSES, ErrorIcon } from '../Field/ErrorIcon.tsx';
 
-interface FormAlertProps {
+export interface FormAlertProps {
   readonly children: ReactNode;
 }
 

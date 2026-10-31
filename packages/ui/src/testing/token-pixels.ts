@@ -4,7 +4,8 @@ export type SizeToken =
   | 'form-width'
   | 'reading-width'
   | 'border-attention'
-  | 'account-name-width';
+  | 'account-name-width'
+  | 'progress-height';
 
 /** A size token's value, in pixels, as the page's tokens give it. */
 export function tokenPixels(token: SizeToken): number {

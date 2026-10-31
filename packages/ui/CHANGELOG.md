@@ -1,5 +1,21 @@
 # @bram-van-osta/ui
 
+## 0.11.0
+
+### Minor Changes
+
+- 264a449: `CheckboxCards`, every answer that applies among cards in two columns where there is room, with `value: string[]`, an error under the group and the same `detail` text field of "Other…" across the grid.
+- d83cade: `FileInput`, one file dropped or chosen, then shown by its name with a button to remove it; the app checks the file in `onFileChange` and says what is wrong in `error`. Two new texts, `fileInput.choose` and `fileInput.remove`.
+- e79581f: `RadioCards`, one answer among cards in two columns where there is room, an answer set apart (`isSetApart`), and the `detail` text field of "Other…" beside or under the cards, which takes the focus when its answer is chosen.
+- 55dc198: `FormAlert`, `AuthBlock` and `CheckMailbox` are exported: a form's failure in its box, a page's kicker, heading, lead and action, and "Check your mailbox" with the app's own kicker and lead.
+- 604d059: `StepProgress`, a journey's progress in segments, the done ones in Delft blue, with the `label` and the `valueText` the app gives to screen readers.
+- df5a724: `TextArea`, a few sentences inside a `Field`: the text control's outline, `rows` lines at first (3 by default), and taller at will.
+
+### Patch Changes
+
+- Updated dependencies [604d059]
+  - @bram-van-osta/tokens@0.4.0
+
 ## 0.10.0
 
 ### Minor Changes

@@ -1,9 +1,9 @@
+import { FormAlert } from '../../components/FormAlert/FormAlert.tsx';
 import { Link, type LinkProps } from '../../components/Link/Link.tsx';
 import { interpolate } from '../../i18n/interpolate.ts';
 import { useMessages } from '../../i18n/use-messages.ts';
-import { AuthBlock } from '../shared/AuthBlock.tsx';
-import { CheckMailbox } from '../shared/CheckMailbox.tsx';
-import { FormAlert } from '../shared/FormAlert.tsx';
+import { AuthBlock } from '../AuthBlock/AuthBlock.tsx';
+import { CheckMailbox } from '../CheckMailbox/CheckMailbox.tsx';
 import { ForgotPasswordForm } from './ForgotPasswordForm.tsx';
 import { FORGOT_PASSWORD_ALERTS, ForgotPasswordStatus } from './forgot-password-status.ts';
 import { type ForgotPasswordValues, useForgotPasswordForm } from './use-forgot-password-form.ts';

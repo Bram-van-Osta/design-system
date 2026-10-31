@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import { Text, TextTone } from '../../components/Text/Text.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
-import { AuthBlock } from './AuthBlock.tsx';
+import { AuthBlock } from '../AuthBlock/AuthBlock.tsx';
 
-interface CheckMailboxProps {
+export interface CheckMailboxProps {
   /** Where the reader is: their password, their address. */
-  readonly kicker: string;
+  readonly kicker: ReactNode;
   /** What was sent, and where. */
-  readonly lead: string;
-  readonly className: string | undefined;
+  readonly lead: ReactNode;
+  readonly className?: string | undefined;
   /** What the reader can do from here. */
   readonly children?: ReactNode;
 }

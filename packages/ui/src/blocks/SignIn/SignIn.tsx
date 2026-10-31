@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
+import { FormAlert } from '../../components/FormAlert/FormAlert.tsx';
 import type { LinkProps } from '../../components/Link/Link.tsx';
 import { Text, TextTone, TextVariant } from '../../components/Text/Text.tsx';
 import { useMessages } from '../../i18n/use-messages.ts';
 import { hasContent } from '../../utils/has-content.ts';
-import { AuthBlock } from '../shared/AuthBlock.tsx';
-import { FormAlert } from '../shared/FormAlert.tsx';
+import { AuthBlock } from '../AuthBlock/AuthBlock.tsx';
 import { OrSeparator } from './OrSeparator.tsx';
 import { ProviderButtons, type SignInProvider } from './ProviderButtons.tsx';
 import { SignInForm } from './SignInForm.tsx';

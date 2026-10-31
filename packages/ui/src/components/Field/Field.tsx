@@ -16,7 +16,7 @@ export interface FieldProps {
   readonly name?: string;
   readonly disabled?: boolean;
   readonly className?: string;
-  /** The control: a TextInput, a PasswordInput or a Select. */
+  /** The control: a TextInput, a TextArea, a PasswordInput or a Select. */
   readonly children: ReactNode;
 }
 

@@ -7,6 +7,8 @@
   "dialog.cancel": "Cancel",
   "toast.close": "Close",
   "skeleton.loading": "Loading…",
+  "fileInput.choose": "Add a file",
+  "fileInput.remove": "Remove",
   "toast.region": "Notifications",
   "form.email": "Your email address",
   "form.emailMissing": "Enter your email address.",

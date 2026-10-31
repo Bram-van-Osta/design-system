@@ -1,4 +1,9 @@
+export { AuthBlock, type AuthBlockProps } from './blocks/AuthBlock/AuthBlock.tsx';
 export { AuthLayout, type AuthLayoutProps } from './blocks/AuthLayout/AuthLayout.tsx';
+export {
+  CheckMailbox,
+  type CheckMailboxProps,
+} from './blocks/CheckMailbox/CheckMailbox.tsx';
 export {
   ErrorPage,
   type ErrorPageDetail,
@@ -32,12 +37,23 @@ export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
+export {
+  CheckboxCards,
+  type CheckboxCardsProps,
+} from './components/CheckboxCards/CheckboxCards.tsx';
+export {
+  type ChoiceCardOption,
+  type ChoiceDetail,
+  ChoiceDetailPlacement,
+} from './components/ChoiceCard/choice-card.ts';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
 export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclosure.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
+export { FileInput, type FileInputProps } from './components/FileInput/FileInput.tsx';
+export { FormAlert, type FormAlertProps } from './components/FormAlert/FormAlert.tsx';
 export {
   Heading,
   type HeadingLevel,
@@ -63,6 +79,7 @@ export {
   PasswordInput,
   type PasswordInputProps,
 } from './components/PasswordInput/PasswordInput.tsx';
+export { RadioCards, type RadioCardsProps } from './components/RadioCards/RadioCards.tsx';
 export {
   RadioGroup,
   type RadioGroupProps,
@@ -82,12 +99,17 @@ export {
   StackJustify,
 } from './components/Stack/stack-classes.ts';
 export {
+  StepProgress,
+  type StepProgressProps,
+} from './components/StepProgress/StepProgress.tsx';
+export {
   Table,
   type TableColumn,
   type TableProps,
   type TableRow,
 } from './components/Table/Table.tsx';
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
+export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
 export { ToastProvider, type ToastProviderProps } from './components/Toast/ToastProvider.tsx';
 export { type ToastContent, useToast } from './components/Toast/use-toast.ts';
