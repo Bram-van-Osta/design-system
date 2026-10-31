@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.3.1
+
+### Patch Changes
+
+- `SetPassword`, `ResetPassword`, `ForgotPassword` and `VerifyEmail` are exported, with their statuses and types: 0.3.0 exported `SignIn` only.
+
 ## 0.3.0
 
 ### Minor Changes
