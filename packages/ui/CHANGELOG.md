@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.13.0
+
+### Minor Changes
+
+- ff97c5f: `ButtonLink`, a link that looks like a `Button`, with its variants, its icon and its forward arrow, for an action that opens another page; `render` takes the app's router link, such as `render={<RouterLink to="/offer/adjust" />}`.
+
 ## 0.12.0
 
 ### Minor Changes

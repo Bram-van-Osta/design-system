@@ -2,26 +2,9 @@ import { Button as BaseButton } from '@base-ui/react/button';
 import { ArrowRightIcon, CircleNotchIcon, type Icon } from '@phosphor-icons/react';
 import { classNames } from '../../utils/class-names.ts';
 import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
-import { LINK_CLASSES } from '../Link/link-classes.ts';
+import { BUTTON_CLASSES, BUTTON_VARIANT_CLASSES, ButtonVariant } from './button-classes.ts';
 
-export const ButtonVariant = {
-  primary: 'primary',
-  secondary: 'secondary',
-  quiet: 'quiet',
-} as const;
-export type ButtonVariant = (typeof ButtonVariant)[keyof typeof ButtonVariant];
-
-const BASE_CLASSES =
-  'inline-flex items-center justify-center gap-space-3 cursor-pointer select-none data-disabled:cursor-not-allowed data-pending:cursor-wait';
-
-// A pending button is disabled too, but keeps its colors: it is working, not unavailable.
-const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary:
-    'min-h-button-height px-space-6 bg-delft text-label text-on-delft hover:not-data-disabled:bg-delft-deep active:not-data-disabled:bg-delft-deep data-disabled:not-data-pending:bg-line data-disabled:not-data-pending:text-ink-muted',
-  secondary:
-    'min-h-target-min px-space-4 border-hair border-ink text-body-s font-semibold text-ink hover:not-data-disabled:bg-surface data-disabled:not-data-pending:border-line data-disabled:not-data-pending:text-ink-muted',
-  quiet: `${LINK_CLASSES} data-disabled:not-data-pending:text-ink-muted`,
-};
+export { ButtonVariant } from './button-classes.ts';
 
 export interface ButtonProps
   extends Omit<
@@ -55,7 +38,7 @@ export function Button({
       disabled={disabled || isPending}
       focusableWhenDisabled={isPending}
       data-pending={isPending || undefined}
-      className={classNames(BASE_CLASSES, VARIANT_CLASSES[variant], className)}
+      className={classNames(BUTTON_CLASSES, BUTTON_VARIANT_CLASSES[variant], className)}
     >
       {LeadingIcon && <LeadingIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />}
       {children}
