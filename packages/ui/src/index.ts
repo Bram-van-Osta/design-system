@@ -46,6 +46,7 @@ export {
   type ChoiceDetail,
   ChoiceDetailPlacement,
 } from './components/ChoiceCard/choice-card.ts';
+export { CodeInput, type CodeInputProps } from './components/CodeInput/CodeInput.tsx';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
 export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclosure.tsx';
