@@ -33,6 +33,7 @@ export {
   AccountMenu,
   type AccountMenuProps,
 } from './components/AccountMenu/AccountMenu.tsx';
+export { ActionCard, type ActionCardProps } from './components/ActionCard/ActionCard.tsx';
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
@@ -46,7 +47,11 @@ export {
   type ChoiceDetail,
   ChoiceDetailPlacement,
 } from './components/ChoiceCard/choice-card.ts';
+export { CodeInput, type CodeInputProps } from './components/CodeInput/CodeInput.tsx';
+export { CODE_LENGTH } from './components/CodeInput/code-digits.ts';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
+export { CopyList, type CopyListProps } from './components/CopyList/CopyList.tsx';
+export type { CopyListItem } from './components/CopyList/copy-list.ts';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
 export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclosure.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
@@ -75,6 +80,10 @@ export {
   type MenuProps,
   MenuTriggerVariant,
 } from './components/Menu/Menu.tsx';
+export {
+  MessageBubble,
+  type MessageBubbleProps,
+} from './components/MessageBubble/MessageBubble.tsx';
 export {
   PasswordInput,
   type PasswordInputProps,

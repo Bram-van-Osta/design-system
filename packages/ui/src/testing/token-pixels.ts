@@ -3,6 +3,7 @@ export type SizeToken =
   | 'button-height'
   | 'form-width'
   | 'reading-width'
+  | 'border-select'
   | 'border-attention'
   | 'account-name-width'
   | 'progress-height';
