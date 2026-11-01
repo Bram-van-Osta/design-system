@@ -79,6 +79,10 @@ export {
   MenuTriggerVariant,
 } from './components/Menu/Menu.tsx';
 export {
+  MessageBubble,
+  type MessageBubbleProps,
+} from './components/MessageBubble/MessageBubble.tsx';
+export {
   PasswordInput,
   type PasswordInputProps,
 } from './components/PasswordInput/PasswordInput.tsx';
