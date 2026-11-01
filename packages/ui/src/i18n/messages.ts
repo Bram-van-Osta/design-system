@@ -21,6 +21,7 @@ export const MESSAGE_KEYS = [
   'skeleton.loading',
   'fileInput.choose',
   'fileInput.remove',
+  'codeInput.slot',
   'form.email',
   'form.emailMissing',
   'form.emailInvalid',

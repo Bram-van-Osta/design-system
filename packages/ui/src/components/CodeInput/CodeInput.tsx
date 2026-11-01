@@ -1,73 +1,72 @@
-import { Input } from '@base-ui/react/input';
+import { OTPField } from '@base-ui/react/otp-field';
+import { interpolate } from '../../i18n/interpolate.ts';
+import { useMessages } from '../../i18n/use-messages.ts';
 import { classNames } from '../../utils/class-names.ts';
 import { CODE_LENGTH } from './code-digits.ts';
 import { useCodeInput } from './use-code-input.ts';
 
-const CELL_POSITIONS = Array.from({ length: CODE_LENGTH }, (_, position) => position);
+const SLOT_POSITIONS = Array.from({ length: CODE_LENGTH }, (_, position) => position + 1);
 
-// The cells follow the input, their peer: its focus, its error and its disabled state.
-const CELL_CLASSES =
-  'flex h-button-height w-button-height min-w-0 items-center justify-center border-hair border-field bg-bg font-mono text-heading-xs font-medium text-ink peer-data-invalid:border-select peer-data-invalid:border-ink peer-data-disabled:bg-surface peer-data-disabled:text-ink-muted peer-focus-visible:data-active:outline-2 peer-focus-visible:data-active:outline-offset-2 peer-focus-visible:data-active:outline-focus';
+const SLOT_CLASSES =
+  'h-button-height w-button-height min-w-0 border-hair border-field bg-bg p-0 text-center font-mono text-heading-xs font-medium text-ink data-invalid:border-select data-invalid:border-ink data-disabled:cursor-not-allowed data-disabled:bg-surface data-disabled:text-ink-muted';
 
 export interface CodeInputProps
   extends Omit<
-    Input.Props,
+    OTPField.Root.Props,
     | 'className'
     | 'render'
-    | 'type'
-    | 'inputMode'
-    | 'maxLength'
+    | 'children'
+    | 'length'
+    | 'validationType'
     | 'value'
     | 'defaultValue'
     | 'onValueChange'
-    | 'onSelect'
-    | 'onFocus'
-    | 'onClick'
-    | 'onPaste'
+    | 'onValueComplete'
   > {
   /** The digits typed so far, at most six. */
   readonly value?: string;
   readonly defaultValue?: string;
-  /** Called with the digits only: letters, spaces and dashes are dropped. */
   readonly onValueChange?: (code: string) => void;
+  /** Called once the six digits are there, typed, pasted or offered by the phone. */
+  readonly onComplete?: (code: string) => void;
   readonly className?: string;
 }
 
 /**
- * A one-time code of six digits, inside a Field that names it. One input under six cells: it takes
- * typing, pasting, Backspace, the arrows and the code the phone offers from a mail or a message.
+ * A one-time code of six digits in six slots, inside a Field that names it: typed, pasted, or
+ * offered by the phone from a mail or a message. A whole code replaces the one already there.
  */
 export function CodeInput({
   value,
   defaultValue,
   onValueChange,
+  onComplete,
   className,
   ...props
 }: CodeInputProps) {
-  const { code, activePosition, inputProps } = useCodeInput({
-    value,
-    defaultValue,
-    onValueChange,
-  });
+  const messages = useMessages();
+  const { rootProps, slotProps } = useCodeInput({ value, defaultValue, onValueChange, onComplete });
   return (
-    <div className={classNames('relative flex w-fit max-w-full gap-space-2', className)}>
-      <Input
-        autoComplete="one-time-code"
-        {...props}
-        {...inputProps}
-        inputMode="numeric"
-        className="peer absolute inset-0 size-full cursor-text opacity-0 data-disabled:cursor-not-allowed"
-      />
-      {CELL_POSITIONS.map((position) => (
-        <span
+    <OTPField.Root
+      {...props}
+      {...rootProps}
+      length={CODE_LENGTH}
+      validationType="numeric"
+      className={classNames('flex w-fit max-w-full gap-space-2', className)}
+    >
+      {SLOT_POSITIONS.map((position) => (
+        <OTPField.Input
           key={position}
-          aria-hidden
-          data-active={position === activePosition || undefined}
-          className={CELL_CLASSES}
-        >
-          {code[position]}
-        </span>
+          {...slotProps}
+          // The first slot is named by the Field's label.
+          aria-label={
+            position === 1
+              ? undefined
+              : interpolate(messages['codeInput.slot'], { position, count: CODE_LENGTH })
+          }
+          className={SLOT_CLASSES}
+        />
       ))}
-    </div>
+    </OTPField.Root>
   );
 }

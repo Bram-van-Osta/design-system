@@ -48,6 +48,7 @@ export {
   ChoiceDetailPlacement,
 } from './components/ChoiceCard/choice-card.ts';
 export { CodeInput, type CodeInputProps } from './components/CodeInput/CodeInput.tsx';
+export { CODE_LENGTH } from './components/CodeInput/code-digits.ts';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
 export { CopyList, type CopyListProps } from './components/CopyList/CopyList.tsx';
 export type { CopyListItem } from './components/CopyList/copy-list.ts';
