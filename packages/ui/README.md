@@ -4,12 +4,12 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 
 | Group | Components |
 |---|---|
-| Actions | `Button` (primary, secondary, quiet), `IconButton`, `Link` |
-| Forms | `Field`, `TextInput`, `PasswordInput`, `Checkbox`, `RadioGroup`, `Select` |
-| Layout | `Stack`, `Container` (the 720 px reading column) |
-| Identity | `Heading`, `Text`, `Kicker`, `Logo` |
-| Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`), `Skeleton`, `EmptyState`, `Badge` |
-| Blocks | `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail` |
+| Actions | `Button` (primary, secondary, quiet), `IconButton`, `Link`, `Menu`, `AccountMenu` |
+| Forms | `Field`, `TextInput`, `TextArea`, `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards`, `CheckboxCards`, `FileInput`, `FormAlert` |
+| Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` |
+| Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |
+| Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
+| Blocks | `AuthLayout`, `AuthBlock`, `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail`, `CheckMailbox`, `ErrorPage` |
 
 ## Using
 
