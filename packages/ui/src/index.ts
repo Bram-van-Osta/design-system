@@ -37,6 +37,7 @@ export { ActionCard, type ActionCardProps } from './components/ActionCard/Action
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
+export { ButtonLink, type ButtonLinkProps } from './components/ButtonLink/ButtonLink.tsx';
 export { Checkbox, type CheckboxProps } from './components/Checkbox/Checkbox.tsx';
 export {
   CheckboxCards,
