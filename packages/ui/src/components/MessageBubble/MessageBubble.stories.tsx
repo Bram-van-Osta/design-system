@@ -45,6 +45,14 @@ export const FromTheStudio: Story = {
     children:
       'No worries if the holidays take all your time: we can also finish together on the phone, twenty minutes are enough.',
   },
+  play: async ({ canvas }) => {
+    const bubble = canvas.getByRole('figure');
+    await expect(bubble.querySelector('figcaption')).toHaveTextContent('Bram · yesterday');
+    const quote = canvas.getByText(/No worries if the holidays/);
+    await expect(quote.tagName).toBe('BLOCKQUOTE');
+    await expect(getComputedStyle(quote).backgroundColor).toBe(tokenColor('surface', quote));
+    await expect(getComputedStyle(bubble).alignItems).toBe('normal');
+  },
 };
 
 // Its line breaks are kept, and a long address wraps rather than widening the page.

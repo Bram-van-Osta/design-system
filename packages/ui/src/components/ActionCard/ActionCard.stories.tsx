@@ -92,3 +92,19 @@ export const PayTheDeposit: Story = {
     );
   },
 };
+
+// Under a section's h2, the card's heading is an h3, and names the card.
+export const UnderASection: Story = {
+  args: {
+    kicker: 'The deposit · received',
+    heading: 'Confirm the day of the transfer.',
+    headingLevel: 3,
+  },
+  play: async ({ canvas }) => {
+    const heading = canvas.getByRole('heading', { level: 3 });
+    await expect(heading).toHaveTextContent('Confirm the day of the transfer.');
+    await expect(canvas.getByRole('region', { name: 'Confirm the day of the transfer.' })).toBe(
+      heading.closest('section'),
+    );
+  },
+};
