@@ -9,3 +9,9 @@ export interface CopyListItem {
   /** The text copied when it differs from the one shown: an IBAN without its spaces. */
   readonly copyValue?: string;
 }
+
+export interface CopyListTexts {
+  readonly copy: string;
+  readonly copied: string;
+  readonly failed: string;
+}

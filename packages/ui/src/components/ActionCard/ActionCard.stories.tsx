@@ -73,8 +73,6 @@ export const PayTheDeposit: Story = {
           30% of the creation. No rush: the questionnaire opens without waiting for your transfer.
         </Text>
         <CopyList
-          copyLabel="Copy"
-          copiedLabel="Copied"
           items={[
             { id: 'amount', label: 'Amount', value: '€1,260.00 incl. VAT', copyValue: '1260.00' },
             { id: 'iban', label: 'IBAN', value: 'FR76 3000 6000 0112 3456 7890 189' },

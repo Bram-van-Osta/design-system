@@ -1,20 +1,20 @@
 import { CheckIcon, CopyIcon } from '@phosphor-icons/react';
 import { useId, useRef } from 'react';
 import { Button, ButtonVariant } from '../Button/Button.tsx';
-import type { CopyListItem } from './copy-list.ts';
-import { useCopy } from './use-copy.ts';
+import type { CopyListItem, CopyListTexts } from './copy-list.ts';
+import { CopyOutcome, useCopy } from './use-copy.ts';
 
 interface CopyListRowProps {
   readonly item: CopyListItem;
-  readonly copyLabel: string;
-  readonly copiedLabel: string;
+  readonly texts: CopyListTexts;
 }
 
-export function CopyListRow({ item, copyLabel, copiedLabel }: CopyListRowProps) {
+export function CopyListRow({ item, texts }: CopyListRowProps) {
   const labelId = useId();
   const actionId = useId();
   const valueRef = useRef<HTMLSpanElement>(null);
-  const { isCopied, copy } = useCopy({ text: item.copyValue ?? item.value, valueRef });
+  const { result, copy } = useCopy({ text: item.copyValue ?? item.value, valueRef });
+  const isCopied = result?.outcome === CopyOutcome.copied;
   return (
     <li className="flex items-center gap-space-3 border-t-hair border-line py-space-2">
       <div className="min-w-0 flex-1">
@@ -35,10 +35,22 @@ export function CopyListRow({ item, copyLabel, copiedLabel }: CopyListRowProps) 
         onClick={copy}
         className="shrink-0"
       >
-        <span id={actionId}>{isCopied ? copiedLabel : copyLabel}</span>
+        {/* Both texts take the same cell, so that the button keeps its width. */}
+        <span className="grid">
+          <span id={actionId} className="col-start-1 row-start-1">
+            {isCopied ? texts.copied : texts.copy}
+          </span>
+          <span aria-hidden className="invisible col-start-1 row-start-1">
+            {isCopied ? texts.copy : texts.copied}
+          </span>
+        </span>
       </Button>
       <span role="status" className="sr-only">
-        {isCopied ? copiedLabel : null}
+        {result !== null && (
+          <span key={result.count}>
+            {result.outcome === CopyOutcome.copied ? texts.copied : texts.failed}
+          </span>
+        )}
       </span>
     </li>
   );
