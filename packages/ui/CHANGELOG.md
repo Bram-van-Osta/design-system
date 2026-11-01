@@ -1,5 +1,14 @@
 # @bram-van-osta/ui
 
+## 0.12.0
+
+### Minor Changes
+
+- 9cc574f: `ActionCard`, what depends on the reader on surface under a vermillion rule: its band (`kicker`), an optional `heading` that names it, its content and its `actions`.
+- 064b06c: `CodeInput`, a one-time code of six digits on Base UI's OTP field, inside a `Field`: typed, pasted or offered by the phone (`autocomplete="one-time-code"`, a numeric keyboard), each slot named ("Digit 2 of 6", `codeInput.slot`), with `onComplete` and `CODE_LENGTH`; a whole code typed, suggested, dropped or pasted over a wrong one replaces it.
+- cec9a51: `CopyList`, values to copy one by one such as bank details: each row shows its label, its value in IBM Plex Mono and a 44 px button that copies it, then says "Copied" for a moment; its texts come from the package's messages (`copyList.copy`, `copyList.copied`, `copyList.failed`) unless the app gives its own, and an optional `copyValue` copies another text (an IBAN without its spaces).
+- 2784608: `MessageBubble`, a message quoted in a bubble on surface under its caption, who wrote it and when, both given by the app; the client's messages and the studio's look the same, as the brand book draws them.
+
 ## 0.11.0
 
 ### Minor Changes
