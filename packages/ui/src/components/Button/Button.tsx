@@ -38,11 +38,26 @@ export function Button({
       disabled={disabled || isPending}
       focusableWhenDisabled={isPending}
       data-pending={isPending || undefined}
-      className={classNames(BUTTON_CLASSES, BUTTON_VARIANT_CLASSES[variant], className)}
+      className={classNames(BUTTON_CLASSES, 'relative', BUTTON_VARIANT_CLASSES[variant], className)}
     >
-      {LeadingIcon && <LeadingIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />}
-      {children}
-      <TrailingIcon isPending={isPending} hasArrow={hasArrow} />
+      {/* Without an arrow to take its place, the spinner covers the label, which keeps its room:
+          the button does not grow and push its neighbors to another line. */}
+      <span
+        className={classNames(
+          'inline-flex items-center gap-space-3',
+          isPending && !hasArrow && 'opacity-0',
+        )}
+      >
+        {LeadingIcon && <LeadingIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />}
+        {children}
+      </span>
+      {isPending && !hasArrow ? (
+        <span className="absolute inset-0 flex items-center justify-center">
+          <Spinner />
+        </span>
+      ) : (
+        <TrailingIcon isPending={isPending} hasArrow={hasArrow} />
+      )}
     </BaseButton>
   );
 }
@@ -52,16 +67,20 @@ interface TrailingIconProps {
   readonly hasArrow: boolean;
 }
 
+function Spinner() {
+  return (
+    <CircleNotchIcon
+      size={ICON_SIZE.inline}
+      weight={ICON_WEIGHT}
+      className="motion-safe:animate-spin"
+      aria-hidden
+    />
+  );
+}
+
 function TrailingIcon({ isPending, hasArrow }: TrailingIconProps) {
   if (isPending) {
-    return (
-      <CircleNotchIcon
-        size={ICON_SIZE.inline}
-        weight={ICON_WEIGHT}
-        className="motion-safe:animate-spin"
-        aria-hidden
-      />
-    );
+    return <Spinner />;
   }
   if (hasArrow) {
     return <ArrowRightIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} aria-hidden />;

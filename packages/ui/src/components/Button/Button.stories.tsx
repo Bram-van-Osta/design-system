@@ -71,6 +71,23 @@ export const Pending: Story = {
   },
 };
 
+// The spinner covers the label instead of following it: a button that starts working keeps its
+// width, and does not push its neighbors to another line.
+export const PendingKeepsItsWidth: Story = {
+  render: () => (
+    <div className="flex flex-col items-start gap-space-3">
+      <Button variant={ButtonVariant.secondary}>Save</Button>
+      <Button variant={ButtonVariant.secondary} isPending>
+        Save
+      </Button>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const [idle, pending] = canvas.getAllByRole('button', { name: 'Save' });
+    await expect(pending?.getBoundingClientRect().width).toBe(idle?.getBoundingClientRect().width);
+  },
+};
+
 export const Disabled: Story = {
   args: { variant: ButtonVariant.primary, children: 'Save', disabled: true },
   play: async ({ canvas, args }) => {
