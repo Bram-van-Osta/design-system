@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent } from 'storybook/test';
+import { expectBodyText } from '../../testing/expect-body-text.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { Field } from '../Field/Field.tsx';
 import { TextInput } from './TextInput.tsx';
@@ -26,6 +27,7 @@ export const Empty: Story = {
   args: { placeholder: 'E.g. the Boulangerie du Port' },
   play: async ({ canvas }) => {
     const input = canvas.getByRole('textbox', { name: 'Your business' });
+    await expectBodyText(input);
     await userEvent.tab();
     await expectFocusRing(input);
     await userEvent.keyboard('Boulangerie du Port');

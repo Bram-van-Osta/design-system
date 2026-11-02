@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.18.0
+
+### Minor Changes
+
+- `TextInput`, `PasswordInput` and `Select` write their typed text and placeholder at the body size, 16 px, like `TextArea`, at the same height and padding; the one-line controls share the text area's classes again.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.6.0
+
 ## 0.17.0
 
 ### Minor Changes

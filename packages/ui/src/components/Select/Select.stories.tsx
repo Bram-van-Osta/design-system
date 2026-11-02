@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent } from 'storybook/test';
+import { expectBodyText } from '../../testing/expect-body-text.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { Field } from '../Field/Field.tsx';
@@ -33,6 +34,7 @@ export const Empty: Story = {
   play: async ({ canvas, args }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Your trade' });
     await expectHeightAtLeast(trigger, 'button-height');
+    await expectBodyText(trigger);
     await userEvent.tab();
     await expectFocusRing(trigger);
     await userEvent.keyboard('{ArrowDown}');

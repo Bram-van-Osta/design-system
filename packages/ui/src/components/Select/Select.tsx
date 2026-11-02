@@ -3,7 +3,7 @@ import { CaretDownIcon, CheckIcon } from '@phosphor-icons/react';
 import { useMessages } from '../../i18n/use-messages.ts';
 import { classNames } from '../../utils/class-names.ts';
 import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
-import { LINE_CONTROL_CLASSES } from '../TextInput/control-classes.ts';
+import { CONTROL_CLASSES } from '../TextInput/control-classes.ts';
 
 export interface SelectOption {
   readonly value: string;
@@ -48,7 +48,7 @@ export function Select({
     >
       <BaseSelect.Trigger
         className={classNames(
-          LINE_CONTROL_CLASSES,
+          CONTROL_CLASSES,
           'flex cursor-pointer items-center justify-between gap-space-3 text-left',
           className,
         )}

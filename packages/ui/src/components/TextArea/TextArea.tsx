@@ -21,7 +21,7 @@ export function TextArea({ rows = DEFAULT_ROWS, className, ref, ...props }: Text
     <Input
       {...props}
       render={<textarea ref={autoSizeRef} rows={rows} />}
-      className={classNames(CONTROL_CLASSES, 'resize-none py-space-3 text-body', className)}
+      className={classNames(CONTROL_CLASSES, 'resize-none py-space-3', className)}
     />
   );
 }

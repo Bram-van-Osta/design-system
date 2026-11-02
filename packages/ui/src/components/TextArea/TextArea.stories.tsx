@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { expectBodyText } from '../../testing/expect-body-text.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
-import { tokenPixels } from '../../testing/token-pixels.ts';
 import { Field } from '../Field/Field.tsx';
 import { FieldMarker } from '../Field/field-marker.ts';
 import { TextArea } from './TextArea.tsx';
@@ -66,12 +66,7 @@ export const Empty: Story = {
     await expect(textArea).toHaveAttribute('rows', '2');
     await expect(textArea).toHaveAttribute('maxlength', '2000');
     await expect(getComputedStyle(textArea).resize).toBe('none');
-    await expect(Number.parseFloat(getComputedStyle(textArea).fontSize)).toBe(
-      tokenPixels('text-body'),
-    );
-    await expect(Number.parseFloat(getComputedStyle(textArea, '::placeholder').fontSize)).toBe(
-      tokenPixels('text-body'),
-    );
+    await expectBodyText(textArea);
     await expectHeightAtLeast(textArea, 'button-height');
     await expect(textArea).toHaveAccessibleDescription(
       'In your own words, as you would say it to a customer.',
