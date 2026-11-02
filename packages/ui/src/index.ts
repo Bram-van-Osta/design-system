@@ -120,6 +120,7 @@ export {
   type TableProps,
   type TableRow,
 } from './components/Table/Table.tsx';
+export { Tabs, type TabsItem, type TabsProps } from './components/Tabs/Tabs.tsx';
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
 export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
