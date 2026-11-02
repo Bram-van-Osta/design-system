@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent } from 'storybook/test';
+import { expectBodyText } from '../../testing/expect-body-text.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { Field } from '../Field/Field.tsx';
 import { PasswordInput } from './PasswordInput.tsx';
@@ -27,6 +28,7 @@ export const Hidden: Story = {
   play: async ({ canvas }) => {
     const input = canvas.getByLabelText('Password');
     await expect(input).toHaveAttribute('type', 'password');
+    await expectBodyText(input);
     await userEvent.tab();
     await expect(input).toHaveFocus();
     await userEvent.tab();
