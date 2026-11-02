@@ -1,6 +1,6 @@
 import { Input } from '@base-ui/react/input';
 import { classNames } from '../../utils/class-names.ts';
-import { CONTROL_CLASSES } from './control-classes.ts';
+import { LINE_CONTROL_CLASSES } from './control-classes.ts';
 
 export interface TextInputProps extends Omit<Input.Props, 'className' | 'render'> {
   readonly className?: string;
@@ -8,5 +8,5 @@ export interface TextInputProps extends Omit<Input.Props, 'className' | 'render'
 
 /** A line of text, inside a Field. `type`, `autoComplete` and `inputMode` say what it holds. */
 export function TextInput({ className, ...props }: TextInputProps) {
-  return <Input {...props} className={classNames(CONTROL_CLASSES, className)} />;
+  return <Input {...props} className={classNames(LINE_CONTROL_CLASSES, className)} />;
 }

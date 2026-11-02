@@ -17,7 +17,7 @@ interface CopyResult {
 interface UseCopyOptions {
   readonly text: string;
   /** The value shown: selected, for the reader to copy it, when the browser refuses. */
-  readonly valueRef: RefObject<HTMLElement | null>;
+  readonly valueRef?: RefObject<HTMLElement | null>;
 }
 
 export function useCopy({ text, valueRef }: UseCopyOptions) {
@@ -40,8 +40,9 @@ export function useCopy({ text, valueRef }: UseCopyOptions) {
       await navigator.clipboard.writeText(text);
       settle(CopyOutcome.copied);
     } catch {
-      if (valueRef.current !== null) {
-        window.getSelection()?.selectAllChildren(valueRef.current);
+      const value = valueRef?.current;
+      if (value) {
+        window.getSelection()?.selectAllChildren(value);
       }
       settle(CopyOutcome.failed);
     }

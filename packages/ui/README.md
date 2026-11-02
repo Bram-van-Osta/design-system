@@ -4,11 +4,11 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 
 | Group | Components |
 |---|---|
-| Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton`, `Link`, `Menu`, `AccountMenu`, `ToggleGroup` (a few views, one pressed, on a Delft band) |
-| Forms | `Field`, `TextInput`, `TextArea`, `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards`, `CheckboxCards`, `FileInput`, `FormAlert` |
+| Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton` (default, or compact in a line of text), `CopyButton` (copies a value from within a line), `Link`, `Menu`, `AccountMenu`, `ToggleGroup` (a few views, one pressed, on a Delft band) |
+| Forms | `Field`, `TextInput`, `TextArea` (grows with its text), `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards`, `CheckboxCards`, `FileInput`, `FormAlert` |
 | Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` (a journey's steps, grouped by named part if given) |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |
-| Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
+| Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`, an ink band, done or failed), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
 | Blocks | `AuthLayout`, `AuthBlock`, `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail`, `CheckMailbox`, `ErrorPage` |
 
 ## Using
