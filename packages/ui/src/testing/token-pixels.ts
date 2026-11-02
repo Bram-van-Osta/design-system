@@ -4,6 +4,7 @@ export type SizeToken =
   | 'space-1'
   | 'space-3'
   | 'target-min'
+  | 'icon-button-compact'
   | 'button-height'
   | 'form-width'
   | 'reading-width'

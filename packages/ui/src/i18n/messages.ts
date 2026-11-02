@@ -27,6 +27,8 @@ export const MESSAGE_KEYS = [
   'copyList.copy',
   'copyList.copied',
   'copyList.failed',
+  'copyButton.copied',
+  'copyButton.failed',
   'form.email',
   'form.emailMissing',
   'form.emailInvalid',
