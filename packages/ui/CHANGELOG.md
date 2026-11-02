@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.15.0
+
+### Minor Changes
+
+- `ToggleGroup`, a few mutually exclusive views side by side on a Delft band, one always pressed, such as a preview's computer and phone: its `options`, `value`, `defaultValue`, `onValueChange` and its accessible `label`.
+
 ## 0.14.0
 
 ### Minor Changes
