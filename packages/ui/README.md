@@ -4,7 +4,7 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 
 | Group | Components |
 |---|---|
-| Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton`, `Link`, `Menu`, `AccountMenu` |
+| Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton`, `Link`, `Menu`, `AccountMenu`, `ToggleGroup` (a few views, one pressed, on a Delft band) |
 | Forms | `Field`, `TextInput`, `TextArea`, `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards`, `CheckboxCards`, `FileInput`, `FormAlert` |
 | Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |

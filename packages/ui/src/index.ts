@@ -122,5 +122,10 @@ export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
 export { ToastProvider, type ToastProviderProps } from './components/Toast/ToastProvider.tsx';
 export { type ToastContent, useToast } from './components/Toast/use-toast.ts';
+export {
+  ToggleGroup,
+  type ToggleGroupOption,
+  type ToggleGroupProps,
+} from './components/ToggleGroup/ToggleGroup.tsx';
 export { Locale, type MessageKey, type Messages } from './i18n/messages.ts';
 export { UiProvider, type UiProviderProps } from './i18n/UiProvider.tsx';
