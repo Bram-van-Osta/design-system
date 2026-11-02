@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.20.0
+
+### Minor Changes
+
+- The toasts stack, three at most: the newest in front, the two before it smaller behind, unfolded into a column on hover or from the keyboard (F6), a fourth sending the oldest away; they come up and fade in, go down and fade out, slide to their place and can be swiped away, with a fade alone under reduced motion; on a computer they take the new `toast-width` size token (420 px).
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.7.0
+
 ## 0.19.1
 
 ### Patch Changes
