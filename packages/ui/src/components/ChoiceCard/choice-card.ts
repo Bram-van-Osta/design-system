@@ -20,9 +20,12 @@ export const ChoiceDetailPlacement = {
 export type ChoiceDetailPlacement =
   (typeof ChoiceDetailPlacement)[keyof typeof ChoiceDetailPlacement];
 
-/** The text field that details an answer, "Other…" first: always shown, never a closed question. */
+/**
+ * The text field that details an answer, "Other…" first. It shows once one of its answers is
+ * chosen, and hides again when none is: its text stays, and the app decides whether to send it.
+ */
 export interface ChoiceDetail {
-  /** The answers it details: choosing one with a click or Space moves the focus into the field. */
+  /** The answers it details: choosing one with a click or Space shows the field, focused. */
   readonly forValues: readonly string[];
   readonly label: ReactNode;
   /** Shown above the field; otherwise read by screen readers only, the card naming it on screen. */
@@ -31,8 +34,11 @@ export interface ChoiceDetail {
   readonly value?: string;
   readonly defaultValue?: string;
   readonly onValueChange?: (value: string) => void;
+  /** A hint inside the empty field, in the app's words. */
+  readonly placeholder?: string;
   /** What is wrong with the text, in words, under the field. */
   readonly error?: ReactNode;
+  /** Sent with the form while the field shows. */
   readonly name?: string;
   readonly maxLength?: number;
 }

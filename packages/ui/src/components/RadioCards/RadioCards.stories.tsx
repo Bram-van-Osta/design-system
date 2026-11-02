@@ -8,6 +8,7 @@ import { RadioCards } from './RadioCards.tsx';
 
 const SOMETHING_ELSE = 'Something else…';
 const SPECIFY = 'Specify "Something else"';
+const SPECIFY_PLACEHOLDER = 'E.g. a second shop, a stand at the market';
 
 // REF-T6-B02-Situation-D and -M: the first question of the request.
 const meta = {
@@ -50,6 +51,7 @@ const meta = {
       forValues: ['something-else'],
       label: SPECIFY,
       placement: ChoiceDetailPlacement.beside,
+      placeholder: SPECIFY_PLACEHOLDER,
       maxLength: 200,
       onValueChange: fn(),
     },
@@ -66,18 +68,24 @@ export const Situation: Story = {
     const modernize = canvas.getByRole('radio', { name: /I have a website to modernize/ });
     const none = canvas.getByRole('radio', { name: /I do not have a website yet/ });
     const somethingElse = canvas.getByRole('radio', { name: SOMETHING_ELSE });
-    const specify = canvas.getByRole('textbox', { name: SPECIFY });
+    const somethingElseCell = somethingElse.closest('label')?.parentElement;
     await expectColumns(group, [modernize, none]);
     await expectHeightAtLeast(somethingElse.closest('label') ?? somethingElse, 'button-height');
-    await expect(somethingElse).toHaveAttribute('aria-controls', specify.id);
+    await expect(canvas.queryByRole('textbox')).toBeNull();
+    await expect(somethingElse).not.toHaveAttribute('aria-controls');
+    await expect(somethingElseCell?.nextElementSibling).toBeNull();
 
     await userEvent.click(none);
     await expect(args.onValueChange).toHaveBeenLastCalledWith('none');
     await expect(none).toHaveFocus();
     await expectCardStates(none, modernize);
+    await expect(canvas.queryByRole('textbox')).toBeNull();
 
     await userEvent.click(somethingElse);
     await expect(args.onValueChange).toHaveBeenLastCalledWith('something-else');
+    const specify = await canvas.findByRole('textbox', { name: SPECIFY });
+    await expect(somethingElse).toHaveAttribute('aria-controls', specify.id);
+    await expect(specify).toHaveAttribute('placeholder', SPECIFY_PLACEHOLDER);
     await expect(specify).toHaveFocus();
     await userEvent.keyboard('A second shop{ArrowLeft}{ArrowRight}{ArrowRight}');
     await expect(specify).toHaveFocus();
@@ -87,9 +95,12 @@ export const Situation: Story = {
     await expectFocusRing(somethingElse);
     await userEvent.keyboard('{ArrowUp}');
     await expect(canvas.getByRole('radio', { name: /I have another project/ })).toBeChecked();
+    await expect(canvas.queryByRole('textbox')).toBeNull();
+    await expect(somethingElse).not.toHaveAttribute('aria-controls');
     await userEvent.keyboard('{ArrowDown}');
     await expect(somethingElse).toBeChecked();
     await expect(somethingElse).toHaveFocus();
+    await expect(canvas.getByRole('textbox', { name: SPECIFY })).toHaveValue('A second shop');
   },
 };
 
@@ -114,15 +125,37 @@ export const Timing: Story = {
   },
   play: async ({ canvas }) => {
     const period = canvas.getByRole('radio', { name: 'For a specific period…' });
-    const specify = canvas.getByRole('textbox', { name: 'Which one? Or specify' });
-    await expect(canvas.getByText('Which one? Or specify')).toBeVisible();
     await expectHeightAtLeast(period.closest('label') ?? period, 'button-height');
+    await expect(canvas.queryByText('Which one? Or specify')).toBeNull();
+
+    await userEvent.click(period);
+    const specify = await canvas.findByRole('textbox', { name: 'Which one? Or specify' });
+    await expect(canvas.getByText('Which one? Or specify')).toBeVisible();
+    await expect(specify).toHaveFocus();
     await expect(specify.getBoundingClientRect().width).toBe(
       canvas.getByRole('radiogroup').getBoundingClientRect().width,
     );
-    await userEvent.click(period);
-    await expect(specify).toHaveFocus();
+
     await userEvent.click(canvas.getByRole('radio', { name: 'No rush' }));
+    await expect(canvas.queryByRole('textbox')).toBeNull();
+    await expect(canvas.queryByText('Which one? Or specify')).toBeNull();
+
+    await userEvent.click(canvas.getByRole('radio', { name: 'Other…' }));
+    await expect(await canvas.findByRole('textbox', { name: 'Which one? Or specify' })).toHaveValue(
+      'Before the end-of-year holidays, if possible',
+    );
+  },
+};
+
+// The answer that asks for words, chosen: its field beside it, with the app's hint inside.
+export const SomethingElseChosen: Story = {
+  args: { defaultValue: 'something-else' },
+  play: async ({ canvas }) => {
+    const somethingElse = canvas.getByRole('radio', { name: SOMETHING_ELSE });
+    const specify = canvas.getByRole('textbox', { name: SPECIFY });
+    await expect(specify).toBeVisible();
+    await expect(specify).toHaveAttribute('placeholder', SPECIFY_PLACEHOLDER);
+    await expect(somethingElse).toHaveAttribute('aria-controls', specify.id);
     await expect(specify).not.toHaveFocus();
   },
 };
@@ -150,11 +183,12 @@ export const WithErrors: Story = {
 };
 
 export const Disabled: Story = {
-  args: { defaultValue: 'modernize', disabled: true },
+  args: { defaultValue: 'something-else', disabled: true },
   play: async ({ canvas }) => {
-    await expect(
-      canvas.getByRole('radio', { name: /I have a website to modernize/ }),
-    ).toHaveAttribute('aria-disabled', 'true');
+    await expect(canvas.getByRole('radio', { name: SOMETHING_ELSE })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
     await expect(canvas.getByRole('textbox', { name: SPECIFY })).toBeDisabled();
   },
 };

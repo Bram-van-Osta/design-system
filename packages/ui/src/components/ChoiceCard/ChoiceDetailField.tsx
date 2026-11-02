@@ -1,10 +1,11 @@
 import { Field as BaseField } from '@base-ui/react/field';
-import type { KeyboardEvent, RefObject } from 'react';
+import type { KeyboardEvent } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
 import { FieldError } from '../Field/FieldError.tsx';
 import { TextInput } from '../TextInput/TextInput.tsx';
 import { type ChoiceDetail, ChoiceDetailPlacement } from './choice-card.ts';
+import type { ChoiceDetailInput } from './use-choice-detail.ts';
 
 const PLACEMENT_CLASSES: Readonly<Record<ChoiceDetailPlacement, string>> = {
   beside: '',
@@ -21,12 +22,11 @@ function keepArrowKeysInText(event: KeyboardEvent) {
 
 interface ChoiceDetailFieldProps {
   readonly detail: ChoiceDetail;
-  readonly inputId: string;
-  readonly inputRef: RefObject<HTMLInputElement | null>;
+  readonly input: ChoiceDetailInput;
   readonly disabled: boolean | undefined;
 }
 
-export function ChoiceDetailField({ detail, inputId, inputRef, disabled }: ChoiceDetailFieldProps) {
+export function ChoiceDetailField({ detail, input, disabled }: ChoiceDetailFieldProps) {
   const isInvalid = hasContent(detail.error);
   const placement = detail.placement ?? ChoiceDetailPlacement.below;
   return (
@@ -40,11 +40,11 @@ export function ChoiceDetailField({ detail, inputId, inputRef, disabled }: Choic
         {detail.label}
       </BaseField.Label>
       <TextInput
-        ref={inputRef}
-        id={inputId}
-        value={detail.value}
-        defaultValue={detail.defaultValue}
-        onValueChange={(nextValue: string) => detail.onValueChange?.(nextValue)}
+        ref={input.inputRef}
+        id={input.inputId}
+        value={input.text}
+        onValueChange={input.onTextChange}
+        placeholder={detail.placeholder}
         maxLength={detail.maxLength}
         onKeyDown={keepArrowKeysInText}
       />
