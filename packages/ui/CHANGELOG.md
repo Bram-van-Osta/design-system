@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.16.0
+
+### Minor Changes
+
+- `StepProgress` takes optional `parts` (`label`, `shortLabel`, `steps`), whose steps add up to `max`: the segments grouped by part, and each part's name under the bar, checked once done, in vermilion while current, muted after, its short name on a phone; without `parts`, nothing changes.
+
 ## 0.15.0
 
 ### Minor Changes
