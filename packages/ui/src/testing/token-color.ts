@@ -3,6 +3,7 @@ export type ColorToken =
   | 'delft'
   | 'field'
   | 'ink'
+  | 'ink-muted'
   | 'line'
   | 'on-delft'
   | 'surface'
