@@ -15,6 +15,8 @@ export function Avatar({ name, className }: AvatarProps) {
       aria-label={name}
       className={classNames(
         'inline-flex size-space-6 shrink-0 items-center justify-center rounded-round bg-surface font-sans text-meta font-semibold text-ink',
+        // A menu's button shows the surface on hover and while open: the circle leaves it for the page's background.
+        'group-hover/menu-trigger:bg-bg group-data-popup-open/menu-trigger:bg-bg',
         className,
       )}
     >
