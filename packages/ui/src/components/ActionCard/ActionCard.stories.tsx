@@ -2,15 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
+import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { tokenPixels } from '../../testing/token-pixels.ts';
 import { Button } from '../Button/Button.tsx';
 import { CopyList } from '../CopyList/CopyList.tsx';
 import { Text, TextTone, TextVariant } from '../Text/Text.tsx';
 import { ActionCard } from './ActionCard.tsx';
-
-// Tailwind's md breakpoint, from which the card takes the computer's padding.
-const COMPUTER_QUERY = '(min-width: 48rem)';
 
 // REF-T8-09-AcompteRecu-O: the deposit the operator waits for.
 const meta = {
@@ -50,7 +48,7 @@ export const DepositExpected: Story = {
     await expect(style.backgroundColor).toBe(tokenColor('surface', card));
     await expect(style.borderRadius).toBe('0px');
     await expect(style.boxShadow).toBe('none');
-    const padding = window.matchMedia(COMPUTER_QUERY).matches ? 'space-6' : 'space-5';
+    const padding = isOnAComputer() ? 'space-6' : 'space-5';
     await expect(style.paddingLeft).toBe(
       getComputedStyle(card).getPropertyValue(`--${padding}`).trim(),
     );

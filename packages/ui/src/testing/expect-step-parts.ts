@@ -5,19 +5,13 @@ import {
   type StepProgressPart,
 } from '../components/StepProgress/step-parts.ts';
 import { Locale, MESSAGES } from '../i18n/messages.ts';
+import { isOnAComputer } from './is-on-a-computer.ts';
 import { type ColorToken, tokenColor } from './token-color.ts';
 import { tokenPixels } from './token-pixels.ts';
 
-// Tailwind's md breakpoint, from which each name sits under its own group.
-const COMPUTER_QUERY = '(min-width: 48rem)';
 // What rounding the fractions of the grid to device pixels may leave.
 const LAYOUT_TOLERANCE = 0.5;
 const MEDIUM_WEIGHT = '500';
-
-/** Whether the page is as wide as a computer's, from Tailwind's md breakpoint. */
-export function isOnAComputer(): boolean {
-  return window.matchMedia(COMPUTER_QUERY).matches;
-}
 const REGULAR_WEIGHT = '400';
 
 const STATE_COLORS: Readonly<Record<StepPartState, ColorToken>> = {

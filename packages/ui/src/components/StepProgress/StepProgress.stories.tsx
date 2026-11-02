@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
-import {
-  expectGroupedSegments,
-  expectPartNames,
-  isOnAComputer,
-} from '../../testing/expect-step-parts.ts';
+import { expectGroupedSegments, expectPartNames } from '../../testing/expect-step-parts.ts';
+import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { tokenPixels } from '../../testing/token-pixels.ts';
 import { StepProgress } from './StepProgress.tsx';
