@@ -5,7 +5,6 @@
   "passwordInput.hide": "Masquer le mot de passe",
   "select.placeholder": "Choisir…",
   "dialog.cancel": "Annuler",
-  "toast.close": "Fermer",
   "skeleton.loading": "Chargement…",
   "stepProgress.done": "fait",
   "stepProgress.current": "en cours",

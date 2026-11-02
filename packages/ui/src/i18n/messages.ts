@@ -17,7 +17,6 @@ export const MESSAGE_KEYS = [
   'select.placeholder',
   'dialog.cancel',
   'toast.region',
-  'toast.close',
   'skeleton.loading',
   'stepProgress.done',
   'stepProgress.current',

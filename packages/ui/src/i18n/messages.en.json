@@ -5,7 +5,6 @@
   "passwordInput.hide": "Hide the password",
   "select.placeholder": "Choose…",
   "dialog.cancel": "Cancel",
-  "toast.close": "Close",
   "skeleton.loading": "Loading…",
   "stepProgress.done": "done",
   "stepProgress.current": "in progress",

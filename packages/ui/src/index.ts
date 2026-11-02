@@ -122,6 +122,7 @@ export { Text, type TextProps, TextTone, TextVariant } from './components/Text/T
 export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
 export { ToastProvider, type ToastProviderProps } from './components/Toast/ToastProvider.tsx';
+export { ToastTone } from './components/Toast/toast-tone.ts';
 export { type ToastContent, useToast } from './components/Toast/use-toast.ts';
 export {
   ToggleGroup,

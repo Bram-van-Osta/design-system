@@ -8,7 +8,7 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 | Forms | `Field`, `TextInput`, `TextArea`, `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards`, `CheckboxCards`, `FileInput`, `FormAlert` |
 | Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` (a journey's steps, grouped by named part if given) |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |
-| Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
+| Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`, an ink band, done or failed), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
 | Blocks | `AuthLayout`, `AuthBlock`, `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail`, `CheckMailbox`, `ErrorPage` |
 
 ## Using
