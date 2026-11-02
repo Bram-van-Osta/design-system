@@ -6,7 +6,7 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 |---|---|
 | Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton`, `Link`, `Menu`, `AccountMenu`, `ToggleGroup` (a few views, one pressed, on a Delft band) |
 | Forms | `Field`, `TextInput`, `TextArea`, `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards`, `CheckboxCards`, `FileInput`, `FormAlert` |
-| Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` |
+| Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` (a journey's steps, grouped by named part if given) |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |
 | Feedback | `Dialog`, `Toast` (`ToastProvider` and `useToast`), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
 | Blocks | `AuthLayout`, `AuthBlock`, `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail`, `CheckMailbox`, `ErrorPage` |

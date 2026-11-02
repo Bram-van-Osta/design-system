@@ -109,6 +109,7 @@ export {
 } from './components/Stack/stack-classes.ts';
 export {
   StepProgress,
+  type StepProgressPart,
   type StepProgressProps,
 } from './components/StepProgress/StepProgress.tsx';
 export {

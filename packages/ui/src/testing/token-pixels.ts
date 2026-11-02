@@ -2,6 +2,7 @@ import { tokenPixels as pixelsOf } from '../utils/token-pixels.ts';
 
 export type SizeToken =
   | 'space-1'
+  | 'space-3'
   | 'target-min'
   | 'button-height'
   | 'form-width'
