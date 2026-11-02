@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.20.1
+
+### Patch Changes
+
+- A pending button without an arrow keeps its width: the spinner covers its label instead of following it, so that it no longer pushes its neighbors to another line.
+
 ## 0.20.0
 
 ### Minor Changes
