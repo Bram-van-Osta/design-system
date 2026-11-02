@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.6.0
+
+### Minor Changes
+
+- The `agent` and `agent-pale` color tokens, in light and dark: violet for what the agent read, advised or drafted, on the operator's side only, never on the client's side and never a button.
+
 ## 0.5.0
 
 ### Minor Changes

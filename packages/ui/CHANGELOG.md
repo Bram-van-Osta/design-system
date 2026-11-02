@@ -1,5 +1,12 @@
 # @bram-van-osta/ui
 
+## 0.17.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.6.0
+
 ## 0.17.0
 
 ### Minor Changes
