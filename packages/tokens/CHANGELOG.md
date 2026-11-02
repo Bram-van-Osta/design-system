@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.5.0
+
+### Minor Changes
+
+- The `icon-button-compact` size token, 28 px: the drawn square of a compact icon button in a line of text, whose target stays `target-min`.
+
 ## 0.4.0
 
 ### Minor Changes

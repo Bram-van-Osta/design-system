@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.17.0
+
+### Minor Changes
+
+- The toast is an ink band that leaves by itself, with a check or, given `tone: ToastTone.failed`, a vermilion warning, and no close button (the `toast.close` message is removed); `IconButton` takes `size: IconButtonSize.compact`, a 16 px icon in a 28 px square that keeps a 44 px target, on which the new `CopyButton` copies a value from within a line of text and shows "Copied" beside it; `TextArea` writes at the body size, grows with its text up to 60% of the screen's height, and no longer has a resize handle.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.5.0
+
 ## 0.16.0
 
 ### Minor Changes
