@@ -14,6 +14,8 @@ const YOUR_REQUEST = 'Your request';
 const MESSAGES = 'Messages';
 const WHERE = 'Where your request stands';
 const MESSAGE_COUNT = 1;
+// The count, joined to its label by no-break spaces.
+const COUNTED = new RegExp(`^·\\s${MESSAGE_COUNT}$`);
 const REPLY = 'Your reply';
 
 const messages: TabsItem = {
@@ -82,11 +84,13 @@ export const WithCount: Story = {
   args: { tabs: [{ ...messages, count: MESSAGE_COUNT }, progress] },
   play: async ({ canvas, canvasElement }) => {
     const list = canvas.getByRole('tablist', { name: YOUR_REQUEST });
-    const messagesTab = canvas.getByRole('tab', { name: `${MESSAGES} · ${MESSAGE_COUNT}` });
+    const messagesTab = canvas.getByRole('tab', {
+      name: new RegExp(`^${MESSAGES}\\s·\\s${MESSAGE_COUNT}$`),
+    });
     const whereTab = canvas.getByRole('tab', { name: WHERE });
     await expectUnderlinedTabs(list, [messagesTab, whereTab]);
     await expectOpenTab(messagesTab, [whereTab]);
-    const count = within(messagesTab).getByText(`· ${MESSAGE_COUNT}`);
+    const count = within(messagesTab).getByText(COUNTED);
     await expect(getComputedStyle(count).color).toBe(tokenColor('ink-muted', canvasElement));
   },
 };
@@ -102,6 +106,10 @@ export const LongLabels: Story = {
   play: async ({ canvas }) => {
     const list = canvas.getByRole('tablist', { name: YOUR_REQUEST });
     await expectUnderlinedTabs(list, canvas.getAllByRole('tab'));
+    const count = within(canvas.getAllByRole('tab')[0] ?? list).getByText(COUNTED);
+    // One line: each of its pieces sits at the same height.
+    const lines = new Set([...count.getClientRects()].map((rect) => Math.round(rect.top)));
+    await expect(lines.size).toBe(1);
   },
 };
 

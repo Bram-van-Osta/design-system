@@ -28,6 +28,8 @@ const LIST_CLASSES =
 const TAB_CLASSES =
   'relative inline-flex min-h-target-min cursor-pointer items-center border-b-select border-transparent px-space-1 text-body-s font-medium text-ink-muted hover:not-data-active:bg-surface hover:not-data-active:text-ink data-active:border-delft data-active:font-semibold data-active:text-ink';
 const PANEL_CLASSES = 'pt-space-4';
+// The count stays on the line of the label's last word, however narrow the phone.
+const NO_BREAK_SPACE = '\u00a0';
 
 function stringValueHandler(onValueChange: ((value: string) => void) | undefined) {
   return (value: unknown) => {
@@ -56,8 +58,11 @@ export function Tabs({ label, tabs, value, defaultValue, onValueChange, classNam
               {tab.label}
               {tab.count !== undefined && (
                 <>
-                  {' '}
-                  <span className="text-ink-muted">· {tab.count}</span>
+                  {NO_BREAK_SPACE}
+                  <span className="whitespace-nowrap text-ink-muted">
+                    ·{NO_BREAK_SPACE}
+                    {tab.count}
+                  </span>
                 </>
               )}
             </span>

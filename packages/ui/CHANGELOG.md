@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.19.1
+
+### Patch Changes
+
+- The tabs' count stays on the line of its label's last word, however narrow the phone; the text area's `ref` is typed as the text area it is.
+
 ## 0.19.0
 
 ### Minor Changes

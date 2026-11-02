@@ -88,7 +88,7 @@ function attach<Element>(ref: Ref<Element> | undefined, element: Element): () =>
  * from outside, a controlled value or a form's reset. The app's own ref still receives the element.
  */
 export function useAutoSize(
-  forwardedRef: Ref<HTMLElement> | undefined,
+  forwardedRef: Ref<HTMLTextAreaElement> | undefined,
 ): RefCallback<HTMLTextAreaElement> {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
