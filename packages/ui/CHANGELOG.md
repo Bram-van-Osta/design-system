@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.19.0
+
+### Minor Changes
+
+- `Tabs`, a few panels behind a row of tabs underlined at their width on a rule, one open, with an optional count beside a tab's label.
+
 ## 0.18.0
 
 ### Minor Changes
