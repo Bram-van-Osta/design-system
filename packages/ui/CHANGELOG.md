@@ -1,5 +1,12 @@
 # @bram-van-osta/ui
 
+## 0.14.0
+
+### Minor Changes
+
+- 116d630: The `detail` field of `RadioCards` and `CheckboxCards` now shows only once one of its `forValues` is chosen, focused when chosen with a click or Space, and hides again when none is, keeping its text; its new `placeholder` takes the app's hint.
+- bc0dace: `Menu`'s button has no border, shows the surface on hover and while open with an `Avatar` in it on the page's background, and its popup opens 4 px under it in a `line` hair; `triggerVariant` and `MenuTriggerVariant` are removed, `AccountMenu` taking that look with its name.
+
 ## 0.13.0
 
 ### Minor Changes
