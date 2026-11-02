@@ -4,6 +4,7 @@ import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
+import { useControllableValue } from '../../utils/use-controllable-value.ts';
 import { ChoiceCard } from '../ChoiceCard/ChoiceCard.tsx';
 import { ChoiceDetailField } from '../ChoiceCard/ChoiceDetailField.tsx';
 import type { ChoiceCardOption, ChoiceDetail } from '../ChoiceCard/choice-card.ts';
@@ -24,7 +25,7 @@ export interface RadioCardsProps {
   readonly description?: ReactNode;
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
-  /** The text field of "Other…", or of any answer that asks for words. */
+  /** The text field of "Other…", or of any answer that asks for words, once it is chosen. */
   readonly detail?: ChoiceDetail;
   readonly name?: string;
   readonly required?: boolean;
@@ -49,7 +50,11 @@ export function RadioCards({
   className,
 }: RadioCardsProps) {
   const isInvalid = hasContent(error);
-  const choiceDetail = useChoiceDetail(detail);
+  const [chosenValue, setChosenValue] = useControllableValue(value, defaultValue ?? null);
+  const choiceDetail = useChoiceDetail({
+    detail,
+    chosenValues: chosenValue === null ? [] : [chosenValue],
+  });
   return (
     <BaseField.Root
       name={name}
@@ -66,6 +71,7 @@ export function RadioCards({
             required={required}
             onValueChange={(nextValue: unknown) => {
               if (typeof nextValue === 'string') {
+                setChosenValue(nextValue);
                 onValueChange?.(nextValue);
                 choiceDetail.onChoose(nextValue);
               }
@@ -88,13 +94,8 @@ export function RadioCards({
               }
             />
           ))}
-          {detail && (
-            <ChoiceDetailField
-              detail={detail}
-              inputId={choiceDetail.inputId}
-              inputRef={choiceDetail.inputRef}
-              disabled={disabled}
-            />
+          {detail && choiceDetail.isShown && (
+            <ChoiceDetailField detail={detail} input={choiceDetail.input} disabled={disabled} />
           )}
         </div>
       </Fieldset.Root>

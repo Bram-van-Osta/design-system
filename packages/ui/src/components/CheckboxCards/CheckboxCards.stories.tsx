@@ -6,6 +6,7 @@ import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { CheckboxCards } from './CheckboxCards.tsx';
 
 const SPECIFY = 'Specify "Other"';
+const SPECIFY_PLACEHOLDER = 'E.g. my opening hours change every season';
 
 // REF-T6-B03-Pourquoi-D: what makes the business decide now.
 const meta = {
@@ -27,6 +28,7 @@ const meta = {
     detail: {
       forValues: ['other'],
       label: SPECIFY,
+      placeholder: SPECIFY_PLACEHOLDER,
       maxLength: 200,
       onValueChange: fn(),
     },
@@ -43,10 +45,11 @@ export const WhatDecides: Story = {
     const information = canvas.getByRole('checkbox', { name: /cannot find the information/ });
     const aging = canvas.getByRole('checkbox', { name: 'My website is aging' });
     const other = canvas.getByRole('checkbox', { name: 'Other…' });
-    const specify = canvas.getByRole('textbox', { name: SPECIFY });
     await expectColumns(group, [information, aging]);
     await expectHeightAtLeast(aging.closest('label') ?? aging, 'button-height');
-    await expect(other).toHaveAttribute('aria-controls', specify.id);
+    await expect(canvas.queryByRole('textbox')).toBeNull();
+    await expect(other).not.toHaveAttribute('aria-controls');
+    await expect(other.closest('label')?.parentElement?.nextElementSibling).toBeNull();
 
     await userEvent.tab();
     await expectFocusRing(information);
@@ -57,13 +60,25 @@ export const WhatDecides: Story = {
     await expect(args.onValueChange).toHaveBeenLastCalledWith(['information', 'orders']);
 
     await userEvent.click(other);
+    const specify = await canvas.findByRole('textbox', { name: SPECIFY });
+    await expect(other).toHaveAttribute('aria-controls', specify.id);
+    await expect(specify).toHaveAttribute('placeholder', SPECIFY_PLACEHOLDER);
     await expect(specify).toHaveFocus();
     await userEvent.keyboard('The Sunday cake list');
     await expect(args.detail?.onValueChange).toHaveBeenLastCalledWith('The Sunday cake list');
     await expect(specify.getBoundingClientRect().width).toBe(group.getBoundingClientRect().width);
+
     await userEvent.click(other);
     await expect(other).not.toBeChecked();
-    await expect(specify).not.toHaveFocus();
+    await expect(canvas.queryByRole('textbox')).toBeNull();
+    await expect(other).not.toHaveAttribute('aria-controls');
+
+    await userEvent.keyboard(' ');
+    await expect(other).toBeChecked();
+    await expect(await canvas.findByRole('textbox', { name: SPECIFY })).toHaveFocus();
+    await expect(canvas.getByRole('textbox', { name: SPECIFY })).toHaveValue(
+      'The Sunday cake list',
+    );
   },
 };
 
@@ -79,11 +94,20 @@ export const WhatYouExpect: Story = {
       { value: 'unsure', label: 'I do not know yet' },
       { value: 'other', label: 'Other…' },
     ],
-    defaultValue: ['quote', 'build'],
-    detail: { forValues: ['other'], label: 'Specify if you wish', isLabelVisible: true },
+    defaultValue: ['quote', 'other'],
+    detail: {
+      forValues: ['other'],
+      label: 'Specify if you wish',
+      isLabelVisible: true,
+      placeholder: 'E.g. a booking page for the workshops',
+    },
   },
   play: async ({ canvas }) => {
     await expect(canvas.getByText('Specify if you wish')).toBeVisible();
+    await expect(canvas.getByRole('textbox', { name: 'Specify if you wish' })).toHaveAttribute(
+      'placeholder',
+      'E.g. a booking page for the workshops',
+    );
     await expect(canvas.getByRole('checkbox', { name: 'A quote' })).toBeChecked();
   },
 };
@@ -96,7 +120,7 @@ export const WithError: Story = {
 };
 
 export const Disabled: Story = {
-  args: { defaultValue: ['aging'], disabled: true },
+  args: { defaultValue: ['aging', 'other'], disabled: true },
   play: async ({ canvas }) => {
     await expect(canvas.getByRole('checkbox', { name: 'My website is aging' })).toHaveAttribute(
       'aria-disabled',

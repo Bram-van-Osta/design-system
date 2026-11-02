@@ -4,6 +4,7 @@ import { Fieldset } from '@base-ui/react/fieldset';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
+import { useControllableValue } from '../../utils/use-controllable-value.ts';
 import { CheckboxBox } from '../Checkbox/CheckboxBox.tsx';
 import { ChoiceCard } from '../ChoiceCard/ChoiceCard.tsx';
 import { ChoiceDetailField } from '../ChoiceCard/ChoiceDetailField.tsx';
@@ -13,6 +14,8 @@ import { useChoiceDetail } from '../ChoiceCard/use-choice-detail.ts';
 import { ChoiceLegend } from '../Field/ChoiceLegend.tsx';
 import { FieldError } from '../Field/FieldError.tsx';
 import type { FieldMarker } from '../Field/field-marker.ts';
+
+const NO_VALUES: readonly string[] = [];
 
 export interface CheckboxCardsProps {
   /** The question the cards answer: a label, or the page's heading. */
@@ -24,7 +27,7 @@ export interface CheckboxCardsProps {
   readonly description?: ReactNode;
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
-  /** The text field of "Other…", across the grid under the cards. */
+  /** The text field of "Other…", across the grid under the cards, once it is ticked. */
   readonly detail?: ChoiceDetail;
   readonly name?: string;
   readonly disabled?: boolean;
@@ -47,7 +50,8 @@ export function CheckboxCards({
   className,
 }: CheckboxCardsProps) {
   const isInvalid = hasContent(error);
-  const choiceDetail = useChoiceDetail(detail);
+  const [chosenValues, setChosenValues] = useControllableValue(value, defaultValue ?? NO_VALUES);
+  const choiceDetail = useChoiceDetail({ detail, chosenValues });
   return (
     <BaseField.Root
       name={name}
@@ -61,7 +65,10 @@ export function CheckboxCards({
             {...choiceDetail.groupProps}
             value={value && [...value]}
             defaultValue={defaultValue && [...defaultValue]}
-            onValueChange={(nextValue: string[]) => onValueChange?.(nextValue)}
+            onValueChange={(nextValue: string[]) => {
+              setChosenValues(nextValue);
+              onValueChange?.(nextValue);
+            }}
           />
         }
         className="flex flex-col gap-space-1"
@@ -85,13 +92,8 @@ export function CheckboxCards({
               }
             />
           ))}
-          {detail && (
-            <ChoiceDetailField
-              detail={detail}
-              inputId={choiceDetail.inputId}
-              inputRef={choiceDetail.inputRef}
-              disabled={disabled}
-            />
+          {detail && choiceDetail.isShown && (
+            <ChoiceDetailField detail={detail} input={choiceDetail.input} disabled={disabled} />
           )}
         </div>
       </Fieldset.Root>

@@ -3,7 +3,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, waitFor } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
-import { tokenColor } from '../../testing/token-color.ts';
+import {
+  expectDetachedPopup,
+  expectMenuTriggerAtRest,
+  expectMenuTriggerOpen,
+} from '../../testing/expect-menu.ts';
 import { tokenPixels } from '../../testing/token-pixels.ts';
 import { AccountMenu } from './AccountMenu.tsx';
 
@@ -51,9 +55,11 @@ export const Closed: Story = {
     await expect(trigger).toHaveAccessibleName(NAME);
     await expect(canvas.queryByRole('img')).not.toBeInTheDocument();
     await expectHeightAtLeast(trigger, 'target-min');
-    const style = getComputedStyle(trigger);
-    await expect(style.borderTopColor).toBe(tokenColor('line', trigger));
-    await expect(style.borderRadius).toBe('0px');
+    await expect(trigger.getBoundingClientRect().width).toBeGreaterThanOrEqual(
+      tokenPixels('target-min'),
+    );
+    await expectMenuTriggerAtRest(trigger);
+    await expect(getComputedStyle(trigger).borderRadius).toBe('0px');
     await userEvent.tab();
     await expectFocusRing(trigger);
   },
@@ -63,7 +69,10 @@ export const Open: Story = {
   play: async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: NAME });
     await userEvent.click(trigger);
-    await expect(await screen.findByRole('menu')).toBeVisible();
+    const menu = await screen.findByRole('menu');
+    await expect(menu).toBeVisible();
+    await expectMenuTriggerOpen(trigger);
+    await expectDetachedPopup(trigger, menu);
     await expect(screen.getAllByRole('menuitem').map((item) => item.textContent)).toEqual([
       'Nederlands',
       'Sign out',

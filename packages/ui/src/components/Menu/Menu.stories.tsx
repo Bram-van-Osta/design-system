@@ -3,6 +3,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, waitFor } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
+import {
+  expectDetachedPopup,
+  expectMenuTriggerAtRest,
+  expectMenuTriggerOpen,
+} from '../../testing/expect-menu.ts';
 import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
 import { Avatar } from '../Avatar/Avatar.tsx';
 import { Menu } from './Menu.tsx';
@@ -40,11 +45,14 @@ export const Account: Story = {
   play: async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: 'Jeanne Martin' });
     await expectHeightAtLeast(trigger, 'target-min');
+    await expectMenuTriggerAtRest(trigger);
     await userEvent.tab();
     await expectFocusRing(trigger);
     await userEvent.keyboard('{Enter}');
     const menu = await screen.findByRole('menu');
     await expect(menu).toBeVisible();
+    await expectMenuTriggerOpen(trigger);
+    await expectDetachedPopup(trigger, menu);
     const items = screen.getAllByRole('menuitem');
     await expect(items.map((item) => item.textContent)).toEqual(['Nederlands', 'Sign out']);
     await expect(items[0]).toHaveAttribute('lang', 'nl');

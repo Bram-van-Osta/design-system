@@ -79,7 +79,6 @@ export {
   Menu,
   type MenuItem,
   type MenuProps,
-  MenuTriggerVariant,
 } from './components/Menu/Menu.tsx';
 export {
   MessageBubble,

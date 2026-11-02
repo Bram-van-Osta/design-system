@@ -1,4 +1,4 @@
-export type ColorToken = 'delft' | 'field' | 'ink' | 'line' | 'surface' | 'vermillion';
+export type ColorToken = 'bg' | 'delft' | 'field' | 'ink' | 'line' | 'surface' | 'vermillion';
 
 /** A color token's value as the page computes it, in the theme around the element. */
 export function tokenColor(token: ColorToken, around: Element): string {

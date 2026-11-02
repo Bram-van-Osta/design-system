@@ -1,4 +1,7 @@
+import { tokenPixels as pixelsOf } from '../utils/token-pixels.ts';
+
 export type SizeToken =
+  | 'space-1'
   | 'target-min'
   | 'button-height'
   | 'form-width'
@@ -10,7 +13,5 @@ export type SizeToken =
 
 /** A size token's value, in pixels, as the page's tokens give it. */
 export function tokenPixels(token: SizeToken): number {
-  return Number.parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue(`--${token}`),
-  );
+  return pixelsOf(token);
 }
