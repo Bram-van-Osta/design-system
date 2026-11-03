@@ -3,6 +3,7 @@ import {
   STEP_PART_STATE_MESSAGES,
   StepPartState,
   type StepProgressPart,
+  StepProgressTone,
 } from '../components/StepProgress/step-parts.ts';
 import { Locale, MESSAGES } from '../i18n/messages.ts';
 import { isOnAComputer } from './is-on-a-computer.ts';
@@ -20,6 +21,40 @@ const STATE_COLORS: Readonly<Record<StepPartState, ColorToken>> = {
   upcoming: 'ink-muted',
 };
 
+const SEGMENT_COLORS: Readonly<
+  Record<StepProgressTone, Readonly<Record<StepPartState, ColorToken>>>
+> = {
+  delft: { done: 'delft', current: 'delft', upcoming: 'line' },
+  ink: { done: 'ink', current: 'vermillion', upcoming: 'line' },
+};
+
+interface SegmentFilling {
+  readonly filledCount: number;
+  readonly tone?: StepProgressTone;
+}
+
+function segmentColorOf(index: number, { filledCount, tone }: SegmentFilling): ColorToken {
+  const colors = SEGMENT_COLORS[tone ?? StepProgressTone.delft];
+  if (index + 1 < filledCount) {
+    return colors.done;
+  }
+  return index + 1 === filledCount ? colors.current : colors.upcoming;
+}
+
+/**
+ * The segments in order, filled up to the step the person is on: in Delft blue, or with the `ink`
+ * tone, done in ink and the current one in vermilion; the next ones in the line color.
+ */
+export async function expectSegmentColors(
+  segments: readonly Element[],
+  filling: SegmentFilling,
+): Promise<void> {
+  for (const [index, segment] of segments.entries()) {
+    const color = tokenColor(segmentColorOf(index, filling), segment);
+    await expect(getComputedStyle(segment).backgroundColor).toBe(color);
+  }
+}
+
 async function expectGaps(elements: readonly Element[], gap: number): Promise<void> {
   for (const [index, next] of elements.entries()) {
     const previous = elements[index - 1];
@@ -32,24 +67,20 @@ async function expectGaps(elements: readonly Element[], gap: number): Promise<vo
 
 /**
  * The segments in one group per part, 4 px apart within a part and 12 px between two parts, each
- * group as wide as its steps, filled in Delft blue up to the step the person is on.
+ * group as wide as its steps, filled in their tone up to the step the person is on.
  */
 export async function expectGroupedSegments(
   bar: HTMLElement,
-  {
-    parts,
-    filledCount,
-  }: { readonly parts: readonly StepProgressPart[]; readonly filledCount: number },
+  { parts, ...filling }: SegmentFilling & { readonly parts: readonly StepProgressPart[] },
 ): Promise<void> {
   const groups = [...bar.children];
   await expect(groups.map((group) => group.childElementCount)).toEqual(
     parts.map((part) => part.steps),
   );
-  const segments = groups.flatMap((group) => [...group.children]);
-  for (const [index, segment] of segments.entries()) {
-    const color = index < filledCount ? 'delft' : 'line';
-    await expect(getComputedStyle(segment).backgroundColor).toBe(tokenColor(color, bar));
-  }
+  await expectSegmentColors(
+    groups.flatMap((group) => [...group.children]),
+    filling,
+  );
   await expectGaps(groups, tokenPixels('space-3'));
   for (const group of groups) {
     await expectGaps([...group.children], tokenPixels('space-1'));

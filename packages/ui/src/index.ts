@@ -115,6 +115,7 @@ export {
   type StepProgressPart,
   type StepProgressProps,
 } from './components/StepProgress/StepProgress.tsx';
+export { StepProgressTone } from './components/StepProgress/step-parts.ts';
 export {
   Table,
   type TableColumn,

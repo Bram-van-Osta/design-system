@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
-import { expectGroupedSegments, expectPartNames } from '../../testing/expect-step-parts.ts';
+import {
+  expectGroupedSegments,
+  expectPartNames,
+  expectSegmentColors,
+} from '../../testing/expect-step-parts.ts';
 import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { tokenPixels } from '../../testing/token-pixels.ts';
 import { StepProgress } from './StepProgress.tsx';
-import { StepPartState, type StepProgressPart } from './step-parts.ts';
+import { StepPartState, type StepProgressPart, StepProgressTone } from './step-parts.ts';
 
 const LABEL = "Your request's progress";
 
@@ -141,6 +145,52 @@ export const BriefOnAPhone: Story = {
     await expect(isOnAComputer()).toBe(false);
     const bar = canvas.getByRole('progressbar', { name: LABEL });
     await expectGroupedSegments(bar, { parts: BRIEF_PARTS, filledCount: 5 });
+    await expectPartNames(bar, {
+      parts: BRIEF_PARTS,
+      states: [done, current, upcoming, upcoming],
+      locale: globals.locale,
+    });
+  },
+};
+
+// The request's tracking page, kept on 3 November: the steps done in ink, the current one in
+// vermilion, the next ones in the line color.
+export const Following: Story = {
+  args: { max: 6, value: 3, valueText: 'Step 3 of 6: the proposal', tone: StepProgressTone.ink },
+  play: async ({ canvas }) => {
+    const bar = canvas.getByRole('progressbar', { name: LABEL });
+    await expect(bar).toHaveAttribute('aria-valuenow', '3');
+    await expect(bar).toHaveAttribute('aria-valuetext', 'Step 3 of 6: the proposal');
+    const segments = [...bar.children];
+    await expect(segments).toHaveLength(6);
+    await expectSegmentColors(segments, { filledCount: 3, tone: StepProgressTone.ink });
+  },
+};
+
+export const FollowingNotStarted: Story = {
+  args: { max: 6, value: 0, valueText: 'Not started yet', tone: StepProgressTone.ink },
+  play: async ({ canvas }) => {
+    const bar = canvas.getByRole('progressbar', { name: LABEL });
+    await expectSegmentColors([...bar.children], { filledCount: 0, tone: StepProgressTone.ink });
+  },
+};
+
+// With parts, the segments in the colors of their parts' names.
+export const FollowingInParts: Story = {
+  args: {
+    max: BRIEF_QUESTIONS,
+    value: 5,
+    valueText: 'Question 5 of 8',
+    parts: BRIEF_PARTS,
+    tone: StepProgressTone.ink,
+  },
+  play: async ({ canvas, globals }) => {
+    const bar = canvas.getByRole('progressbar', { name: LABEL });
+    await expectGroupedSegments(bar, {
+      parts: BRIEF_PARTS,
+      filledCount: 5,
+      tone: StepProgressTone.ink,
+    });
     await expectPartNames(bar, {
       parts: BRIEF_PARTS,
       states: [done, current, upcoming, upcoming],
