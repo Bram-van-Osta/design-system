@@ -1,4 +1,5 @@
 import { expect } from 'storybook/test';
+import { isOnAComputer } from './is-on-a-computer.ts';
 import { tokenColor } from './token-color.ts';
 
 // Tailwind's @md container: from this width on, the cards stand in two columns.
@@ -38,4 +39,24 @@ export async function expectColumns(
   } else {
     await expect(top(second)).toBeGreaterThan(top(first));
   }
+}
+
+/**
+ * One column on every width, the group wide enough for two on a computer: each card under the one
+ * before, at the group's width.
+ */
+export async function expectOneColumn(
+  group: Element,
+  [first, second]: readonly [Element, Element],
+): Promise<void> {
+  const groupWidth = group.getBoundingClientRect().width;
+  if (isOnAComputer()) {
+    await expect(groupWidth).toBeGreaterThanOrEqual(TWO_COLUMNS_MIN_WIDTH);
+  }
+  const firstBox = cardOf(first).getBoundingClientRect();
+  const secondBox = cardOf(second).getBoundingClientRect();
+  await expect(secondBox.top).toBeGreaterThan(firstBox.bottom);
+  await expect(secondBox.left).toBe(firstBox.left);
+  await expect(firstBox.width).toBe(groupWidth);
+  await expect(secondBox.width).toBe(groupWidth);
 }

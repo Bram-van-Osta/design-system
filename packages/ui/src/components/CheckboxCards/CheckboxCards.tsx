@@ -9,7 +9,7 @@ import { CheckboxBox } from '../Checkbox/CheckboxBox.tsx';
 import { ChoiceCard } from '../ChoiceCard/ChoiceCard.tsx';
 import { ChoiceDetailField } from '../ChoiceCard/ChoiceDetailField.tsx';
 import type { ChoiceCardOption, ChoiceDetail } from '../ChoiceCard/choice-card.ts';
-import { CHOICE_GRID_CLASSES } from '../ChoiceCard/choice-grid.ts';
+import { ChoiceColumns, choiceGridClassesOf } from '../ChoiceCard/choice-grid.ts';
 import { useChoiceDetail } from '../ChoiceCard/use-choice-detail.ts';
 import { ChoiceLegend } from '../Field/ChoiceLegend.tsx';
 import { FieldError } from '../Field/FieldError.tsx';
@@ -27,6 +27,8 @@ export interface CheckboxCardsProps {
   readonly description?: ReactNode;
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
+  /** `auto` by default: two columns once the group is 28 rem wide; `one` for a list on every width. */
+  readonly columns?: ChoiceColumns;
   /** The text field of "Other…", across the grid under the cards, once it is ticked. */
   readonly detail?: ChoiceDetail;
   readonly name?: string;
@@ -34,7 +36,7 @@ export interface CheckboxCardsProps {
   readonly className?: string;
 }
 
-/** Every answer that applies, among cards in two columns where there is room. */
+/** Every answer that applies, among cards in two columns where there is room, or in one as a list. */
 export function CheckboxCards({
   legend,
   options,
@@ -44,6 +46,7 @@ export function CheckboxCards({
   description,
   error,
   marker,
+  columns = ChoiceColumns.auto,
   detail,
   name,
   disabled,
@@ -74,7 +77,7 @@ export function CheckboxCards({
         className="flex flex-col gap-space-1"
       >
         <ChoiceLegend legend={legend} marker={marker} description={description} />
-        <div className={CHOICE_GRID_CLASSES}>
+        <div className={choiceGridClassesOf(columns)}>
           {options.map((option) => (
             <ChoiceCard
               key={option.value}

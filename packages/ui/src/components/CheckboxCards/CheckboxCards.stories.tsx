@@ -1,8 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
-import { expectCardStates, expectColumns } from '../../testing/expect-choice-cards.ts';
+import {
+  expectCardStates,
+  expectColumns,
+  expectOneColumn,
+} from '../../testing/expect-choice-cards.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
+import { ChoiceColumns } from '../ChoiceCard/choice-grid.ts';
 import { CheckboxCards } from './CheckboxCards.tsx';
 
 const SPECIFY = 'Specify "Other"';
@@ -109,6 +114,38 @@ export const WhatYouExpect: Story = {
       'E.g. a booking page for the workshops',
     );
     await expect(canvas.getByRole('checkbox', { name: 'A quote' })).toBeChecked();
+  },
+};
+
+// C-26-OffrePistes, the list form: an offer's extras, one per row on every width.
+export const Extras: Story = {
+  args: {
+    legend: 'If you wish',
+    description: 'Paid once, like the creation.',
+    columns: ChoiceColumns.one,
+    options: [
+      {
+        value: 'photos',
+        label: 'A photo session',
+        description: 'Your shop and your products, by a photographer, for the site.',
+      },
+      {
+        value: 'texts',
+        label: 'The texts written for you',
+        description: 'Every page written from an interview, in your words.',
+      },
+    ],
+    detail: undefined,
+  },
+  play: async ({ canvas, args }) => {
+    const group = canvas.getByRole('group', { name: /If you wish/ });
+    const photos = canvas.getByRole('checkbox', { name: /A photo session/ });
+    const texts = canvas.getByRole('checkbox', { name: /The texts written for you/ });
+    await expectOneColumn(group, [photos, texts]);
+
+    await userEvent.click(texts);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith(['texts']);
+    await expectCardStates(texts, photos);
   },
 };
 
