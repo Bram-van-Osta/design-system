@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.24.0
+
+### Minor Changes
+
+- Adds `ScoreRing` (a score in a ring, its figure inside and its short name under it), `StatusMark` (a measure's mark: good, to improve or to fix) and `Tag` (a short fact in a frame, a mark before it).
+
 ## 0.23.0
 
 ### Minor Changes
