@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.8.0
+
+### Minor Changes
+
+- `ImageViewer`, an image shown whole in a dialog, a tall one scrolled at the frame's width, with the app's `controls` beside Previous and Next (`onPrevious`, `onNext`, disabled at either end by `hasPrevious` and `hasNext`, and the left and right arrow keys), a link to the image alone (`originalHref`) and a `hint`, full screen on a phone; on a computer it takes the new `image-viewer-width` and `image-viewer-height` size tokens (820 and 560 px); and `Button` takes `isFocusableWhenDisabled`, for a command that turns unavailable under the focus.
+
 ## 0.7.0
 
 ### Minor Changes

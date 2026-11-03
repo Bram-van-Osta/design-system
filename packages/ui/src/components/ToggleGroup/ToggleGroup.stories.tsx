@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
+import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import {
   expectFocusOnDelft,
+  expectInkGroup,
   expectPressed,
   expectSegmentedGroup,
 } from '../../testing/expect-toggle-group.ts';
+import { tokenColor } from '../../testing/token-color.ts';
 import { ToggleGroup } from './ToggleGroup.tsx';
+import { ToggleGroupTone } from './toggle-group-tone.ts';
 
 const PREVIEW_ON = 'Preview on';
 const COMPUTER = 'Computer';
@@ -27,8 +31,15 @@ const meta = {
     options: { control: false },
   },
   decorators: [
-    (Story) => (
-      <div className="-m-space-5 flex justify-end bg-delft px-space-4 py-space-2">
+    // A Delft band by default; the page's own background for the ink tone.
+    (Story, { args }) => (
+      <div
+        className={
+          args.tone === ToggleGroupTone.ink
+            ? '-m-space-5 bg-bg p-space-5'
+            : '-m-space-5 flex justify-end bg-delft px-space-4 py-space-2'
+        }
+      >
         <Story />
       </div>
     ),
@@ -94,5 +105,34 @@ export const Keyboard: Story = {
     await expectPressed(computer, [phone]);
     await userEvent.keyboard('{ArrowLeft}');
     await expectFocusOnDelft(phone);
+  },
+};
+
+// C-27-SiteActuel: the views of a capture, in a dialog on the page's own background.
+export const InkOnThePage: Story = {
+  args: { tone: ToggleGroupTone.ink },
+  play: async ({ canvas }) => {
+    const group = canvas.getByRole('group', { name: PREVIEW_ON });
+    const computer = canvas.getByRole('button', { name: COMPUTER });
+    const phone = canvas.getByRole('button', { name: PHONE });
+    await expectInkGroup(group, computer, [phone]);
+    await expect(phone.getBoundingClientRect().left).toBe(computer.getBoundingClientRect().right);
+    await expect(getComputedStyle(phone).borderLeftColor).toBe(tokenColor('ink', phone));
+  },
+};
+
+export const InkKeyboard: Story = {
+  args: { tone: ToggleGroupTone.ink },
+  play: async ({ canvas, args }) => {
+    const group = canvas.getByRole('group', { name: PREVIEW_ON });
+    const computer = canvas.getByRole('button', { name: COMPUTER });
+    const phone = canvas.getByRole('button', { name: PHONE });
+    await userEvent.tab();
+    await expectFocusRing(computer);
+    await userEvent.keyboard('{ArrowRight}');
+    await expectFocusRing(phone);
+    await userEvent.keyboard(' ');
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('phone');
+    await expectInkGroup(group, phone, [computer]);
   },
 };
