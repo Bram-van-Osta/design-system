@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.25.0
+
+### Minor Changes
+
+- Adds `Meter` (a measure on a scale cut into named zones, in Delft blue or ink), `SegmentMeter` (a count in segments: a weight on three steps, or points in blocks against a limit), `Timeline` (moments in order down a rule) and a `tone` on `Tag` (`plain`, `ink`, `solid`, `delft`, `agent`), to tell a fact's sources apart.
+
 ## 0.24.0
 
 ### Minor Changes

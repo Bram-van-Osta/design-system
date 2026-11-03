@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
+import { type ColorToken, tokenColor } from '../../testing/token-color.ts';
 import { StatusMarkLevel } from '../StatusMark/StatusMark.tsx';
-import { Tag } from './Tag.tsx';
+import { Tag, TagTone } from './Tag.tsx';
 
 const LONG = 'header-photo-of-the-bakery-at-dawn-before-opening.jpg: 2400 px for 390';
 
@@ -11,6 +12,7 @@ const meta = {
   args: { children: '2 images without alt text' },
   argTypes: {
     level: { control: 'inline-radio', options: Object.values(StatusMarkLevel) },
+    tone: { control: 'inline-radio', options: Object.values(TagTone) },
   },
 } satisfies Meta<typeof Tag>;
 
@@ -44,5 +46,39 @@ export const InARow: Story = {
     await expect(long.getBoundingClientRect().right).toBeLessThanOrEqual(
       canvasElement.getBoundingClientRect().right,
     );
+  },
+};
+
+// Each tone's frame, as a fact's sources tell themselves apart: measured, read, said, inferred.
+const TONE_FRAMES: Readonly<Record<TagTone, ColorToken>> = {
+  plain: 'field',
+  ink: 'ink',
+  solid: 'ink',
+  delft: 'delft',
+  agent: 'agent',
+};
+
+export const Tones: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-1.5">
+      {Object.values(TagTone).map((tone) => (
+        <Tag key={tone} tone={tone}>
+          {tone}
+        </Tag>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    for (const tone of Object.values(TagTone)) {
+      const tag = canvasElement.querySelector(`[data-tone="${tone}"]`);
+      await expect(tag).not.toBeNull();
+      if (tag !== null) {
+        await expect(getComputedStyle(tag).borderTopColor).toBe(tokenColor(TONE_FRAMES[tone], tag));
+      }
+    }
+    const solid = canvasElement.querySelector('[data-tone="solid"]');
+    if (solid !== null) {
+      await expect(getComputedStyle(solid).color).toBe(tokenColor('bg', solid));
+    }
   },
 };
