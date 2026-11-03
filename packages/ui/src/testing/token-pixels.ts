@@ -17,7 +17,9 @@ export type SizeToken =
   | 'border-attention'
   | 'account-name-width'
   | 'progress-height'
-  | 'toast-width';
+  | 'toast-width'
+  | 'image-viewer-width'
+  | 'image-viewer-height';
 
 /** A size token's value, in pixels, as the page's tokens give it. */
 export function tokenPixels(token: SizeToken): number {

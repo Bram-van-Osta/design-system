@@ -98,6 +98,25 @@ export const Disabled: Story = {
   },
 };
 
+// Next at the last image: unavailable, yet the focus stays on it rather than leaving for the page.
+export const DisabledUnderTheFocus: Story = {
+  args: {
+    variant: ButtonVariant.secondary,
+    children: 'Next',
+    disabled: true,
+    isFocusableWhenDisabled: true,
+  },
+  play: async ({ canvas, args }) => {
+    const button = canvas.getByRole('button', { name: 'Next' });
+    await expect(button).toHaveAttribute('aria-disabled', 'true');
+    await userEvent.tab();
+    await expectFocusRing(button);
+    await userEvent.keyboard('{Enter}');
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
 export const Together: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-space-5">

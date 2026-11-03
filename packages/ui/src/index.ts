@@ -74,6 +74,7 @@ export {
   IconButtonSize,
   IconButtonVariant,
 } from './components/IconButton/IconButton.tsx';
+export { ImageViewer, type ImageViewerProps } from './components/ImageViewer/ImageViewer.tsx';
 export { Kicker, type KickerProps, KickerTone } from './components/Kicker/Kicker.tsx';
 export { Link, type LinkProps } from './components/Link/Link.tsx';
 export { Logo, type LogoProps } from './components/Logo/Logo.tsx';

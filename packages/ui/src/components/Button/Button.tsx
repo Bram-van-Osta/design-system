@@ -19,6 +19,8 @@ export interface ButtonProps
   readonly hasArrow?: boolean;
   /** The action is running: the button stays focusable, ignores clicks and shows a spinner. */
   readonly isPending?: boolean;
+  /** Disabled, it keeps the focus and is read as unavailable: a command that turns unavailable under the focus, such as Next at the last image. */
+  readonly isFocusableWhenDisabled?: boolean;
   readonly className?: string;
 }
 
@@ -27,6 +29,7 @@ export function Button({
   icon: LeadingIcon,
   hasArrow = false,
   isPending = false,
+  isFocusableWhenDisabled = false,
   disabled = false,
   className,
   children,
@@ -36,7 +39,7 @@ export function Button({
     <BaseButton
       {...props}
       disabled={disabled || isPending}
-      focusableWhenDisabled={isPending}
+      focusableWhenDisabled={isPending || isFocusableWhenDisabled}
       data-pending={isPending || undefined}
       className={classNames(BUTTON_CLASSES, 'relative', BUTTON_VARIANT_CLASSES[variant], className)}
     >
