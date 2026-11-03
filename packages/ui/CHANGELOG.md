@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.26.0
+
+### Minor Changes
+
+- The score ring draws its arc in Delft blue on its pale track, a data ring as the identity draws its data bars; a score to fix keeps its vermilion arc.
+
 ## 0.25.0
 
 ### Minor Changes

@@ -25,6 +25,11 @@ function arcOf(ring: HTMLElement): SVGCircleElement | null {
   return ring.querySelector('circle[data-arc]');
 }
 
+function trackOf(ring: HTMLElement): SVGCircleElement | null {
+  return ring.querySelector('circle:not([data-arc])');
+}
+
+// A data ring: its arc in Delft blue on its pale track, its figure in ink.
 export const Neutral: Story = {
   play: async ({ canvas }) => {
     const ring = canvas.getByRole('img', { name: PERFORMANCE });
@@ -33,8 +38,14 @@ export const Neutral: Story = {
     const arc = arcOf(ring);
     await expect(arc).not.toBeNull();
     if (arc !== null) {
-      await expect(getComputedStyle(arc).stroke).toBe(tokenColor('ink', ring));
+      await expect(getComputedStyle(arc).stroke).toBe(tokenColor('delft', ring));
     }
+    const track = trackOf(ring);
+    await expect(track).not.toBeNull();
+    if (track !== null) {
+      await expect(getComputedStyle(track).stroke).toBe(tokenColor('delft-pale', ring));
+    }
+    await expect(getComputedStyle(canvas.getByText('87')).color).toBe(tokenColor('ink', ring));
   },
 };
 
