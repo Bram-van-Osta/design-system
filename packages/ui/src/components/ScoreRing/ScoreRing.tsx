@@ -17,8 +17,10 @@ const DEFAULT_MAX = 100;
 // The ring of a value that could not be measured: empty, a dash in it.
 const NOT_MEASURED = '–';
 
+// A data ring, as the identity draws its data bars: Delft blue on its pale track, vermilion for a
+// score to fix.
 const TONE_CLASSES: Readonly<Record<ScoreRingTone, string>> = {
-  neutral: 'stroke-ink',
+  neutral: 'stroke-delft',
   attention: 'stroke-vermillion',
 };
 
@@ -31,7 +33,7 @@ export interface ScoreRingProps {
   readonly label: ReactNode;
   /** Its name and its value for a screen reader: "Performance: 87 out of 100". */
   readonly accessibleLabel: string;
-  /** `attention`, its arc in vermilion, for a score to fix; `neutral`, in ink, otherwise. */
+  /** `attention`, its arc in vermilion, for a score to fix; `neutral`, in Delft blue, otherwise. */
   readonly tone?: ScoreRingTone;
   readonly className?: string;
 }
@@ -68,7 +70,13 @@ export function ScoreRing({
           fill="none"
           className="absolute inset-0 -rotate-90"
         >
-          <circle cx={CENTER} cy={CENTER} r={RADIUS} strokeWidth={STROKE} className="stroke-line" />
+          <circle
+            cx={CENTER}
+            cy={CENTER}
+            r={RADIUS}
+            strokeWidth={STROKE}
+            className="stroke-delft-pale"
+          />
           {share > 0 && (
             <circle
               data-arc
