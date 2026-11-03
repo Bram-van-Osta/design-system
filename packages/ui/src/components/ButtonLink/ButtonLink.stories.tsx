@@ -1,25 +1,16 @@
 import { ChatCircleIcon } from '@phosphor-icons/react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ComponentProps, MouseEvent } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
+import { RouterLink } from '../../testing/RouterLink.tsx';
+import { stayOnThePage } from '../../testing/stay-on-the-page.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { ButtonVariant } from '../Button/button-classes.ts';
 import { ButtonLink } from './ButtonLink.tsx';
 
 const ADJUST = 'Ask for an adjustment';
 const ROUTE = '/offer/adjust';
-
-// The story stays on its page: the test checks where the link leads, not the leaving.
-function stayOnThePage(event: MouseEvent) {
-  event.preventDefault();
-}
-
-// What an app's router gives: a link that takes a `to` and renders an <a>.
-function RouterLink({ to, ...props }: ComponentProps<'a'> & { readonly to: string }) {
-  return <a {...props} href={to} data-router-link="" />;
-}
 
 // REF-T8-07-Acompte and the offer: actions that open another page, as links.
 const meta = {

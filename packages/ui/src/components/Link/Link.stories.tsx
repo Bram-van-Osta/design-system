@@ -1,9 +1,9 @@
 import { ArrowLeftIcon } from '@phosphor-icons/react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ComponentProps } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
+import { RouterLink } from '../../testing/RouterLink.tsx';
 import { Text, TextTone, TextVariant } from '../Text/Text.tsx';
 import { Link } from './Link.tsx';
 
@@ -103,14 +103,9 @@ export const InRunningText: Story = {
   },
 };
 
-// What an app's router gives: an anchor that navigates without reloading the page.
-function RouterLink(props: ComponentProps<'a'>) {
-  return <a {...props} data-router-link="" />;
-}
-
 export const RenderedByARouter: Story = {
   args: {
-    render: <RouterLink href="#router" />,
+    render: <RouterLink to="#router" />,
     children: 'A link of the app router',
   },
   play: async ({ canvas }) => {

@@ -1,5 +1,6 @@
 import { useMessages } from '../../i18n/use-messages.ts';
 import { classNames } from '../../utils/class-names.ts';
+import { SKELETON_BAR_CLASSES } from './skeleton-classes.ts';
 
 export const SkeletonShape = {
   text: 'text',
@@ -9,8 +10,6 @@ export const SkeletonShape = {
 export type SkeletonShape = (typeof SkeletonShape)[keyof typeof SkeletonShape];
 
 const DEFAULT_LINES = 3;
-
-const BAR_CLASSES = 'block bg-line motion-safe:animate-pulse';
 
 export interface SkeletonProps {
   /** The shape of what is loading: lines of text, a heading or a field. */
@@ -42,17 +41,23 @@ interface SkeletonBarsProps {
 
 function SkeletonBars({ shape, lines }: SkeletonBarsProps) {
   if (shape === SkeletonShape.heading) {
-    return <span aria-hidden className={classNames(BAR_CLASSES, 'h-space-6 w-2/3')} />;
+    return <span aria-hidden className={classNames(SKELETON_BAR_CLASSES, 'h-space-6 w-2/3')} />;
   }
   if (shape === SkeletonShape.field) {
-    return <span aria-hidden className={classNames(BAR_CLASSES, 'h-button-height w-full')} />;
+    return (
+      <span aria-hidden className={classNames(SKELETON_BAR_CLASSES, 'h-button-height w-full')} />
+    );
   }
   const lineNumbers = Array.from({ length: lines }, (_, index) => index + 1);
   return lineNumbers.map((lineNumber) => (
     <span
       key={lineNumber}
       aria-hidden
-      className={classNames(BAR_CLASSES, 'h-space-4', lineNumber === lines ? 'w-2/3' : 'w-full')}
+      className={classNames(
+        SKELETON_BAR_CLASSES,
+        'h-space-4',
+        lineNumber === lines ? 'w-2/3' : 'w-full',
+      )}
     />
   ));
 }

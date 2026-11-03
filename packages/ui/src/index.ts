@@ -126,6 +126,19 @@ export { Tabs, type TabsItem, type TabsProps } from './components/Tabs/Tabs.tsx'
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
 export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
+export { Thumbnail, type ThumbnailProps } from './components/Thumbnail/Thumbnail.tsx';
+export {
+  ThumbnailAwaited,
+  type ThumbnailAwaitedProps,
+} from './components/Thumbnail/ThumbnailAwaited.tsx';
+export {
+  ThumbnailLeftOut,
+  type ThumbnailLeftOutProps,
+} from './components/Thumbnail/ThumbnailLeftOut.tsx';
+export {
+  ThumbnailLink,
+  type ThumbnailLinkProps,
+} from './components/Thumbnail/ThumbnailLink.tsx';
 export { ToastProvider, type ToastProviderProps } from './components/Toast/ToastProvider.tsx';
 export { ToastTone } from './components/Toast/toast-tone.ts';
 export { type ToastContent, useToast } from './components/Toast/use-toast.ts';
