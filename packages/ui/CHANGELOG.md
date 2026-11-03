@@ -1,5 +1,12 @@
 # @bram-van-osta/ui
 
+## 0.21.0
+
+### Minor Changes
+
+- `RadioCards` and `CheckboxCards` take `columns`, `ChoiceColumns.auto` by default (two columns once the group is 28 rem wide, as before) or `ChoiceColumns.one`, a list with one answer per row on every width.
+- `StepProgress` takes `tone`, `StepProgressTone.delft` by default (the filled segments in Delft blue, as before) or `StepProgressTone.ink`, the done segments in ink and the current one, the last filled, in vermilion; each segment carries its state in `data-state` (`done`, `current`, `upcoming`) in place of `data-filled`.
+
 ## 0.20.1
 
 ### Patch Changes
