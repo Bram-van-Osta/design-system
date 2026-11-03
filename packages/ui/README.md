@@ -8,7 +8,7 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 | Forms | `Field`, `TextInput`, `TextArea` (grows with its text), `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards` and `CheckboxCards` (two columns where there is room, or a list), `FileInput`, `FormAlert` |
 | Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` (a journey's steps, grouped by named part if given, filled in Delft blue, or in ink up to the current one in vermilion), `Tabs` (a few panels behind underlined tabs, a count beside a label) |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |
-| Feedback | `Dialog`, `ImageViewer` (an image shown whole in a dialog, a tall one scrolled, from one image to the next), `Toast` (`ToastProvider` and `useToast`, an ink band, done or failed, three at most in a stack that unfolds on hover), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble` |
+| Feedback | `Dialog`, `ImageViewer` (an image shown whole in a dialog, a tall one scrolled, from one image to the next), `Toast` (`ToastProvider` and `useToast`, an ink band, done or failed, three at most in a stack that unfolds on hover), `Skeleton`, `EmptyState`, `Badge`, `MessageBubble`, `ScoreRing` (a score in a ring as full as it is, in ink or in vermilion), `StatusMark` (a measure's mark: good, to improve, to fix), `Tag` (a short fact in a frame, a mark before it) |
 | Blocks | `AuthLayout`, `AuthBlock`, `SignIn`, `SetPassword`, `ForgotPassword`, `ResetPassword`, `VerifyEmail`, `CheckMailbox`, `ErrorPage` |
 
 ## Using
