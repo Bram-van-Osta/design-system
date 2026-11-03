@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.22.0
+
+### Minor Changes
+
+- `Thumbnail`, the top of an image cropped to a box of the given `width` and `height`, a button named by its `label` with an optional `caption` under it, that opens the whole image; `ThumbnailLink`, the same as a link, whose `render` takes the router's link; and `ThumbnailAwaited` and `ThumbnailLeftOut`, its place while the image is awaited and when there is none, with a `reason`.
+
 ## 0.21.0
 
 ### Minor Changes

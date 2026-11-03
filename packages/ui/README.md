@@ -4,7 +4,7 @@ The Bram van Osta React components, on Base UI's primitives, styled with Tailwin
 
 | Group | Components |
 |---|---|
-| Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton` (default, or compact in a line of text), `CopyButton` (copies a value from within a line), `Link`, `Menu`, `AccountMenu`, `ToggleGroup` (a few views, one pressed, on a Delft band) |
+| Actions | `Button` (primary, secondary, quiet), `ButtonLink` (a link that looks like a button), `IconButton` (default, or compact in a line of text), `CopyButton` (copies a value from within a line), `Link`, `Menu`, `AccountMenu`, `ToggleGroup` (a few views, one pressed, on a Delft band), `Thumbnail` and `ThumbnailLink` (the top of an image, cropped to its box, which opens the whole image), with `ThumbnailAwaited` and `ThumbnailLeftOut` in their place |
 | Forms | `Field`, `TextInput`, `TextArea` (grows with its text), `PasswordInput`, `CodeInput` (a six-digit code), `Select`, `Checkbox`, `RadioGroup`, `RadioCards` and `CheckboxCards` (two columns where there is room, or a list), `FileInput`, `FormAlert` |
 | Layout | `Stack`, `Container` (the 720 px reading column), `ActionCard`, `CopyList`, `Table`, `Disclosure`, `StepProgress` (a journey's steps, grouped by named part if given, filled in Delft blue, or in ink up to the current one in vermilion), `Tabs` (a few panels behind underlined tabs, a count beside a label) |
 | Identity | `Heading`, `Text`, `Kicker`, `Logo`, `Avatar` |
