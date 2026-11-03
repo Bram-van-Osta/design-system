@@ -11,6 +11,8 @@ import {
   STEP_PART_STATE_MESSAGES,
   StepPartState,
   type StepProgressPart,
+  StepProgressTone,
+  segmentStateOf,
 } from './step-parts.ts';
 
 export type { StepProgressPart } from './step-parts.ts';
@@ -32,8 +34,19 @@ export interface StepProgressProps {
    * bar. Their steps add up to `max`, or the component throws.
    */
   readonly parts?: readonly StepProgressPart[];
+  /**
+   * `delft` by default, the filled segments in Delft blue; `ink` for the done ones in ink and the
+   * current one, the last filled, in vermilion.
+   */
+  readonly tone?: StepProgressTone;
   readonly className?: string;
 }
+
+const SEGMENT_CLASSES: Readonly<Record<StepProgressTone, Readonly<Record<StepPartState, string>>>> =
+  {
+    delft: { done: 'bg-delft', current: 'bg-delft', upcoming: 'bg-line' },
+    ink: { done: 'bg-ink', current: 'bg-vermillion', upcoming: 'bg-line' },
+  };
 
 const PART_STATE_CLASSES: Readonly<Record<StepPartState, string>> = {
   done: 'text-ink',
@@ -42,8 +55,9 @@ const PART_STATE_CLASSES: Readonly<Record<StepPartState, string>> = {
 };
 
 /**
- * The progress of a journey in segments, the filled ones in Delft blue, across the page under its
- * header; with parts, the segments grouped by part and each part's name under its group.
+ * The progress of a journey in segments, the filled ones in Delft blue, or in ink up to the current
+ * one in vermilion, across the page under its header; with parts, the segments grouped by part and
+ * each part's name under its group.
  */
 export function StepProgress({
   max,
@@ -51,6 +65,7 @@ export function StepProgress({
   label,
   valueText,
   parts,
+  tone = StepProgressTone.delft,
   className,
 }: StepProgressProps) {
   const filledCount = Math.min(Math.max(value, 0), max);
@@ -58,7 +73,7 @@ export function StepProgress({
   if (parts === undefined) {
     return (
       <ProgressBar {...bar} className={classNames('flex gap-space-1', className)}>
-        <Segments steps={stepsUpTo(max)} filledCount={filledCount} />
+        <Segments steps={stepsUpTo(max)} filledCount={filledCount} tone={tone} />
       </ProgressBar>
     );
   }
@@ -69,7 +84,7 @@ export function StepProgress({
       <ProgressBar {...bar} className="grid gap-space-3" style={columns}>
         {placedParts.map(({ part, steps }) => (
           <span key={part.label} className="flex gap-space-1">
-            <Segments steps={steps} filledCount={filledCount} />
+            <Segments steps={steps} filledCount={filledCount} tone={tone} />
           </span>
         ))}
       </ProgressBar>
@@ -127,16 +142,20 @@ function ProgressBar({
 interface SegmentsProps {
   readonly steps: readonly number[];
   readonly filledCount: number;
+  readonly tone: StepProgressTone;
 }
 
-function Segments({ steps, filledCount }: SegmentsProps) {
-  return steps.map((step) => (
-    <span
-      key={step}
-      data-filled={step <= filledCount || undefined}
-      className="h-progress-height flex-1 bg-line data-filled:bg-delft"
-    />
-  ));
+function Segments({ steps, filledCount, tone }: SegmentsProps) {
+  return steps.map((step) => {
+    const state = segmentStateOf(step, filledCount);
+    return (
+      <span
+        key={step}
+        data-state={state}
+        className={classNames('h-progress-height flex-1', SEGMENT_CLASSES[tone][state])}
+      />
+    );
+  });
 }
 
 interface PartNameProps {

@@ -1,9 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
-import { expectCardStates, expectColumns } from '../../testing/expect-choice-cards.ts';
+import {
+  expectCardStates,
+  expectColumns,
+  expectOneColumn,
+} from '../../testing/expect-choice-cards.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { ChoiceDetailPlacement } from '../ChoiceCard/choice-card.ts';
+import { ChoiceColumns } from '../ChoiceCard/choice-grid.ts';
 import { RadioCards } from './RadioCards.tsx';
 
 const SOMETHING_ELSE = 'Something else…';
@@ -144,6 +149,50 @@ export const Timing: Story = {
     await expect(await canvas.findByRole('textbox', { name: 'Which one? Or specify' })).toHaveValue(
       'Before the end-of-year holidays, if possible',
     );
+  },
+};
+
+// C-26-OffrePistes, the list form: an offer's subscriptions, one per row on every width.
+export const Subscriptions: Story = {
+  args: {
+    legend: 'The subscription',
+    description: 'Choose how your site is looked after once it is online.',
+    columns: ChoiceColumns.one,
+    options: [
+      {
+        value: 'base',
+        label: 'The Base subscription',
+        description: 'Hosting, updates and one change a month.',
+      },
+      {
+        value: 'premium',
+        label: 'The Premium subscription',
+        description: 'Hosting, updates and five changes a month, handled first.',
+      },
+      {
+        value: 'none',
+        label: 'No subscription',
+        description: 'You, or your provider, look after the site.',
+      },
+    ],
+    defaultValue: 'base',
+    detail: undefined,
+  },
+  play: async ({ canvas, args }) => {
+    const group = canvas.getByRole('radiogroup', { name: 'The subscription' });
+    const base = canvas.getByRole('radio', { name: /The Base subscription/ });
+    const premium = canvas.getByRole('radio', { name: /The Premium subscription/ });
+    const none = canvas.getByRole('radio', { name: /No subscription/ });
+    await expectOneColumn(group, [base, premium]);
+    await expectOneColumn(group, [premium, none]);
+    await expectCardStates(base, premium);
+
+    await userEvent.click(premium);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('premium');
+    await expectCardStates(premium, base);
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(none).toBeChecked();
+    await expectFocusRing(none);
   },
 };
 

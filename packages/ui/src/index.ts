@@ -48,6 +48,7 @@ export {
   type ChoiceDetail,
   ChoiceDetailPlacement,
 } from './components/ChoiceCard/choice-card.ts';
+export { ChoiceColumns } from './components/ChoiceCard/choice-grid.ts';
 export { CodeInput, type CodeInputProps } from './components/CodeInput/CodeInput.tsx';
 export { CODE_LENGTH } from './components/CodeInput/code-digits.ts';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
@@ -114,6 +115,7 @@ export {
   type StepProgressPart,
   type StepProgressProps,
 } from './components/StepProgress/StepProgress.tsx';
+export { StepProgressTone } from './components/StepProgress/step-parts.ts';
 export {
   Table,
   type TableColumn,

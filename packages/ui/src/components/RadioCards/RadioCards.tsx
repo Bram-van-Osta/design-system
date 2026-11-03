@@ -8,7 +8,7 @@ import { useControllableValue } from '../../utils/use-controllable-value.ts';
 import { ChoiceCard } from '../ChoiceCard/ChoiceCard.tsx';
 import { ChoiceDetailField } from '../ChoiceCard/ChoiceDetailField.tsx';
 import type { ChoiceCardOption, ChoiceDetail } from '../ChoiceCard/choice-card.ts';
-import { CHOICE_GRID_CLASSES } from '../ChoiceCard/choice-grid.ts';
+import { ChoiceColumns, choiceGridClassesOf } from '../ChoiceCard/choice-grid.ts';
 import { useChoiceDetail } from '../ChoiceCard/use-choice-detail.ts';
 import { ChoiceLegend } from '../Field/ChoiceLegend.tsx';
 import { FieldError } from '../Field/FieldError.tsx';
@@ -25,6 +25,8 @@ export interface RadioCardsProps {
   readonly description?: ReactNode;
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
+  /** `auto` by default: two columns once the group is 28 rem wide; `one` for a list on every width. */
+  readonly columns?: ChoiceColumns;
   /** The text field of "Other…", or of any answer that asks for words, once it is chosen. */
   readonly detail?: ChoiceDetail;
   readonly name?: string;
@@ -33,7 +35,10 @@ export interface RadioCardsProps {
   readonly className?: string;
 }
 
-/** One answer among cards, in two columns where there is room: the arrow keys move between them. */
+/**
+ * One answer among cards, in two columns where there is room, or in one as a list: the arrow keys
+ * move between them.
+ */
 export function RadioCards({
   legend,
   options,
@@ -43,6 +48,7 @@ export function RadioCards({
   description,
   error,
   marker,
+  columns = ChoiceColumns.auto,
   detail,
   name,
   required,
@@ -81,7 +87,7 @@ export function RadioCards({
         className="flex flex-col gap-space-1"
       >
         <ChoiceLegend legend={legend} marker={marker} description={description} />
-        <div className={CHOICE_GRID_CLASSES}>
+        <div className={choiceGridClassesOf(columns)}>
           {options.map((option) => (
             <ChoiceCard
               key={option.value}

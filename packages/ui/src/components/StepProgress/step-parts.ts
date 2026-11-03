@@ -14,6 +14,29 @@ export const STEP_PART_STATE_MESSAGES = {
   upcoming: 'stepProgress.upcoming',
 } as const satisfies Readonly<Record<StepPartState, MessageKey>>;
 
+/** How the segments are drawn. */
+export const StepProgressTone = {
+  /** The filled segments in Delft blue: a journey the person moves through, such as a form. */
+  delft: 'delft',
+  /**
+   * The done segments in ink, the current one in vermilion, the next ones in the line color: a
+   * page that follows where something stands for the person, such as a request.
+   */
+  ink: 'ink',
+} as const;
+export type StepProgressTone = (typeof StepProgressTone)[keyof typeof StepProgressTone];
+
+/**
+ * A segment's state: done before the step the person is on, current on it, upcoming after it, every
+ * one upcoming before any is filled.
+ */
+export function segmentStateOf(step: number, filledCount: number): StepPartState {
+  if (step < filledCount) {
+    return StepPartState.done;
+  }
+  return step === filledCount ? StepPartState.current : StepPartState.upcoming;
+}
+
 /** A named part of a journey, which holds a few of its steps in a row. */
 export interface StepProgressPart {
   /** Its name under its group of segments, on a computer: "Your business". */

@@ -4,6 +4,7 @@ import {
   placeStepParts,
   StepPartState,
   type StepProgressPart,
+  segmentStateOf,
 } from './step-parts.ts';
 
 const BRIEF_PARTS: readonly StepProgressPart[] = [
@@ -72,5 +73,28 @@ describe('partColumnsOf', () => {
     expect(partColumnsOf(BRIEF_PARTS)).toBe(
       'minmax(0, 3fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr)',
     );
+  });
+});
+
+describe('segmentStateOf', () => {
+  it('should make every segment upcoming before any is filled', () => {
+    expect([1, 2, 3].map((step) => segmentStateOf(step, 0))).toEqual([
+      upcoming,
+      upcoming,
+      upcoming,
+    ]);
+  });
+
+  it('should make the last filled segment current and the ones before it done', () => {
+    expect([1, 2, 3, 4].map((step) => segmentStateOf(step, 3))).toEqual([
+      done,
+      done,
+      current,
+      upcoming,
+    ]);
+  });
+
+  it('should make the last segment current on the last step', () => {
+    expect([1, 2, 3].map((step) => segmentStateOf(step, 3))).toEqual([done, done, current]);
   });
 });
