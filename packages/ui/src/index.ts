@@ -148,5 +148,6 @@ export {
   type ToggleGroupOption,
   type ToggleGroupProps,
 } from './components/ToggleGroup/ToggleGroup.tsx';
+export { ToggleGroupTone } from './components/ToggleGroup/toggle-group-tone.ts';
 export { Locale, type MessageKey, type Messages } from './i18n/messages.ts';
 export { UiProvider, type UiProviderProps } from './i18n/UiProvider.tsx';

@@ -14,6 +14,7 @@ import { COMPUTER_CAPTURE, PHONE_CAPTURE, pageCapture } from '../../testing/page
 import { tokenColor } from '../../testing/token-color.ts';
 import { Thumbnail } from '../Thumbnail/Thumbnail.tsx';
 import { ToggleGroup } from '../ToggleGroup/ToggleGroup.tsx';
+import { ToggleGroupTone } from '../ToggleGroup/toggle-group-tone.ts';
 import { ImageViewer, type ImageViewerProps } from './ImageViewer.tsx';
 
 const View = {
@@ -132,6 +133,7 @@ function WalkingViewer() {
         onOpenChange={(isOpen) => setShown({ ...shown, isOpen })}
         controls={
           <ToggleGroup
+            tone={ToggleGroupTone.ink}
             label={VIEWS_LABEL}
             options={VIEWS.map((view) => ({ value: view, label: VIEW_LABELS[view] }))}
             value={capture.view}

@@ -5,6 +5,7 @@
 ### Minor Changes
 
 - `ImageViewer`, an image shown whole in a dialog, a tall one scrolled at the frame's width, with the app's `controls` beside Previous and Next (`onPrevious`, `onNext`, disabled at either end by `hasPrevious` and `hasNext`, and the left and right arrow keys), a link to the image alone (`originalHref`) and a `hint`, full screen on a phone; on a computer it takes the new `image-viewer-width` and `image-viewer-height` size tokens (820 and 560 px); and `Button` takes `isFocusableWhenDisabled`, for a command that turns unavailable under the focus.
+- `ToggleGroup` takes a `tone` (`ToggleGroupTone`): Delft for a Delft band, as before and by default, or ink on the page's own background, such as an `ImageViewer`'s controls: its segments in white with ink text in an ink hair, the pressed one in ink, the whole width on a phone.
 
 ### Patch Changes
 
