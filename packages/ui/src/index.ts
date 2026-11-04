@@ -124,6 +124,9 @@ export {
   StackDirection,
   StackJustify,
 } from './components/Stack/stack-classes.ts';
+export { Stat, type StatProps } from './components/Stat/Stat.tsx';
+export { StatLink, type StatLinkProps } from './components/Stat/StatLink.tsx';
+export { StatTone } from './components/Stat/stat-tone.ts';
 export {
   StatusMark,
   StatusMarkLevel,
