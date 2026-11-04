@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.32.0
+
+### Minor Changes
+
+- `ThumbnailRemovableTile` takes `src={null}` for an image not served yet, drawn as the awaited box in its 4:3 frame and read as "Loading…", a `note` under the box in Delft blue, and `isRefused`, a dashed box in place of the image with the note in vermilion; the remove button stays over the corner in every state, now `space-2` from the box's outer edge.
+
 ## 0.31.0
 
 ### Minor Changes
