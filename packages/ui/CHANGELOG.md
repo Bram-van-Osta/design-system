@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.27.0
+
+### Minor Changes
+
+- The meter's bars stop as far short of a zone's dashed tick on both sides and each zone's name starts on its tick, the first on the bar's start; the timeline's squares sit in a slot one line of their name high, centered on that line, the rule unbroken from one square to the next.
+
 ## 0.26.0
 
 ### Minor Changes

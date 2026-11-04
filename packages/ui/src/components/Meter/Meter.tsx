@@ -28,7 +28,8 @@ const PERCENT = 100;
 
 /**
  * A measure on a scale in a bar, filled as far as it reaches, its scale cut into named zones
- * parted by dashed ticks, their names under it: a project's size against its limits.
+ * parted by dashed ticks, the bars on both sides stopping the same distance short of a tick, and
+ * each zone's name under it starting on its tick: a project's size against its limits.
  */
 export function Meter({
   value,
@@ -56,6 +57,7 @@ export function Meter({
             className={classNames(
               'flex h-6 items-center',
               index > 0 && 'border-ink-muted border-s-hair border-dashed ps-0.5',
+              index < placed.length - 1 && 'pe-0.5',
             )}
           >
             <span className={classNames('h-2.5 w-full', colors.track)}>
@@ -71,10 +73,7 @@ export function Meter({
       {hasNames && (
         <div className="grid font-mono text-ink-muted text-meta" style={columns}>
           {placed.map((zone, index) => (
-            <span
-              key={zone.label === '' ? index : zone.label}
-              className="min-w-0 wrap-break-word ps-1"
-            >
+            <span key={zone.label === '' ? index : zone.label} className="min-w-0 wrap-break-word">
               {zone.label}
             </span>
           ))}
