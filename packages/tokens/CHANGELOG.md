@@ -1,5 +1,12 @@
 # @bram-van-osta/tokens
 
+## 0.9.0
+
+### Minor Changes
+
+- afd975b: Adds `FileDropZone`, several files at once dropped or chosen, `large` (a dashed zone of `drop-zone-height` on a computer, a primary button on a phone) or `compact` (one dashed line of `drop-zone-compact-height`, `drop-zone-compact-phone-height` on a phone).
+- 549cbe3: Adds `ProgressBar`, a file's upload on a bar of `progress-bar-height` in the line color, filled in Delft blue, muted once paused or in vermilion once it failed, read as a percentage in the language of the `UiProvider`.
+
 ## 0.8.0
 
 ### Minor Changes
