@@ -100,6 +100,7 @@ export {
   type RadioGroupProps,
   type RadioOption,
 } from './components/RadioGroup/RadioGroup.tsx';
+export { RadioGroupOrientation } from './components/RadioGroup/radio-group-orientation.ts';
 export {
   ScoreRing,
   type ScoreRingProps,
