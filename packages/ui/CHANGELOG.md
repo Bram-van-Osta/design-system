@@ -1,5 +1,19 @@
 # @bram-van-osta/ui
 
+## 0.29.0
+
+### Minor Changes
+
+- afd975b: Adds `FileDropZone`, several files at once dropped or chosen, `large` (a dashed zone of `drop-zone-height` on a computer, a primary button on a phone) or `compact` (one dashed line of `drop-zone-compact-height`, `drop-zone-compact-phone-height` on a phone).
+- 549cbe3: Adds `ProgressBar`, a file's upload on a bar of `progress-bar-height` in the line color, filled in Delft blue, muted once paused or in vermilion once it failed, read as a percentage in the language of the `UiProvider`.
+- 5f9bbb2: Adds `ThumbnailGrid`, a category's files in 4:3 tiles, four columns on a computer and two on a phone, with `ThumbnailTile` (an image that opens), `ThumbnailCheckboxTile` (an image to tick, framed in Delft blue once ticked), `ThumbnailFileTile` and `ThumbnailFileTileLink` (a file by its format) and `ThumbnailTileAwaited` (a file on its way).
+
+### Patch Changes
+
+- Updated dependencies [afd975b]
+- Updated dependencies [549cbe3]
+  - @bram-van-osta/tokens@0.9.0
+
 ## 0.28.0
 
 ### Minor Changes

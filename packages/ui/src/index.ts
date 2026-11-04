@@ -60,6 +60,11 @@ export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclo
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
+export {
+  FileDropZone,
+  type FileDropZoneProps,
+  FileDropZoneSize,
+} from './components/FileDropZone/FileDropZone.tsx';
 export { FileInput, type FileInputProps } from './components/FileInput/FileInput.tsx';
 export { FormAlert, type FormAlertProps } from './components/FormAlert/FormAlert.tsx';
 export {
@@ -94,6 +99,11 @@ export {
   PasswordInput,
   type PasswordInputProps,
 } from './components/PasswordInput/PasswordInput.tsx';
+export {
+  ProgressBar,
+  type ProgressBarProps,
+  ProgressBarTone,
+} from './components/ProgressBar/ProgressBar.tsx';
 export { RadioCards, type RadioCardsProps } from './components/RadioCards/RadioCards.tsx';
 export {
   RadioGroup,
@@ -163,6 +173,30 @@ export {
   ThumbnailLink,
   type ThumbnailLinkProps,
 } from './components/Thumbnail/ThumbnailLink.tsx';
+export {
+  ThumbnailCheckboxTile,
+  type ThumbnailCheckboxTileProps,
+} from './components/ThumbnailGrid/ThumbnailCheckboxTile.tsx';
+export {
+  ThumbnailFileTile,
+  type ThumbnailFileTileProps,
+} from './components/ThumbnailGrid/ThumbnailFileTile.tsx';
+export {
+  ThumbnailFileTileLink,
+  type ThumbnailFileTileLinkProps,
+} from './components/ThumbnailGrid/ThumbnailFileTileLink.tsx';
+export {
+  ThumbnailGrid,
+  type ThumbnailGridProps,
+} from './components/ThumbnailGrid/ThumbnailGrid.tsx';
+export {
+  ThumbnailTile,
+  type ThumbnailTileProps,
+} from './components/ThumbnailGrid/ThumbnailTile.tsx';
+export {
+  ThumbnailTileAwaited,
+  type ThumbnailTileAwaitedProps,
+} from './components/ThumbnailGrid/ThumbnailTileAwaited.tsx';
 export {
   Timeline,
   type TimelineItem,
