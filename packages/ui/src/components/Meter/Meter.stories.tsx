@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
+import { expectEvenGapsAroundTicks, expectNamesOnTicks } from '../../testing/expect-meter.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { Meter } from './Meter.tsx';
 import { MeterTone } from './meter-tone.ts';
@@ -40,7 +41,8 @@ function fillsOf(meter: HTMLElement): readonly HTMLElement[] {
   return [...meter.querySelectorAll<HTMLElement>('[data-fill]')];
 }
 
-// A project's size against its limits: the first zone filled to three quarters, its names under it.
+// A project's size against its limits: the first zone filled to three quarters, its names under it,
+// each starting on its zone's tick, and the bars stopping as far short of a tick on both sides.
 export const Sizes: Story = {
   play: async ({ canvas }) => {
     const meter = canvas.getByRole('meter', { name: POINTS });
@@ -53,6 +55,9 @@ export const Sizes: Story = {
     if (first !== undefined) {
       await expect(getComputedStyle(first).backgroundColor).toBe(tokenColor('delft', meter));
     }
+    const names = SIZES.map((size) => canvas.getByText(size.label));
+    await expectNamesOnTicks(meter, names);
+    await expectEvenGapsAroundTicks(meter);
   },
 };
 

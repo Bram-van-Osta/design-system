@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
+import { expectMarkersOnNames, expectUnbrokenRule } from '../../testing/expect-timeline.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { Timeline } from './Timeline.tsx';
 
@@ -46,9 +47,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// What a client provides, by moment: each moment a square on the rule, its name, then its items.
+// What a client provides, by moment: each moment a square on the rule, centered on its name's line,
+// the rule unbroken from one square to the next, its name, then its items.
 export const ByMoment: Story = {
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement }) => {
     const moments = canvas.getAllByRole('listitem');
     await expect(moments).toHaveLength(2);
     await expect(canvas.getByText('at the questionnaire')).toBeVisible();
@@ -56,6 +58,11 @@ export const ByMoment: Story = {
     if (marker instanceof HTMLElement) {
       await expect(getComputedStyle(marker).backgroundColor).toBe(tokenColor('ink', marker));
     }
+    const names = ['before the start', 'at the questionnaire'].map((name) =>
+      canvas.getByText(name),
+    );
+    await expectMarkersOnNames(canvasElement, names);
+    await expectUnbrokenRule(canvasElement);
   },
 };
 
@@ -69,7 +76,9 @@ export const OneMoment: Story = {
       },
     ],
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement }) => {
     await expect(canvas.getAllByRole('listitem')).toHaveLength(1);
+    await expectMarkersOnNames(canvasElement, [canvas.getByText('before the launch')]);
+    await expect(canvasElement.querySelector('[data-rule]')).toBeNull();
   },
 };
