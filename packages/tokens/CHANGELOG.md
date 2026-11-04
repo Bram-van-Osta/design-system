@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.10.0
+
+### Minor Changes
+
+- Adds `Switch`, a setting turned on or off at once, on a line of a settings list: its label (and an optional description) on the left, a square switch of `switch-width` by `switch-height` on the right with its `switch-knob`, in Delft blue when on and outlined in ink when off.
+
 ## 0.9.0
 
 ### Minor Changes

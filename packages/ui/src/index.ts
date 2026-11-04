@@ -149,6 +149,7 @@ export {
   type StepProgressProps,
 } from './components/StepProgress/StepProgress.tsx';
 export { StepProgressTone } from './components/StepProgress/step-parts.ts';
+export { Switch, type SwitchProps } from './components/Switch/Switch.tsx';
 export {
   Table,
   type TableColumn,
