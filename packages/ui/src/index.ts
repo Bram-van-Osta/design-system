@@ -169,6 +169,30 @@ export {
   type ThumbnailLinkProps,
 } from './components/Thumbnail/ThumbnailLink.tsx';
 export {
+  ThumbnailCheckboxTile,
+  type ThumbnailCheckboxTileProps,
+} from './components/ThumbnailGrid/ThumbnailCheckboxTile.tsx';
+export {
+  ThumbnailFileTile,
+  type ThumbnailFileTileProps,
+} from './components/ThumbnailGrid/ThumbnailFileTile.tsx';
+export {
+  ThumbnailFileTileLink,
+  type ThumbnailFileTileLinkProps,
+} from './components/ThumbnailGrid/ThumbnailFileTileLink.tsx';
+export {
+  ThumbnailGrid,
+  type ThumbnailGridProps,
+} from './components/ThumbnailGrid/ThumbnailGrid.tsx';
+export {
+  ThumbnailTile,
+  type ThumbnailTileProps,
+} from './components/ThumbnailGrid/ThumbnailTile.tsx';
+export {
+  ThumbnailTileAwaited,
+  type ThumbnailTileAwaitedProps,
+} from './components/ThumbnailGrid/ThumbnailTileAwaited.tsx';
+export {
   Timeline,
   type TimelineItem,
   type TimelineProps,
