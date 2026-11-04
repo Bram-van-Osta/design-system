@@ -2,6 +2,7 @@ import { expect } from 'storybook/test';
 import { expectFocusRing } from './expect-focus-ring.ts';
 import { expectHeightAtLeast } from './expect-height.ts';
 import { tokenColor } from './token-color.ts';
+import { type SizeToken, tokenPixels } from './token-pixels.ts';
 
 /**
  * The group on its Delft band: square, no shadow, in a white hair, its segments touching, each one
@@ -20,7 +21,7 @@ export async function expectSegmentedGroup(
   for (const [index, segment] of segments.entries()) {
     await expectHeightAtLeast(segment, 'target-min');
     await expect(getComputedStyle(segment).borderRadius).toBe('0px');
-    await expect(segment).toHaveClass('hover:not-data-pressed:bg-delft-deep');
+    await expect(segment).toHaveClass('hover:not-data-pressed:not-data-disabled:bg-delft-deep');
     const previous = segments[index - 1];
     if (previous !== undefined) {
       await expect(segment.getBoundingClientRect().left).toBe(
@@ -75,8 +76,105 @@ export async function expectInkGroup(
   await expect(getComputedStyle(pressed).color).toBe(tokenColor('bg', pressed));
   for (const other of others) {
     await expect(other).toHaveAttribute('aria-pressed', 'false');
-    await expect(other).toHaveClass('hover:not-data-pressed:bg-surface');
+    await expect(other).toHaveClass('hover:not-data-pressed:not-data-disabled:bg-surface');
     await expect(getComputedStyle(other).backgroundColor).toBe(tokenColor('bg', other));
     await expect(getComputedStyle(other).color).toBe(tokenColor('ink', other));
+  }
+}
+
+// The answers share the row's width in fractions of a pixel.
+const SUBPIXEL_TOLERANCE = 0.5;
+
+function checkOf(answer: HTMLElement): Element {
+  const check = answer.querySelector('svg');
+  if (check === null) {
+    throw new Error('Each answer holds its check.');
+  }
+  return check;
+}
+
+/**
+ * A question's answers: each its own equal column on one row, apart by the gap, a primary button
+ * high, square, no shadow, in an ink hair, none pressed. The pointer's hover cannot be simulated,
+ * so its surface is pinned by its class.
+ */
+export async function expectAnswerRow(
+  answers: readonly HTMLElement[],
+  gap: SizeToken,
+): Promise<void> {
+  const [first] = answers;
+  for (const [index, answer] of answers.entries()) {
+    const box = answer.getBoundingClientRect();
+    await expect(Math.abs(box.width - (first?.getBoundingClientRect().width ?? 0))).toBeLessThan(
+      SUBPIXEL_TOLERANCE,
+    );
+    await expect(box.top).toBe(first?.getBoundingClientRect().top);
+    await expectHeightAtLeast(answer, 'button-height');
+    const style = getComputedStyle(answer);
+    await expect({
+      borderTopWidth: style.borderTopWidth,
+      borderTopColor: style.borderTopColor,
+      borderRadius: style.borderRadius,
+      boxShadow: style.boxShadow,
+    }).toEqual({
+      borderTopWidth: '1px',
+      borderTopColor: tokenColor('ink', answer),
+      borderRadius: '0px',
+      boxShadow: 'none',
+    });
+    await expect(answer).toHaveClass('hover:not-data-pressed:not-data-disabled:bg-surface');
+    const previous = answers[index - 1];
+    if (previous !== undefined) {
+      const apart = box.left - previous.getBoundingClientRect().right;
+      await expect(Math.abs(apart - tokenPixels(gap))).toBeLessThan(SUBPIXEL_TOLERANCE);
+    }
+  }
+}
+
+/**
+ * The pressed answer in Delft blue with white text, its check shown on a computer only; the others
+ * in white with ink text, without a check. No pressed one when it is null.
+ */
+export async function expectAnswerPressed(
+  pressed: HTMLElement | null,
+  others: readonly HTMLElement[],
+  { isCheckShown }: { readonly isCheckShown: boolean },
+): Promise<void> {
+  if (pressed !== null) {
+    await expect(pressed).toHaveAttribute('aria-pressed', 'true');
+    const { backgroundColor, color } = getComputedStyle(pressed);
+    await expect({ backgroundColor, color }).toEqual({
+      backgroundColor: tokenColor('delft', pressed),
+      color: tokenColor('on-delft', pressed),
+    });
+    await expect(getComputedStyle(checkOf(pressed)).display).toBe(isCheckShown ? 'block' : 'none');
+  }
+  for (const other of others) {
+    await expect(other).toHaveAttribute('aria-pressed', 'false');
+    const { backgroundColor, color } = getComputedStyle(other);
+    await expect({ backgroundColor, color }).toEqual({
+      backgroundColor: tokenColor('bg', other),
+      color: tokenColor('ink', other),
+    });
+    await expect(getComputedStyle(checkOf(other)).display).toBe('none');
+  }
+}
+
+/** Unavailable: in the line's hair, the pressed one filled in the line color, all in muted ink. */
+export async function expectDisabledOptions(
+  pressed: HTMLElement,
+  others: readonly HTMLElement[],
+): Promise<void> {
+  await expect(pressed).toHaveAttribute('data-disabled');
+  await expect(getComputedStyle(pressed).backgroundColor).toBe(tokenColor('line', pressed));
+  await expect(getComputedStyle(pressed).color).toBe(tokenColor('ink-muted', pressed));
+  for (const other of others) {
+    await expect(other).toHaveAttribute('data-disabled');
+    const { backgroundColor, color, cursor } = getComputedStyle(other);
+    await expect({ backgroundColor, color, cursor }).toEqual({
+      backgroundColor: tokenColor('surface', other),
+      color: tokenColor('ink-muted', other),
+      cursor: 'not-allowed',
+    });
   }
 }

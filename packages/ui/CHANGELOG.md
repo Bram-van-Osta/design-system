@@ -1,5 +1,12 @@
 # @bram-van-osta/ui
 
+## 0.31.0
+
+### Minor Changes
+
+- 56edcad: Adds `ThumbnailRemovableTile`, an image of a `ThumbnailGrid` with a remove button over its corner (`removeLabel`, `onRemove`) and the app's field under it in place of a name, and `ThumbnailGrid`'s `columns`, `two` for such tiles: two columns on a computer, one on a phone.
+- 051a497: Adds `ToggleGroupTone.answer` to `ToggleGroup`, a question's answers side by side in equal columns on every screen, `button-height` high in an ink hair, none pressed until one is chosen and the pressed one in Delft blue with its check on a computer; `ToggleGroup` also takes `labelledBy` in place of `label`, `value={null}` for none pressed, and `disabled`, and its `label` becomes optional.
+
 ## 0.30.0
 
 ### Minor Changes

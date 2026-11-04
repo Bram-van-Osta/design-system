@@ -191,6 +191,10 @@ export {
   type ThumbnailGridProps,
 } from './components/ThumbnailGrid/ThumbnailGrid.tsx';
 export {
+  ThumbnailRemovableTile,
+  type ThumbnailRemovableTileProps,
+} from './components/ThumbnailGrid/ThumbnailRemovableTile.tsx';
+export {
   ThumbnailTile,
   type ThumbnailTileProps,
 } from './components/ThumbnailGrid/ThumbnailTile.tsx';
@@ -198,6 +202,7 @@ export {
   ThumbnailTileAwaited,
   type ThumbnailTileAwaitedProps,
 } from './components/ThumbnailGrid/ThumbnailTileAwaited.tsx';
+export { ThumbnailGridColumns } from './components/ThumbnailGrid/thumbnail-grid-columns.ts';
 export {
   Timeline,
   type TimelineItem,
