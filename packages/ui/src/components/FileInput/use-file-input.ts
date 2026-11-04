@@ -17,7 +17,12 @@ export function useFileInput({ hasFile, onFileChange, isDisabled }: FileInputOpt
     focus.moveFocusOnChange();
     onFileChange(file);
   };
-  const drop = useFileDrop(choose, isDisabled);
+  // One file: the first of those dropped.
+  const drop = useFileDrop(([file]) => {
+    if (file) {
+      choose(file);
+    }
+  }, isDisabled);
   return {
     ids,
     inputRef,

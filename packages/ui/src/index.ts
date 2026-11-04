@@ -60,6 +60,11 @@ export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclo
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
+export {
+  FileDropZone,
+  type FileDropZoneProps,
+  FileDropZoneSize,
+} from './components/FileDropZone/FileDropZone.tsx';
 export { FileInput, type FileInputProps } from './components/FileInput/FileInput.tsx';
 export { FormAlert, type FormAlertProps } from './components/FormAlert/FormAlert.tsx';
 export {

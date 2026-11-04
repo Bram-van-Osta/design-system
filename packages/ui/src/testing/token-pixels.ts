@@ -17,6 +17,9 @@ export type SizeToken =
   | 'border-attention'
   | 'account-name-width'
   | 'progress-height'
+  | 'drop-zone-height'
+  | 'drop-zone-compact-height'
+  | 'drop-zone-compact-phone-height'
   | 'toast-width'
   | 'image-viewer-width'
   | 'image-viewer-height';

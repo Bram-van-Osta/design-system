@@ -1,7 +1,7 @@
 import { type DragEvent, useState } from 'react';
 
-/** A file dropped on the zone, as if it had been chosen: the app checks it the same way. */
-export function useFileDrop(onFile: (file: File) => void, isDisabled: boolean) {
+/** Files dropped on a zone, as if they had been chosen: the app checks them the same way. */
+export function useFileDrop(onFiles: (files: readonly File[]) => void, isDisabled: boolean) {
   const [isDragging, setIsDragging] = useState(false);
   return {
     isDragging,
@@ -16,9 +16,9 @@ export function useFileDrop(onFile: (file: File) => void, isDisabled: boolean) {
       onDrop: (event: DragEvent) => {
         event.preventDefault();
         setIsDragging(false);
-        const file = event.dataTransfer.files[0];
-        if (file && !isDisabled) {
-          onFile(file);
+        const files = Array.from(event.dataTransfer.files);
+        if (files.length > 0 && !isDisabled) {
+          onFiles(files);
         }
       },
     },
