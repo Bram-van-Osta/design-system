@@ -99,6 +99,11 @@ export {
   PasswordInput,
   type PasswordInputProps,
 } from './components/PasswordInput/PasswordInput.tsx';
+export {
+  ProgressBar,
+  type ProgressBarProps,
+  ProgressBarTone,
+} from './components/ProgressBar/ProgressBar.tsx';
 export { RadioCards, type RadioCardsProps } from './components/RadioCards/RadioCards.tsx';
 export {
   RadioGroup,

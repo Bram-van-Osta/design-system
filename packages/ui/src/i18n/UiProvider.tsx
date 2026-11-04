@@ -1,4 +1,5 @@
 import { type ReactNode, useMemo } from 'react';
+import { LocaleContext } from './locale-context.ts';
 import { type Locale, MESSAGES, type Messages } from './messages.ts';
 import { MessagesContext } from './messages-context.ts';
 
@@ -10,8 +11,12 @@ export interface UiProviderProps {
   readonly children: ReactNode;
 }
 
-/** Around the app: the components read their texts from it. */
+/** Around the app: the components read their texts and their language from it. */
 export function UiProvider({ locale, messages, children }: UiProviderProps) {
   const value = useMemo(() => ({ ...MESSAGES[locale], ...messages }), [locale, messages]);
-  return <MessagesContext value={value}>{children}</MessagesContext>;
+  return (
+    <LocaleContext value={locale}>
+      <MessagesContext value={value}>{children}</MessagesContext>
+    </LocaleContext>
+  );
 }
