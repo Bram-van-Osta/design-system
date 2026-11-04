@@ -10,6 +10,7 @@ import { CHOICE_LABEL_CLASSES } from '../Field/choice-classes.ts';
 import { FieldError } from '../Field/FieldError.tsx';
 import type { FieldMarker } from '../Field/field-marker.ts';
 import { RadioButton } from './RadioButton.tsx';
+import { RadioGroupOrientation } from './radio-group-orientation.ts';
 
 export interface RadioOption {
   readonly value: string;
@@ -32,8 +33,15 @@ export interface RadioGroupProps {
   readonly name?: string;
   readonly required?: boolean;
   readonly disabled?: boolean;
+  /** `vertical` by default; `horizontal` for two short answers on one line. */
+  readonly orientation?: RadioGroupOrientation;
   readonly className?: string;
 }
+
+const OPTIONS_CLASSES: Readonly<Record<RadioGroupOrientation, string>> = {
+  vertical: 'flex flex-col gap-space-1',
+  horizontal: 'flex flex-wrap gap-x-space-5',
+};
 
 /** One answer among a few, all visible: the arrow keys move between them. */
 export function RadioGroup({
@@ -48,6 +56,7 @@ export function RadioGroup({
   name,
   required,
   disabled,
+  orientation = RadioGroupOrientation.vertical,
   className,
 }: RadioGroupProps) {
   const isInvalid = hasContent(error);
@@ -74,9 +83,11 @@ export function RadioGroup({
         className="flex flex-col gap-space-1"
       >
         <ChoiceLegend legend={legend} marker={marker} description={description} />
-        {options.map((option) => (
-          <RadioItem key={option.value} option={option} />
-        ))}
+        <div data-orientation={orientation} className={OPTIONS_CLASSES[orientation]}>
+          {options.map((option) => (
+            <RadioItem key={option.value} option={option} />
+          ))}
+        </div>
       </Fieldset.Root>
       {isInvalid && <FieldError>{error}</FieldError>}
     </BaseField.Root>

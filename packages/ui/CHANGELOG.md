@@ -1,5 +1,12 @@
 # @bram-van-osta/ui
 
+## 0.28.0
+
+### Minor Changes
+
+- `RadioGroup` takes an `orientation` (`RadioGroupOrientation`): `vertical` by default, as before, or `horizontal`, its answers side by side on one line and wrapping when it is too narrow.
+- 8f199b9: Adds `Stat`, a figure and its label in a hairline tile for a description list, its `attention` tone under the vermilion rule with the figure in vermilion and an optional `note`, and `StatLink`, the same tile as a link or a button that filters a list.
+
 ## 0.27.0
 
 ### Minor Changes
