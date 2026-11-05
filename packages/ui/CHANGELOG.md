@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.33.0
+
+### Minor Changes
+
+- `Disclosure` takes a `part` variant: a page's part folds under its label row, the button inside a heading of the app's level over the ink rule, its caret and height still for a system that asks for less motion.
+
 ## 0.32.1
 
 ### Patch Changes

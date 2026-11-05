@@ -12,7 +12,7 @@ export type HeadingSize = (typeof HeadingSize)[keyof typeof HeadingSize];
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
-const TAGS = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4', 5: 'h5', 6: 'h6' } as const;
+export const HEADING_TAGS = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4', 5: 'h5', 6: 'h6' } as const;
 
 // On a phone, the three largest sizes come down to heading-s.
 const SIZE_CLASSES: Readonly<Record<HeadingSize, string>> = {
@@ -42,7 +42,7 @@ export interface HeadingProps extends Omit<ComponentProps<'h1'>, 'className'> {
 
 /** A heading in Inter Tight: a sentence that says what is happening. */
 export function Heading({ level, size = DEFAULT_SIZES[level], className, ...props }: HeadingProps) {
-  const Tag = TAGS[level];
+  const Tag = HEADING_TAGS[level];
   return (
     <Tag
       {...props}
