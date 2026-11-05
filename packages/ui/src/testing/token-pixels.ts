@@ -10,6 +10,7 @@ export type SizeToken =
   | 'target-min'
   | 'text-body'
   | 'text-label'
+  | 'text-small'
   | 'icon-button-compact'
   | 'button-height'
   | 'form-width'

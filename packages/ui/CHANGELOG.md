@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.34.0
+
+### Minor Changes
+
+- `Disclosure`'s `part` variant takes an optional `preview`, a line of small muted text under the label while the part is folded, read after the label in its button's name, and a `previewMark` before it on its first line; without them, nothing changes.
+
 ## 0.33.0
 
 ### Minor Changes
