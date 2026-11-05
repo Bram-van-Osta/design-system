@@ -1,4 +1,5 @@
 import { expect, waitFor } from 'storybook/test';
+import { lineCount } from './expect-first-line.ts';
 import { expectHeightAtLeast } from './expect-height.ts';
 import { tokenColor } from './token-color.ts';
 import { tokenPixels } from './token-pixels.ts';
@@ -6,25 +7,33 @@ import { tokenPixels } from './token-pixels.ts';
 const TRANSPARENT = 'rgba(0, 0, 0, 0)';
 const MEDIUM_WEIGHT = '500';
 const SEMIBOLD_WEIGHT = '600';
+// The focus ring reaches past its element: 2 px wide, offset by 2 px.
+const FOCUS_RING_REACH = 4;
+// What rounding a scroll offset to device pixels may leave.
+const SCROLL_TOLERANCE = 1;
 
 /**
- * The row of tabs: at their width, aligned left and 24 px apart, each one 44 px high at least, square
- * and sitting on a 1 px rule in `line` across the row, which never overflows. The pointer's hover
+ * The row of tabs: at their width, aligned left and 24 px apart, each one 44 px high at least, square,
+ * its label on one line, and sitting on a 1 px rule in `line` across the row. The row is as wide as
+ * its tabs at least: when its box is narrower, the box scrolls, never the page. The pointer's hover
  * cannot be simulated, so its surface is pinned by its class.
  */
 export async function expectUnderlinedTabs(
   list: HTMLElement,
   tabs: readonly HTMLElement[],
 ): Promise<void> {
+  const page = list.ownerDocument.documentElement;
+  await expect(page.scrollWidth).toBeLessThanOrEqual(page.clientWidth);
   await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
   const rule = getComputedStyle(list, '::before');
   await expect(rule.borderBottomWidth).toBe('1px');
   await expect(rule.borderBottomColor).toBe(tokenColor('line', list));
-  await expect(Number.parseFloat(rule.width)).toBe(list.clientWidth);
   const row = list.getBoundingClientRect();
+  await expect(Number.parseFloat(rule.width)).toBeCloseTo(row.width, 0);
   await expect(tabs[0]?.getBoundingClientRect().left).toBe(row.left);
   for (const [index, tab] of tabs.entries()) {
     await expectHeightAtLeast(tab, 'target-min');
+    await expect(lineCount(tab)).toBe(1);
     await expect(tab.getBoundingClientRect().bottom).toBe(row.bottom);
     await expect(getComputedStyle(tab).borderRadius).toBe('0px');
     await expect(getComputedStyle(tab).boxShadow).toBe('none');
@@ -65,6 +74,49 @@ export async function expectOpenTab(
     // Base UI hides the panel it closes once its exit has run.
     await waitFor(() => expect(panelOf(other)).not.toBeVisible());
   }
+}
+
+/** The box of the row of tabs, which scrolls sideways when the row is wider. */
+export function scrollerOf(list: HTMLElement): HTMLElement {
+  const scroller = list.parentElement;
+  if (scroller === null) {
+    throw new Error('The row of tabs has no box.');
+  }
+  return scroller;
+}
+
+/**
+ * A row wider than its box, on a phone: the box scrolls sideways, and the row, with its rule, runs
+ * from the first tab's start to the last one's end.
+ */
+export async function expectScrollingRow(
+  list: HTMLElement,
+  tabs: readonly HTMLElement[],
+): Promise<void> {
+  const scroller = scrollerOf(list);
+  await expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+  await expect(getComputedStyle(scroller).overflowX).toBe('auto');
+  await expect(tabs.at(-1)?.getBoundingClientRect().right).toBeCloseTo(
+    list.getBoundingClientRect().right,
+    0,
+  );
+}
+
+/** The tab shows whole in its row's box, with room for its focus ring, which the box never cuts. */
+export async function expectTabInView(tab: HTMLElement): Promise<void> {
+  const list = tab.closest<HTMLElement>('[role="tablist"]');
+  await expect(list).not.toBeNull();
+  if (list === null) {
+    return;
+  }
+  await waitFor(async () => {
+    const box = scrollerOf(list).getBoundingClientRect();
+    const reach = tab.getBoundingClientRect();
+    await expect(reach.left - FOCUS_RING_REACH).toBeGreaterThanOrEqual(box.left - SCROLL_TOLERANCE);
+    await expect(reach.right + FOCUS_RING_REACH).toBeLessThanOrEqual(box.right + SCROLL_TOLERANCE);
+    await expect(reach.top - FOCUS_RING_REACH).toBeGreaterThanOrEqual(box.top);
+    await expect(reach.bottom + FOCUS_RING_REACH).toBeLessThanOrEqual(box.bottom);
+  });
 }
 
 /** The panel a tab controls, which it names. */

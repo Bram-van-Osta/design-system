@@ -2,7 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
-import { expectOpenTab, expectUnderlinedTabs, panelOf } from '../../testing/expect-tabs.ts';
+import {
+  expectOpenTab,
+  expectScrollingRow,
+  expectTabInView,
+  expectUnderlinedTabs,
+  panelOf,
+} from '../../testing/expect-tabs.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { Button, ButtonVariant } from '../Button/Button.tsx';
 import { MessageBubble } from '../MessageBubble/MessageBubble.tsx';
@@ -14,7 +20,6 @@ const YOUR_REQUEST = 'Your request';
 const MESSAGES = 'Messages';
 const WHERE = 'Where your request stands';
 const MESSAGE_COUNT = 1;
-// The count, joined to its label by no-break spaces.
 const COUNTED = new RegExp(`^·\\s${MESSAGE_COUNT}$`);
 const REPLY = 'Your reply';
 
@@ -95,7 +100,7 @@ export const WithCount: Story = {
   },
 };
 
-// The labels wrap on a narrow phone; the row never overflows.
+// Each label stays on one line; on a narrow phone, the row scrolls in its box.
 export const LongLabels: Story = {
   args: {
     tabs: [
@@ -105,8 +110,10 @@ export const LongLabels: Story = {
   },
   play: async ({ canvas }) => {
     const list = canvas.getByRole('tablist', { name: YOUR_REQUEST });
-    await expectUnderlinedTabs(list, canvas.getAllByRole('tab'));
-    const count = within(canvas.getAllByRole('tab')[0] ?? list).getByText(COUNTED);
+    const tabs = canvas.getAllByRole('tab');
+    await expectUnderlinedTabs(list, tabs);
+    await expectTabInView(tabs[0] ?? list);
+    const count = within(tabs[0] ?? list).getByText(COUNTED);
     // One line: each of its pieces sits at the same height.
     const lines = new Set([...count.getClientRects()].map((rect) => Math.round(rect.top)));
     await expect(lines.size).toBe(1);
@@ -210,5 +217,111 @@ export const DraftKept: Story = {
     await userEvent.click(whereTab);
     await userEvent.click(messagesTab);
     await expect(canvas.getByRole('textbox', { name: REPLY })).toHaveValue(draft);
+  },
+};
+
+const PROJECT = 'Your project';
+// A common phone, wider than the smallest one the runs pin, narrower than five tabs.
+const WIDE_PHONE = 'widePhone';
+const WIDE_PHONE_WIDTH = 412;
+const WIDE_PHONE_HEIGHT = 915;
+const WIDE_PHONE_SCREEN = {
+  viewport: {
+    options: {
+      [WIDE_PHONE]: {
+        name: `Phone, ${WIDE_PHONE_WIDTH} px`,
+        styles: { width: `${WIDE_PHONE_WIDTH}px`, height: `${WIDE_PHONE_HEIGHT}px` },
+        type: 'mobile',
+      },
+    },
+  },
+};
+
+function projectTab(value: string, label: string): TabsItem {
+  return { value, label, panel: <Text>{label} of the Boulangerie du Port.</Text> };
+}
+
+const FIVE_TABS: readonly TabsItem[] = [
+  projectTab('overview', 'Overview'),
+  projectTab('conversation', 'Conversation'),
+  projectTab('questionnaire', 'Questionnaire'),
+  projectTab('plan', 'Plan'),
+  projectTab('files', 'Files'),
+];
+const SEVEN_TABS: readonly TabsItem[] = [
+  ...FIVE_TABS,
+  projectTab('proposals', 'Proposals'),
+  projectTab('test-site', 'Test site'),
+];
+
+// More tabs than a phone holds, the last one open: the row scrolls in its box, never the page, and
+// opens on the open tab; the keyboard brings each tab it reaches into view, its focus ring whole.
+async function expectRowOnAPhone(canvasElement: HTMLElement): Promise<void> {
+  await expect(window.innerWidth).toBe(WIDE_PHONE_WIDTH);
+  const scope = within(canvasElement);
+  const list = scope.getByRole('tablist', { name: PROJECT });
+  const tabs = scope.getAllByRole('tab');
+  const first = tabs[0] ?? list;
+  const last = tabs.at(-1) ?? list;
+  const beforeLast = tabs.at(-2) ?? list;
+  await expectUnderlinedTabs(list, tabs);
+  await expectScrollingRow(list, tabs);
+  await expectOpenTab(last, tabs.slice(0, -1));
+  await expectTabInView(last);
+  await userEvent.tab();
+  await expectFocusRing(last);
+  await userEvent.keyboard('{Home}');
+  await expectFocusRing(first);
+  await expectOpenTab(first, tabs.slice(1));
+  await expectTabInView(first);
+  await userEvent.keyboard('{End}');
+  await expectFocusRing(last);
+  await expectTabInView(last);
+  await userEvent.keyboard('{ArrowLeft}');
+  await expectOpenTab(beforeLast, [first, last]);
+  await expectTabInView(beforeLast);
+}
+
+export const FiveOnAPhone: Story = {
+  args: { label: PROJECT, tabs: FIVE_TABS, defaultValue: 'files' },
+  parameters: WIDE_PHONE_SCREEN,
+  globals: { viewport: { value: WIDE_PHONE } },
+  play: async ({ canvasElement }) => {
+    await expectRowOnAPhone(canvasElement);
+  },
+};
+
+export const SevenOnAPhone: Story = {
+  args: { label: PROJECT, tabs: SEVEN_TABS, defaultValue: 'test-site' },
+  parameters: WIDE_PHONE_SCREEN,
+  globals: { viewport: { value: WIDE_PHONE } },
+  play: async ({ canvasElement }) => {
+    await expectRowOnAPhone(canvasElement);
+  },
+};
+
+// The app opens a tab out of view, from outside the row: the row brings it in.
+export const OpenedFromOutside: Story = {
+  args: { label: PROJECT, tabs: SEVEN_TABS },
+  parameters: WIDE_PHONE_SCREEN,
+  globals: { viewport: { value: WIDE_PHONE } },
+  render: function OpenedFromOutsideStory(args) {
+    const [value, setValue] = useState('overview');
+    return (
+      <div className="flex flex-col gap-space-5">
+        <Button variant={ButtonVariant.secondary} onClick={() => setValue('test-site')}>
+          See the test site
+        </Button>
+        <Tabs {...args} value={value} onValueChange={setValue} />
+      </div>
+    );
+  },
+  play: async ({ canvas }) => {
+    const testSite = canvas.getByRole('tab', { name: 'Test site' });
+    const overview = canvas.getByRole('tab', { name: 'Overview' });
+    await expectTabInView(overview);
+    await userEvent.click(canvas.getByRole('button', { name: 'See the test site' }));
+    await expect(testSite).toHaveAttribute('aria-selected', 'true');
+    await expectTabInView(testSite);
   },
 };

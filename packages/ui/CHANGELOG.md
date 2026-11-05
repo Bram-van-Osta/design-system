@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.32.1
+
+### Patch Changes
+
+- `Tabs` holds more tabs than a phone's width: each label stays on one line, a row wider than its box scrolls sideways in it instead of the page, with the rule under every tab and the focus ring whole, and the open tab is brought into view when it changes, gliding unless the system asks for less motion.
+
 ## 0.32.0
 
 ### Minor Changes
