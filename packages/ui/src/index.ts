@@ -56,7 +56,13 @@ export { CopyButton, type CopyButtonProps } from './components/CopyButton/CopyBu
 export { CopyList, type CopyListProps } from './components/CopyList/CopyList.tsx';
 export type { CopyListItem } from './components/CopyList/copy-list.ts';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
-export { Disclosure, type DisclosureProps } from './components/Disclosure/Disclosure.tsx';
+export {
+  Disclosure,
+  type DisclosureBoxProps,
+  type DisclosurePartProps,
+  type DisclosureProps,
+} from './components/Disclosure/Disclosure.tsx';
+export { DisclosureVariant } from './components/Disclosure/disclosure-variant.ts';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
