@@ -31,6 +31,14 @@ export interface DisclosurePartProps extends DisclosureCommonProps {
   readonly headingLevel: HeadingLevel;
   /** The heading's id, which the app's section is labelled by. */
   readonly headingId?: string;
+  /**
+   * A line under the label while the part is folded, which says where it stands without unfolding
+   * it: "Pre-analysis running · requested at 9:17". Part of the button, read after the label; gone
+   * once unfolded, and nothing drawn without it.
+   */
+  readonly preview?: ReactNode;
+  /** A mark before the preview, on its first line: a spinner while something comes, a status mark. */
+  readonly previewMark?: ReactNode;
 }
 
 export type DisclosureProps = DisclosureBoxProps | DisclosurePartProps;
@@ -55,7 +63,12 @@ export function Disclosure(props: DisclosureProps) {
       className={classNames(variant === DisclosureVariant.box && 'bg-surface', className)}
     >
       {props.variant === DisclosureVariant.part ? (
-        <DisclosurePartTrigger level={props.headingLevel} id={props.headingId}>
+        <DisclosurePartTrigger
+          level={props.headingLevel}
+          id={props.headingId}
+          preview={props.preview}
+          previewMark={props.previewMark}
+        >
           {summary}
         </DisclosurePartTrigger>
       ) : (

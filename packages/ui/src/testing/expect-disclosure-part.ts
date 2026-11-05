@@ -94,3 +94,55 @@ export async function expectRingInsidePanel(control: Element, trigger: Element):
   await expect(panel.right).toBeGreaterThanOrEqual(ring.right + reach);
   await expect(panel.top).toBeLessThanOrEqual(ring.top - reach);
 }
+
+const BODY_WEIGHT = '400';
+const PREVIEW_SELECTOR = '[data-part-preview]';
+
+function previewOf(trigger: Element): HTMLElement | null {
+  return trigger.querySelector<HTMLElement>(PREVIEW_SELECTOR);
+}
+
+/**
+ * Folded with a preview: a line of small body text under the label, inside the button and its row,
+ * read after the label in the button's name and its heading's.
+ */
+export async function expectPartPreview({
+  trigger,
+  label,
+  preview,
+}: {
+  readonly trigger: Element;
+  readonly label: string;
+  readonly preview: string;
+}): Promise<HTMLElement> {
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(trigger).toHaveAccessibleName(`${label} ${preview}`);
+  await expect(trigger.parentElement).toHaveAccessibleName(`${label} ${preview}`);
+  const line = previewOf(trigger);
+  if (line === null) {
+    throw new Error("A folded part's preview is a line of its button.");
+  }
+  await expect(line).toBeVisible();
+  await expect(line).toHaveTextContent(preview);
+  const style = getComputedStyle(line);
+  await expect(Number.parseFloat(style.fontSize)).toBe(tokenPixels('text-small'));
+  await expect(style.fontWeight).toBe(BODY_WEIGHT);
+  await expect(style.textTransform).toBe('none');
+  await expect(style.color).toBe(tokenColor('ink-muted', trigger));
+  const box = line.getBoundingClientRect();
+  const caret = caretOf(trigger).getBoundingClientRect();
+  await expect(box.top).toBeGreaterThanOrEqual(caret.bottom);
+  await expect(box.left).toBe(trigger.getBoundingClientRect().left);
+  await expect(trigger.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(box.bottom);
+  return line;
+}
+
+/** Unfolded, or given none: no preview line on the page, and the label alone names the part. */
+export async function expectNoPartPreview(trigger: Element, label: string): Promise<void> {
+  const line = previewOf(trigger);
+  if (line !== null) {
+    await expect(line).not.toBeVisible();
+  }
+  await expect(trigger).toHaveAccessibleName(label);
+  await expect(trigger.parentElement).toHaveAccessibleName(label);
+}
