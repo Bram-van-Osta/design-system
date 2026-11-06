@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
+import { expectHatched } from '../../testing/expect-meter.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { MeterTone } from '../Meter/meter-tone.ts';
 import { SegmentMeter, SegmentMeterSize } from './SegmentMeter.tsx';
@@ -68,6 +69,64 @@ export const PastTheLimit: Story = {
     const meter = canvas.getByRole('meter', { name: 'Module points' });
     const tick = meter.querySelector('[data-limit]');
     await expect(tick?.nextElementSibling?.getAttribute('data-filled')).toBe('true');
+  },
+};
+
+// A budget's points in two parts against S's limit: the modules' blocks solid, then the pages'
+// hatched in a frame of their stripes, each named in the legend that describes the meter.
+export const PointsInParts: Story = {
+  args: {
+    value: undefined,
+    parts: [
+      { value: 4, label: 'Modules · 4 points' },
+      { value: 1, label: 'Pages · 1 point' },
+    ],
+    max: 6,
+    size: SegmentMeterSize.large,
+    limit: { at: 6, label: 'S limit' },
+    label: 'Budget points',
+    valueText: '5 points, up to 6 in S',
+  },
+  play: async ({ canvas }) => {
+    const meter = canvas.getByRole('meter', { name: 'Budget points' });
+    await expect(meter).toHaveAttribute('aria-valuenow', '5');
+    await expect(meter).toHaveAccessibleDescription('Modules · 4 points Pages · 1 point');
+    const segments = segmentsOf(meter);
+    await expect(segments.map((segment) => segment.dataset.part ?? null)).toEqual([
+      '0',
+      '0',
+      '0',
+      '0',
+      '1',
+      null,
+    ]);
+    const [solid] = segments;
+    const hatched = segments[4];
+    if (solid !== undefined && hatched !== undefined) {
+      await expect(getComputedStyle(solid).backgroundColor).toBe(tokenColor('delft', meter));
+      await expectHatched(hatched, tokenColor('delft', meter));
+      await expect(getComputedStyle(hatched).borderTopColor).toBe(tokenColor('delft', meter));
+    }
+  },
+};
+
+// Small segments in parts, the hatched one over the track.
+export const SmallInParts: Story = {
+  args: {
+    value: undefined,
+    parts: [
+      { value: 1, label: 'Built' },
+      { value: 1, label: 'Planned' },
+    ],
+    max: 3,
+  },
+  play: async ({ canvas }) => {
+    const meter = canvas.getByRole('meter', { name: 'Weight' });
+    const [, hatched] = segmentsOf(meter);
+    if (hatched !== undefined) {
+      await expectHatched(hatched, tokenColor('delft', meter));
+      await expect(getComputedStyle(hatched).backgroundColor).toBe(tokenColor('delft-pale', meter));
+    }
   },
 };
 

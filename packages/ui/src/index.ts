@@ -99,7 +99,13 @@ export {
   MessageBubble,
   type MessageBubbleProps,
 } from './components/MessageBubble/MessageBubble.tsx';
-export { Meter, type MeterProps, type MeterZone } from './components/Meter/Meter.tsx';
+export {
+  Meter,
+  type MeterMeasure,
+  type MeterPart,
+  type MeterProps,
+  type MeterZone,
+} from './components/Meter/Meter.tsx';
 export { MeterTone } from './components/Meter/meter-tone.ts';
 export {
   PasswordInput,
