@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.35.0
+
+### Minor Changes
+
+- `Meter` and `SegmentMeter` take their measure as `parts`, each a value and a label, filled one after the other on the same track, the first solid and the next hatched in the tone's color, named in a legend under the meter that describes it for a screen reader; `value` keeps working alone, and becomes optional. `Meter`'s zone names keep a gap before the next tick, wrapping balanced at their spaces when wider than their zone, so two names never touch on a phone.
+
 ## 0.34.0
 
 ### Minor Changes

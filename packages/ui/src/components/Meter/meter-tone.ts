@@ -7,12 +7,12 @@ export const MeterTone = {
 } as const;
 export type MeterTone = (typeof MeterTone)[keyof typeof MeterTone];
 
-/** The filled part's and the track's colors, by tone. */
+/** The filled part's, a hatched part's stripes' and the track's colors, by tone. */
 export const METER_TONE_CLASSES: Readonly<
-  Record<MeterTone, { readonly fill: string; readonly track: string }>
+  Record<MeterTone, { readonly fill: string; readonly hatch: string; readonly track: string }>
 > = {
-  delft: { fill: 'bg-delft', track: 'bg-delft-pale' },
-  ink: { fill: 'bg-ink', track: 'bg-line' },
+  delft: { fill: 'bg-delft', hatch: 'text-delft', track: 'bg-delft-pale' },
+  ink: { fill: 'bg-ink', hatch: 'text-ink', track: 'bg-line' },
 };
 
 /**
@@ -24,11 +24,14 @@ export function meterRoleOf({
   valueText,
   value,
   max,
+  describedBy,
 }: {
   readonly label: string | undefined;
   readonly valueText: string | undefined;
   readonly value: number;
   readonly max: number;
+  /** The legend that names the measure's parts, which describes the meter. */
+  readonly describedBy?: string | undefined;
 }) {
   if (label === undefined) {
     return { 'aria-hidden': true } as const;
@@ -40,5 +43,6 @@ export function meterRoleOf({
     'aria-valuemax': max,
     'aria-valuenow': Math.min(Math.max(value, 0), max),
     'aria-valuetext': valueText,
+    'aria-describedby': describedBy,
   } as const;
 }
