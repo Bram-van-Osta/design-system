@@ -1,5 +1,18 @@
 # @bram-van-osta/ui
 
+## 0.36.0
+
+### Minor Changes
+
+- Adds `StepBand` (a journey's steps in a row, each a bar and its name, the current one in pale Delft with its vermilion diamond and its sub-state, the bars alone with the current step and its position on a phone) and `StepBandCompact` (its short bars for a list's row, read as "step n of m"), `WaitingCard` (what waits in rows under the vermilion rule, a row's main action the whole width on a phone) and `CalmCard` (its calm form on the surface), `DocumentList` (a journey's documents as links with their meta, one yet to come in grey and out of the tab order), and `StatGrid` (two to six figures a row, two on a phone), with `Stat` and `StatLink` taking a `figureFirst` layout and a `mark` before their label.
+- Adds `Thread`, `ThreadDay` and `ThreadLine` (a journey's events by day, each a line that unfolds in place, with a button for what came earlier), `ToggleGroupTone.plain` (a list's filters in plain words, the pressed one underlined in Delft), `Link`'s `isNavigation` (a navigation's plain links, the current one underlined in Delft), `AgentMark` (the agent's square and words, a ring that turns while it works, still for less motion), `AgentWords` (behind its purple rule), `AgentAdvice` (on pale purple), and `Field`'s `agentDraft` (the agent's mark beside the label and its rule at the control's left).
+- Adds `StepList` (a journey's numbered steps with their usual lead times, in a row on a computer and a column on a phone), `ToggleGroupTone.segments` (a row's answer among two to four, none pressed at first), `StepProgressTone.sections` (the current section in pale Delft), `FileDropZone`'s `isMultiple` (one file or several), and `MessageBubble`'s `isOwn` (the reader's own message in Delft at the right); the large `FileDropZone` keeps its dashed frame and its description on a phone, and a card's main action takes the whole width there.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.10.1
+
 ## 0.35.0
 
 ### Minor Changes
