@@ -238,5 +238,11 @@ export {
   type ToggleGroupProps,
 } from './components/ToggleGroup/ToggleGroup.tsx';
 export { ToggleGroupTone } from './components/ToggleGroup/toggle-group-tone.ts';
+export { CalmCard, type CalmCardProps } from './components/WaitingCard/CalmCard.tsx';
+export {
+  WaitingCard,
+  type WaitingCardProps,
+  type WaitingCardRow,
+} from './components/WaitingCard/WaitingCard.tsx';
 export { Locale, type MessageKey, type Messages } from './i18n/messages.ts';
 export { UiProvider, type UiProviderProps } from './i18n/UiProvider.tsx';
