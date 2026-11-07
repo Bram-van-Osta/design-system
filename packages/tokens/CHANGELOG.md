@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.11.0
+
+### Minor Changes
+
+- Removes `drop-zone-compact-phone-height`, the compact drop zone being `drop-zone-compact-height` high on every screen, and extends `progress-bar-height` to the segments of a progress by sections.
+
 ## 0.10.1
 
 ### Patch Changes
