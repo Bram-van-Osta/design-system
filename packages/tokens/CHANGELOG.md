@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.10.1
+
+### Patch Changes
+
+- `progress-bar-height` also sets the height of a step band's bars.
+
 ## 0.10.0
 
 ### Minor Changes

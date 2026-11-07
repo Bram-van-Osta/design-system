@@ -198,3 +198,26 @@ export const FollowingInParts: Story = {
     });
   },
 };
+
+// T14-Q06-Garder-D: the questionnaire's progress by section, six done, the seventh under way.
+export const BySection: Story = {
+  args: {
+    label: 'Your questionnaire',
+    max: 8,
+    value: 7,
+    valueText: '6 sections of 8 done',
+    tone: StepProgressTone.sections,
+  },
+  play: async ({ canvas }) => {
+    const bar = canvas.getByRole('progressbar', { name: 'Your questionnaire' });
+    await expect(bar).toHaveAttribute('aria-valuetext', '6 sections of 8 done');
+    const segments = [...bar.children];
+    await expect(segments).toHaveLength(8);
+    const colors = segments.map((segment) => getComputedStyle(segment).backgroundColor);
+    await expect(colors).toEqual([
+      ...Array.from({ length: 6 }, () => tokenColor('delft', bar)),
+      tokenColor('delft-pale', bar),
+      tokenColor('line', bar),
+    ]);
+  },
+};

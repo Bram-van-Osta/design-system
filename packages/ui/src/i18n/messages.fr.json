@@ -13,6 +13,8 @@
   "stepProgress.done": "fait",
   "stepProgress.current": "en cours",
   "stepProgress.upcoming": "à venir",
+  "stepBand.position": "étape {position} sur {count}",
+  "stepList.now": "en ce moment",
   "fileInput.choose": "Déposer un fichier",
   "fileInput.remove": "Retirer",
   "codeInput.slot": "Chiffre {position} sur {count}",

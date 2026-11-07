@@ -32,22 +32,31 @@ function rulesOfSheet(sheet: CSSStyleSheet): CSSRuleList | readonly CSSRule[] {
   }
 }
 
-function declaresTransition(rule: CSSRule): boolean {
+function declares(rule: CSSRule, property: string): boolean {
   return (
     (rule instanceof CSSStyleRule || rule instanceof CSSNestedDeclarations) &&
-    rule.style.getPropertyValue('transition-property') !== ''
+    rule.style.getPropertyValue(property) !== ''
   );
+}
+
+async function expectOnlyWhenMotionAllowed(element: Element, property: string): Promise<void> {
+  const motions = [...document.styleSheets]
+    .flatMap((sheet) => rulesOf(rulesOfSheet(sheet), { selectors: [], media: [] }))
+    .filter(({ rule, selectors }) => declares(rule, property) && selectors.some(matching(element)));
+  await expect(motions.length).toBeGreaterThan(0);
+  for (const { media } of motions) {
+    await expect(media.some((condition) => condition.includes(MOTION_ALLOWED))).toBe(true);
+  }
 }
 
 /** The element's transitions are declared only for a system that does not ask for less motion. */
 export async function expectTransitionOnlyWhenMotionAllowed(element: Element): Promise<void> {
-  const transitions = [...document.styleSheets]
-    .flatMap((sheet) => rulesOf(rulesOfSheet(sheet), { selectors: [], media: [] }))
-    .filter(({ rule, selectors }) => declaresTransition(rule) && selectors.some(matching(element)));
-  await expect(transitions.length).toBeGreaterThan(0);
-  for (const { media } of transitions) {
-    await expect(media.some((condition) => condition.includes(MOTION_ALLOWED))).toBe(true);
-  }
+  await expectOnlyWhenMotionAllowed(element, 'transition-property');
+}
+
+/** The element's animation is declared only for a system that does not ask for less motion. */
+export async function expectAnimationOnlyWhenMotionAllowed(element: Element): Promise<void> {
+  await expectOnlyWhenMotionAllowed(element, 'animation');
 }
 
 function matching(element: Element): (selector: string) => boolean {

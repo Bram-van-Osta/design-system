@@ -25,6 +25,8 @@ export const MESSAGE_KEYS = [
   'stepProgress.done',
   'stepProgress.current',
   'stepProgress.upcoming',
+  'stepBand.position',
+  'stepList.now',
   'fileInput.choose',
   'fileInput.remove',
   'codeInput.slot',

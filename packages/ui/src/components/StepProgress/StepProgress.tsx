@@ -36,7 +36,8 @@ export interface StepProgressProps {
   readonly parts?: readonly StepProgressPart[];
   /**
    * `delft` by default, the filled segments in Delft blue; `ink` for the done ones in ink and the
-   * current one, the last filled, in vermilion.
+   * current one, the last filled, in vermilion; `sections` for the done ones in Delft blue and the
+   * current one in pale Delft.
    */
   readonly tone?: StepProgressTone;
   readonly className?: string;
@@ -46,6 +47,7 @@ const SEGMENT_CLASSES: Readonly<Record<StepProgressTone, Readonly<Record<StepPar
   {
     delft: { done: 'bg-delft', current: 'bg-delft', upcoming: 'bg-line' },
     ink: { done: 'bg-ink', current: 'bg-vermillion', upcoming: 'bg-line' },
+    sections: { done: 'bg-delft', current: 'bg-delft-pale', upcoming: 'bg-line' },
   };
 
 const PART_STATE_CLASSES: Readonly<Record<StepPartState, string>> = {

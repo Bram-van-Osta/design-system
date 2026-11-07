@@ -55,6 +55,46 @@ export const FromTheStudio: Story = {
   },
 };
 
+const OWN = 'I do not have the cake photos yet. Can I send them later?';
+
+// T14-S7-Echanges-D and -M: the client's own message in Delft at the right, Bram's on surface.
+export const TheReadersOwn: Story = {
+  render: () => (
+    <div className="flex max-w-reading-width flex-col gap-space-4">
+      <MessageBubble author="Bram" sentAt="Wednesday">
+        Thank you Jeanne, here we go. I am preparing your questionnaire.
+      </MessageBubble>
+      <MessageBubble author="You" sentAt="Friday" isOwn>
+        {OWN}
+      </MessageBubble>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const [other, own] = canvas.getAllByRole('figure');
+    if (other === undefined || own === undefined) {
+      throw new Error('Both messages are drawn.');
+    }
+    const thread = own.parentElement;
+    const quote = canvas.getByText(OWN);
+    const { backgroundColor, color, borderRadius } = getComputedStyle(quote);
+    await expect({ backgroundColor, color, borderRadius }).toEqual({
+      backgroundColor: tokenColor('delft', quote),
+      color: tokenColor('on-delft', quote),
+      borderRadius: '0px',
+    });
+    await expect(own.getBoundingClientRect().right).toBe(thread?.getBoundingClientRect().right);
+    await expect(own.querySelector('figcaption')?.getBoundingClientRect().right).toBe(
+      own.getBoundingClientRect().right,
+    );
+    await expect(own.querySelector('figcaption')).toHaveTextContent('You · Friday');
+    await expect(other.getBoundingClientRect().left).toBe(thread?.getBoundingClientRect().left);
+    const otherQuote = canvas.getByText(/here we go/);
+    await expect(getComputedStyle(otherQuote).backgroundColor).toBe(
+      tokenColor('surface', otherQuote),
+    );
+  },
+};
+
 // Its line breaks are kept, and a long address wraps rather than widening the page.
 export const Long: Story = {
   args: {

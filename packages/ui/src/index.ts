@@ -34,6 +34,9 @@ export {
   type AccountMenuProps,
 } from './components/AccountMenu/AccountMenu.tsx';
 export { ActionCard, type ActionCardProps } from './components/ActionCard/ActionCard.tsx';
+export { AgentAdvice, type AgentAdviceProps } from './components/AgentMark/AgentAdvice.tsx';
+export { AgentMark, type AgentMarkProps } from './components/AgentMark/AgentMark.tsx';
+export { AgentWords, type AgentWordsProps } from './components/AgentMark/AgentWords.tsx';
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';
@@ -63,6 +66,13 @@ export {
   type DisclosureProps,
 } from './components/Disclosure/Disclosure.tsx';
 export { DisclosureVariant } from './components/Disclosure/disclosure-variant.ts';
+export {
+  DocumentList,
+  type DocumentListItem,
+  type DocumentListLater,
+  type DocumentListLink,
+  type DocumentListProps,
+} from './components/DocumentList/DocumentList.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
@@ -148,13 +158,30 @@ export {
   StackJustify,
 } from './components/Stack/stack-classes.ts';
 export { Stat, type StatProps } from './components/Stat/Stat.tsx';
+export { StatGrid, type StatGridProps } from './components/Stat/StatGrid.tsx';
 export { StatLink, type StatLinkProps } from './components/Stat/StatLink.tsx';
+export { StatGridColumns } from './components/Stat/stat-grid-columns.ts';
+export { StatLayout } from './components/Stat/stat-layout.ts';
 export { StatTone } from './components/Stat/stat-tone.ts';
 export {
   StatusMark,
   StatusMarkLevel,
   type StatusMarkProps,
 } from './components/StatusMark/StatusMark.tsx';
+export {
+  StepBand,
+  type StepBandProps,
+  type StepBandStep,
+} from './components/StepBand/StepBand.tsx';
+export {
+  StepBandCompact,
+  type StepBandCompactProps,
+} from './components/StepBand/StepBandCompact.tsx';
+export {
+  StepList,
+  type StepListProps,
+  type StepListStep,
+} from './components/StepList/StepList.tsx';
 export {
   StepProgress,
   type StepProgressPart,
@@ -173,6 +200,9 @@ export { Tag, type TagProps, TagTone } from './components/Tag/Tag.tsx';
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
 export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
+export { Thread, type ThreadProps } from './components/Thread/Thread.tsx';
+export { ThreadDay, type ThreadDayProps } from './components/Thread/ThreadDay.tsx';
+export { ThreadLine, type ThreadLineProps } from './components/Thread/ThreadLine.tsx';
 export { Thumbnail, type ThumbnailProps } from './components/Thumbnail/Thumbnail.tsx';
 export {
   ThumbnailAwaited,
@@ -229,5 +259,11 @@ export {
   type ToggleGroupProps,
 } from './components/ToggleGroup/ToggleGroup.tsx';
 export { ToggleGroupTone } from './components/ToggleGroup/toggle-group-tone.ts';
+export { CalmCard, type CalmCardProps } from './components/WaitingCard/CalmCard.tsx';
+export {
+  WaitingCard,
+  type WaitingCardProps,
+  type WaitingCardRow,
+} from './components/WaitingCard/WaitingCard.tsx';
 export { Locale, type MessageKey, type Messages } from './i18n/messages.ts';
 export { UiProvider, type UiProviderProps } from './i18n/UiProvider.tsx';

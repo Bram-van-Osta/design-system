@@ -4,6 +4,7 @@ import { classNames } from '../../utils/class-names.ts';
 import type { StatProps } from './Stat.tsx';
 import { StatParts, StatSemantics } from './StatParts.tsx';
 import { STAT_TILE_CLASSES, STAT_TONE_CLASSES } from './stat-classes.ts';
+import { StatLayout } from './stat-layout.ts';
 import { StatTone } from './stat-tone.ts';
 
 // A target of 44 px even on a phone, where the tile is one line; the surface under the pointer.
@@ -24,6 +25,8 @@ export function StatLink({
   value,
   note,
   tone = StatTone.plain,
+  layout = StatLayout.labelFirst,
+  mark,
   className,
   ...props
 }: StatLinkProps) {
@@ -32,13 +35,20 @@ export function StatLink({
     render,
     props: mergeProps<'a'>(
       {
-        className: classNames(STAT_TILE_CLASSES, STAT_TONE_CLASSES[tone], LINK_CLASSES, className),
+        className: classNames(
+          STAT_TILE_CLASSES[layout],
+          STAT_TONE_CLASSES[tone],
+          LINK_CLASSES,
+          className,
+        ),
         children: (
           <StatParts
             label={label}
             value={value}
             note={note}
+            mark={mark}
             tone={tone}
+            layout={layout}
             semantics={StatSemantics.inline}
           />
         ),

@@ -26,6 +26,7 @@ const SEGMENT_COLORS: Readonly<
 > = {
   delft: { done: 'delft', current: 'delft', upcoming: 'line' },
   ink: { done: 'ink', current: 'vermillion', upcoming: 'line' },
+  sections: { done: 'delft', current: 'delft-pale', upcoming: 'line' },
 };
 
 interface SegmentFilling {
