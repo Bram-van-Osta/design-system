@@ -9,10 +9,12 @@ export { FileDropZoneSize } from './file-drop-zone-size.ts';
 export interface FileDropZoneProps {
   /** What to drop, which names the zone: "Drop files". */
   readonly label: ReactNode;
-  /** Under the label on a computer, beside it in a compact zone: "or drag them here, as they come". Not on a phone, where nothing is dragged. */
+  /** Under the label, the types it takes among them: "or drag them here · .svg, .pdf or .png". Beside it in a compact zone, on a computer only. */
   readonly description?: ReactNode;
-  /** The files chosen or dropped, one or several at once, which the app checks and sends. */
+  /** The files chosen or dropped, which the app checks and sends: never sent by the zone. */
   readonly onFilesChoose: (files: readonly File[]) => void;
+  /** Several files at once, the default; `false` for a question that takes one: a drop of several hands the first. */
+  readonly isMultiple?: boolean;
   /** The types the picker offers, as for an input: `.zip,.sql,.gz`. A drop is not filtered. */
   readonly accept?: string;
   /** `large` by default, the page's own zone; `compact` inside a card. */
@@ -24,27 +26,28 @@ export interface FileDropZoneProps {
 }
 
 /**
- * Several files at once, dropped on the zone or chosen from the picker it opens: a button, reached
- * with the keyboard, in front of a hidden file input.
+ * Files dropped on the zone or chosen from the picker it opens, several at once or one: a button,
+ * reached with the keyboard, in front of a hidden file input.
  */
 export function FileDropZone({
   label,
   description,
   onFilesChoose,
+  isMultiple = true,
   accept,
   size = FileDropZoneSize.large,
   name,
   disabled = false,
   className,
 }: FileDropZoneProps) {
-  const zone = useFileDropZone({ onFilesChoose, isDisabled: disabled });
+  const zone = useFileDropZone({ onFilesChoose, isMultiple, isDisabled: disabled });
   const classes = FILE_DROP_ZONE_CLASSES[size];
   return (
     <>
       <input
         ref={zone.inputRef}
         type="file"
-        multiple
+        multiple={isMultiple}
         accept={accept}
         name={name}
         disabled={disabled}

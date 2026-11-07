@@ -3,13 +3,20 @@ import { useFileDrop } from '../FileInput/use-file-drop.ts';
 
 interface FileDropZoneOptions {
   readonly onFilesChoose: (files: readonly File[]) => void;
+  readonly isMultiple: boolean;
   readonly isDisabled: boolean;
 }
 
-/** The hidden input behind the zone, which takes several files, and the files dropped on it. */
-export function useFileDropZone({ onFilesChoose, isDisabled }: FileDropZoneOptions) {
+/**
+ * The hidden input behind the zone, and the files dropped on it: all of them, or the first alone
+ * for a zone that takes one.
+ */
+export function useFileDropZone({ onFilesChoose, isMultiple, isDisabled }: FileDropZoneOptions) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const drop = useFileDrop(onFilesChoose, isDisabled);
+  const drop = useFileDrop(
+    (files) => onFilesChoose(isMultiple ? files : files.slice(0, 1)),
+    isDisabled,
+  );
   return {
     inputRef,
     drop,

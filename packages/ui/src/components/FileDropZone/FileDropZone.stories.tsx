@@ -62,37 +62,38 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// On a computer, a dashed frame, its label over its description; on a phone, a primary button.
+async function expectFramed(zone: HTMLElement, label: HTMLElement, description: HTMLElement) {
+  const { borderTopStyle, borderTopColor, backgroundColor, borderRadius, boxShadow } =
+    getComputedStyle(zone);
+  await expect({
+    borderTopStyle,
+    borderTopColor,
+    backgroundColor,
+    borderRadius,
+    boxShadow,
+  }).toEqual({
+    borderTopStyle: 'dashed',
+    borderTopColor: tokenColor('ink', zone),
+    backgroundColor: tokenColor('bg', zone),
+    borderRadius: '0px',
+    boxShadow: 'none',
+  });
+  await expect(heightOf(zone)).toBeGreaterThanOrEqual(tokenPixels('drop-zone-height'));
+  await expect(description.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+    label.getBoundingClientRect().bottom,
+  );
+  await expect(getComputedStyle(description).color).toBe(tokenColor('ink-muted', zone));
+}
+
+// T14-S8-Fichiers-D and -M: a dashed frame, its label over its description, on every screen.
 export const Large: Story = {
   play: async ({ canvas, canvasElement, args }) => {
     const zone = canvas.getByRole('button', { name: ZONE });
-    await expectNamedByWhatItShows(zone, LABEL, DESCRIPTION);
+    await expect(zone).toHaveAccessibleName(`${LABEL} ${DESCRIPTION}`);
     const input = fileInputOf(canvasElement);
     await expect(input).toHaveAttribute('multiple');
     await expect(input).not.toBeVisible();
-    const { borderTopStyle, borderTopColor, backgroundColor, color, borderRadius, boxShadow } =
-      getComputedStyle(zone);
-    await expect({ borderRadius, boxShadow }).toEqual({ borderRadius: '0px', boxShadow: 'none' });
-    if (isOnAComputer()) {
-      await expect(heightOf(zone)).toBeGreaterThanOrEqual(tokenPixels('drop-zone-height'));
-      await expect({ borderTopStyle, borderTopColor }).toEqual({
-        borderTopStyle: 'dashed',
-        borderTopColor: tokenColor('ink', zone),
-      });
-      const label = canvas.getByText(LABEL);
-      const description = canvas.getByText(DESCRIPTION);
-      await expect(description.getBoundingClientRect().top).toBeGreaterThanOrEqual(
-        label.getBoundingClientRect().bottom,
-      );
-      await expect(getComputedStyle(description).color).toBe(tokenColor('ink-muted', zone));
-    } else {
-      await expect(heightOf(zone)).toBe(tokenPixels('button-height'));
-      await expect({ backgroundColor, color }).toEqual({
-        backgroundColor: tokenColor('delft', zone),
-        color: tokenColor('on-delft', zone),
-      });
-      await expect(canvas.getByText(DESCRIPTION)).not.toBeVisible();
-    }
+    await expectFramed(zone, canvas.getByText(LABEL), canvas.getByText(DESCRIPTION));
 
     await userEvent.upload(input, [PHOTO, MENU]);
     await expect(args.onFilesChoose).toHaveBeenLastCalledWith([PHOTO, MENU]);
@@ -201,13 +202,38 @@ export const Disabled: Story = {
   },
 };
 
-// On a phone, whatever the run's screen: the large zone as the page's primary button.
+// On a phone, whatever the run's screen: the large zone keeps its frame and its description.
 export const OnAPhone: Story = {
   globals: { viewport: { value: 'mobile1' } },
   play: async ({ canvas }) => {
     const zone = canvas.getByRole('button', { name: ZONE });
-    await expect(heightOf(zone)).toBe(tokenPixels('button-height'));
-    await expect(getComputedStyle(zone).backgroundColor).toBe(tokenColor('delft', zone));
-    await expect(zone).toHaveAccessibleName(LABEL);
+    await expectFramed(zone, canvas.getByText(LABEL), canvas.getByText(DESCRIPTION));
+    await expect(zone).toHaveAccessibleName(`${LABEL} ${DESCRIPTION}`);
+  },
+};
+
+const ORIGINAL_LOGO = 'Drop the original file';
+const LOGO_TYPES = 'or drag it here · .svg, .ai, .pdf or .png';
+
+// T14-Q08-Fichier-D and -M: a question that takes one file, its types given; a drop of several
+// hands the first.
+export const OneFile: Story = {
+  args: {
+    label: ORIGINAL_LOGO,
+    description: LOGO_TYPES,
+    isMultiple: false,
+    accept: '.svg,.ai,.pdf,.png',
+  },
+  play: async ({ canvas, canvasElement, args }) => {
+    const zone = canvas.getByRole('button', { name: `${ORIGINAL_LOGO} ${LOGO_TYPES}` });
+    const input = fileInputOf(canvasElement);
+    await expect(input).not.toHaveAttribute('multiple');
+    await expect(input).toHaveAttribute('accept', '.svg,.ai,.pdf,.png');
+    await userEvent.upload(input, LOGO);
+    await expect(args.onFilesChoose).toHaveBeenLastCalledWith([LOGO]);
+    zone.dispatchEvent(dragEventOf('drop', [LOGO, PHOTO]));
+    await expect(args.onFilesChoose).toHaveBeenLastCalledWith([LOGO]);
+    await userEvent.tab();
+    await expectFocusRing(zone);
   },
 };
