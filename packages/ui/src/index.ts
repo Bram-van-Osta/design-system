@@ -178,6 +178,11 @@ export {
   type StepBandCompactProps,
 } from './components/StepBand/StepBandCompact.tsx';
 export {
+  StepList,
+  type StepListProps,
+  type StepListStep,
+} from './components/StepList/StepList.tsx';
+export {
   StepProgress,
   type StepProgressPart,
   type StepProgressProps,
