@@ -155,7 +155,10 @@ export {
   StackJustify,
 } from './components/Stack/stack-classes.ts';
 export { Stat, type StatProps } from './components/Stat/Stat.tsx';
+export { StatGrid, type StatGridProps } from './components/Stat/StatGrid.tsx';
 export { StatLink, type StatLinkProps } from './components/Stat/StatLink.tsx';
+export { StatGridColumns } from './components/Stat/stat-grid-columns.ts';
+export { StatLayout } from './components/Stat/stat-layout.ts';
 export { StatTone } from './components/Stat/stat-tone.ts';
 export {
   StatusMark,

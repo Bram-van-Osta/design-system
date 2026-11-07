@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { StatParts, StatSemantics } from './StatParts.tsx';
 import { STAT_TILE_CLASSES, STAT_TONE_CLASSES } from './stat-classes.ts';
+import { StatLayout } from './stat-layout.ts';
 import { StatTone } from './stat-tone.ts';
 
 export interface StatProps {
@@ -13,6 +14,13 @@ export interface StatProps {
   readonly note?: ReactNode;
   /** `plain` by default; `attention` for the figure that awaits the reader, rarely. */
   readonly tone?: StatTone;
+  /** `labelFirst` by default, as a pipeline counts; `figureFirst` for a page's figures. */
+  readonly layout?: StatLayout;
+  /**
+   * A mark before the label, for a figure measured against a norm: a `StatusMark` without its own
+   * label, the label saying what it marks ("to fix").
+   */
+  readonly mark?: ReactNode;
   readonly className?: string;
 }
 
@@ -20,17 +28,27 @@ export interface StatProps {
  * A figure and its label in a hairline tile, as a pipeline counts its states. Its label is a
  * term and its figure a description: the tiles go in a `<dl>`, which the app names and lays out.
  */
-export function Stat({ label, value, note, tone = StatTone.plain, className }: StatProps) {
+export function Stat({
+  label,
+  value,
+  note,
+  tone = StatTone.plain,
+  layout = StatLayout.labelFirst,
+  mark,
+  className,
+}: StatProps) {
   return (
     <div
       data-tone={tone}
-      className={classNames(STAT_TILE_CLASSES, STAT_TONE_CLASSES[tone], className)}
+      className={classNames(STAT_TILE_CLASSES[layout], STAT_TONE_CLASSES[tone], className)}
     >
       <StatParts
         label={label}
         value={value}
         note={note}
+        mark={mark}
         tone={tone}
+        layout={layout}
         semantics={StatSemantics.description}
       />
     </div>
