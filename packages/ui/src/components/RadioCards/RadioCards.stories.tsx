@@ -8,7 +8,7 @@ import {
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { ChoiceDetailPlacement } from '../ChoiceCard/choice-card.ts';
-import { ChoiceColumns } from '../ChoiceCard/choice-grid.ts';
+import { ChoiceColumns, ChoiceSize } from '../ChoiceCard/choice-grid.ts';
 import { RadioCards } from './RadioCards.tsx';
 
 const SOMETHING_ELSE = 'Something else…';
@@ -239,5 +239,33 @@ export const Disabled: Story = {
       'true',
     );
     await expect(canvas.getByRole('textbox', { name: SPECIFY })).toBeDisabled();
+  },
+};
+
+// One short answer among compact cards, three a row where there is room: 48 px high, semibold.
+export const Compact: Story = {
+  args: {
+    legend: 'How often do you post?',
+    description: undefined,
+    size: ChoiceSize.compact,
+    columns: ChoiceColumns.three,
+    options: [
+      { value: 'weekly', label: 'Every week' },
+      { value: 'monthly', label: 'Every month' },
+      { value: 'rarely', label: 'Rarely' },
+    ],
+    detail: undefined,
+  },
+  play: async ({ canvas }) => {
+    const weekly = canvas.getByRole('radio', { name: 'Every week' });
+    const monthly = canvas.getByRole('radio', { name: 'Every month' });
+    const card = weekly.closest('label');
+    if (card === null) {
+      throw new Error('A choice card is the label around its control.');
+    }
+    await expectHeightAtLeast(card, 'target-min');
+    await expect(getComputedStyle(card).fontWeight).toBe('600');
+    await userEvent.click(monthly);
+    await expectCardStates(monthly, weekly);
   },
 };

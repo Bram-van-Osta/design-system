@@ -7,7 +7,8 @@ import {
 } from '../../testing/expect-choice-cards.ts';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
-import { ChoiceColumns } from '../ChoiceCard/choice-grid.ts';
+import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
+import { ChoiceColumns, ChoiceSize } from '../ChoiceCard/choice-grid.ts';
 import { CheckboxCards } from './CheckboxCards.tsx';
 
 const SPECIFY = 'Specify "Other"';
@@ -164,5 +165,88 @@ export const Disabled: Story = {
       'true',
     );
     await expect(canvas.getByRole('textbox', { name: SPECIFY })).toBeDisabled();
+  },
+};
+
+// Compact cards: 48 px high at least, their labels in 15 px semibold, 8 px apart.
+const COMPACT_MIN_HEIGHT = 48;
+const COMPACT = { fontSize: '15px', fontWeight: '600', gap: '8px' } as const;
+
+function cardOfControl(control: HTMLElement): HTMLElement {
+  const card = control.closest('label');
+  if (card === null) {
+    throw new Error('A choice card is the label around its control.');
+  }
+  return card;
+}
+
+async function expectCompactCard(control: HTMLElement): Promise<void> {
+  const card = cardOfControl(control);
+  const style = getComputedStyle(card);
+  await expect(card.getBoundingClientRect().height).toBeGreaterThanOrEqual(COMPACT_MIN_HEIGHT);
+  await expect({
+    fontSize: style.fontSize,
+    fontWeight: style.fontWeight,
+    gap: getComputedStyle(card.parentElement?.parentElement ?? card).rowGap,
+  }).toEqual(COMPACT);
+}
+
+// T14-Q05-Juger-D and -M: why a sentence does not suit, short reasons in two columns on a computer,
+// one on a phone.
+export const CompactReasons: Story = {
+  args: {
+    legend: 'Why?',
+    description: 'A quick reason is enough.',
+    size: ChoiceSize.compact,
+    options: [
+      { value: 'familiar', label: 'Too familiar' },
+      { value: 'long', label: 'Too long' },
+      { value: 'unlike', label: 'It does not sound like us' },
+      { value: 'other', label: 'Something else…' },
+    ],
+    detail: { forValues: ['other'], label: 'Say it your way', onValueChange: fn() },
+  },
+  play: async ({ canvas }) => {
+    const group = canvas.getByRole('group', { name: /Why\?/ });
+    const familiar = canvas.getByRole('checkbox', { name: 'Too familiar' });
+    const long = canvas.getByRole('checkbox', { name: 'Too long' });
+    await expectColumns(group, [familiar, long]);
+    await expectCompactCard(familiar);
+    await expect(cardOfControl(familiar).getBoundingClientRect().height).toBe(COMPACT_MIN_HEIGHT);
+    await userEvent.click(long);
+    await expectCardStates(long, familiar);
+  },
+};
+
+// T14-Q07-Inspirations-D and -M: what the client likes in a site, single words in three columns on
+// a computer, two on a phone.
+export const CompactAspects: Story = {
+  args: {
+    legend: 'What you like',
+    description: undefined,
+    size: ChoiceSize.compact,
+    columns: ChoiceColumns.three,
+    options: [
+      { value: 'colors', label: 'The colors' },
+      { value: 'lettering', label: 'The lettering' },
+      { value: 'photos', label: 'The photos' },
+      { value: 'simplicity', label: 'The simplicity' },
+      { value: 'mood', label: 'The mood' },
+      { value: 'other', label: 'Something else…' },
+    ],
+    detail: undefined,
+  },
+  play: async ({ canvas }) => {
+    const top = (name: string) =>
+      cardOfControl(canvas.getByRole('checkbox', { name })).getBoundingClientRect().top;
+    await expect(top('The lettering')).toBe(top('The colors'));
+    const third = top('The photos');
+    if (isOnAComputer()) {
+      await expect(third).toBe(top('The colors'));
+      await expect(top('The simplicity')).toBeGreaterThan(top('The colors'));
+    } else {
+      await expect(third).toBeGreaterThan(top('The colors'));
+    }
+    await expectCompactCard(canvas.getByRole('checkbox', { name: 'The colors' }));
   },
 };

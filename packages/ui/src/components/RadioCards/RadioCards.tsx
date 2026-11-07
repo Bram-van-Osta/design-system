@@ -8,7 +8,7 @@ import { useControllableValue } from '../../utils/use-controllable-value.ts';
 import { ChoiceCard } from '../ChoiceCard/ChoiceCard.tsx';
 import { ChoiceDetailField } from '../ChoiceCard/ChoiceDetailField.tsx';
 import type { ChoiceCardOption, ChoiceDetail } from '../ChoiceCard/choice-card.ts';
-import { ChoiceColumns, choiceGridClassesOf } from '../ChoiceCard/choice-grid.ts';
+import { ChoiceColumns, ChoiceSize, choiceGridClassesOf } from '../ChoiceCard/choice-grid.ts';
 import { useChoiceDetail } from '../ChoiceCard/use-choice-detail.ts';
 import { ChoiceLegend } from '../Field/ChoiceLegend.tsx';
 import { FieldError } from '../Field/FieldError.tsx';
@@ -25,8 +25,13 @@ export interface RadioCardsProps {
   readonly description?: ReactNode;
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
-  /** `auto` by default: two columns once the group is 28 rem wide; `one` for a list on every width. */
+  /**
+   * `auto` by default: two columns once the group is 28 rem wide; `one` for a list on every width;
+   * `three` for single words, two then three columns.
+   */
   readonly columns?: ChoiceColumns;
+  /** `regular` by default; `compact` for short answers, with `columns` `three` for single words. */
+  readonly size?: ChoiceSize;
   /** The text field of "Other…", or of any answer that asks for words, once it is chosen. */
   readonly detail?: ChoiceDetail;
   readonly name?: string;
@@ -49,6 +54,7 @@ export function RadioCards({
   error,
   marker,
   columns = ChoiceColumns.auto,
+  size = ChoiceSize.regular,
   detail,
   name,
   required,
@@ -87,11 +93,12 @@ export function RadioCards({
         className="flex flex-col gap-space-1"
       >
         <ChoiceLegend legend={legend} marker={marker} description={description} />
-        <div className={choiceGridClassesOf(columns)}>
+        <div className={choiceGridClassesOf(columns, size)}>
           {options.map((option) => (
             <ChoiceCard
               key={option.value}
               option={option}
+              size={size}
               control={
                 <RadioButton
                   value={option.value}
