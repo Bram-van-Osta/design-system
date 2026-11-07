@@ -63,6 +63,13 @@ export {
   type DisclosureProps,
 } from './components/Disclosure/Disclosure.tsx';
 export { DisclosureVariant } from './components/Disclosure/disclosure-variant.ts';
+export {
+  DocumentList,
+  type DocumentListItem,
+  type DocumentListLater,
+  type DocumentListLink,
+  type DocumentListProps,
+} from './components/DocumentList/DocumentList.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
 export { FieldMarker } from './components/Field/field-marker.ts';
