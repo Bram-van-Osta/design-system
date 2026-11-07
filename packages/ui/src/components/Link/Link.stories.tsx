@@ -4,6 +4,7 @@ import { expect, userEvent } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { RouterLink } from '../../testing/RouterLink.tsx';
+import { tokenColor } from '../../testing/token-color.ts';
 import { Text, TextTone, TextVariant } from '../Text/Text.tsx';
 import { Link } from './Link.tsx';
 
@@ -56,6 +57,43 @@ export const Navigation: Story = {
       <Link href="#site">My site</Link>
     </nav>
   ),
+};
+
+// T14-S7-Echanges-D: the client's navigation, plain words, the current page's underlined in Delft.
+export const NavigationPlain: Story = {
+  render: () => (
+    <nav aria-label="Your space" className="flex flex-wrap gap-x-space-6">
+      <Link href="#project" isNavigation>
+        Your project
+      </Link>
+      <Link href="#exchanges" isNavigation isCurrent>
+        Exchanges
+      </Link>
+      <Link href="#files" isNavigation>
+        Files
+      </Link>
+    </nav>
+  ),
+  play: async ({ canvas }) => {
+    const current = canvas.getByRole('link', { name: 'Exchanges' });
+    const other = canvas.getByRole('link', { name: 'Files' });
+    await expect(current).toHaveAttribute('aria-current', 'page');
+    await expect(other).not.toHaveAttribute('aria-current');
+    const currentStyle = getComputedStyle(current);
+    await expect({
+      textDecorationLine: currentStyle.textDecorationLine,
+      textDecorationColor: currentStyle.textDecorationColor,
+      textDecorationThickness: currentStyle.textDecorationThickness,
+      fontWeight: currentStyle.fontWeight,
+    }).toEqual({
+      textDecorationLine: 'underline',
+      textDecorationColor: tokenColor('delft', current),
+      textDecorationThickness: '2px',
+      fontWeight: '600',
+    });
+    await expect(getComputedStyle(other).textDecorationLine).toBe('none');
+    await expectHeightAtLeast(other, 'target-min');
+  },
 };
 
 // A link inside a sentence takes the sentence's size and line, at any type style.

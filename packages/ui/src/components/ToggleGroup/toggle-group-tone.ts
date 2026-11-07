@@ -15,5 +15,10 @@ export const ToggleGroupTone = {
    * computer.
    */
   answer: 'answer',
+  /**
+   * Discreet, as a list's filters: plain words in a row, each 44 px high, the pressed one in
+   * semibold, underlined in Delft blue, as a navigation's current link.
+   */
+  plain: 'plain',
 } as const;
 export type ToggleGroupTone = (typeof ToggleGroupTone)[keyof typeof ToggleGroupTone];

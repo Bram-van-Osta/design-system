@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import {
   expectAnswerPressed,
   expectAnswerRow,
@@ -292,5 +293,81 @@ export const AnswersDisabled: Story = {
     await userEvent.click(notForMe);
     await expect(args.onValueChange).not.toHaveBeenCalled();
     await expect(yes).toHaveAttribute('aria-pressed', 'true');
+  },
+};
+
+const FILTER = 'Filter the thread';
+const FILTERS = [
+  { value: 'all', label: 'All' },
+  { value: 'exchanges', label: 'Exchanges' },
+  { value: 'steps', label: 'Steps' },
+  { value: 'tasks', label: 'Tasks' },
+] as const;
+
+async function expectPlainPressed(
+  pressed: HTMLElement,
+  others: readonly HTMLElement[],
+): Promise<void> {
+  await expect(pressed).toHaveAttribute('aria-pressed', 'true');
+  const style = getComputedStyle(pressed);
+  await expect({
+    fontWeight: style.fontWeight,
+    textDecorationLine: style.textDecorationLine,
+    textDecorationColor: style.textDecorationColor,
+    textDecorationThickness: style.textDecorationThickness,
+    backgroundColor: style.backgroundColor,
+  }).toEqual({
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+    textDecorationColor: tokenColor('delft', pressed),
+    textDecorationThickness: '2px',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  });
+  for (const other of others) {
+    await expect(other).toHaveAttribute('aria-pressed', 'false');
+    await expect(getComputedStyle(other).textDecorationLine).toBe('none');
+    await expect(getComputedStyle(other).fontWeight).toBe('400');
+  }
+}
+
+// T13-B1-Fil-D and T13-C3-Fil-M: the thread's filters, plain words, the chosen one underlined.
+export const PlainFilters: Story = {
+  args: { tone: ToggleGroupTone.plain, label: FILTER, options: FILTERS },
+  play: async ({ canvas, args }) => {
+    const group = canvas.getByRole('group', { name: FILTER });
+    await expect(getComputedStyle(group).borderTopWidth).toBe('0px');
+    const [all, exchanges, steps, tasks] = FILTERS.map(({ label }) =>
+      canvas.getByRole('button', { name: label }),
+    );
+    if (
+      all === undefined ||
+      exchanges === undefined ||
+      steps === undefined ||
+      tasks === undefined
+    ) {
+      throw new Error('The four filters are drawn.');
+    }
+    for (const option of [all, exchanges, steps, tasks]) {
+      await expectHeightAtLeast(option, 'target-min');
+    }
+    await expectPlainPressed(all, [exchanges, steps, tasks]);
+    await userEvent.click(exchanges);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('exchanges');
+    await expectPlainPressed(exchanges, [all, steps, tasks]);
+  },
+};
+
+export const PlainKeyboard: Story = {
+  args: PlainFilters.args,
+  play: async ({ canvas, args }) => {
+    const all = canvas.getByRole('button', { name: 'All' });
+    const exchanges = canvas.getByRole('button', { name: 'Exchanges' });
+    await userEvent.tab();
+    await expectFocusRing(all);
+    await userEvent.keyboard('{ArrowRight}');
+    await expectFocusRing(exchanges);
+    await userEvent.keyboard(' ');
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('exchanges');
+    await expectPlainPressed(exchanges, [all]);
   },
 };
