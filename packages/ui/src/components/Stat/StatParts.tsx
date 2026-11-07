@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { hasContent } from '../../utils/has-content.ts';
-import { STAT_FIGURE_CLASSES, STAT_LABEL_CLASSES, STAT_NOTE_CLASSES } from './stat-classes.ts';
+import { STAT_LABEL_CLASSES, STAT_NOTE_CLASSES, statFigureClassesOf } from './stat-classes.ts';
 import type { StatLayout } from './stat-layout.ts';
 import type { StatTone } from './stat-tone.ts';
 
@@ -31,7 +31,8 @@ interface StatPartsProps {
 
 /**
  * A tile's label, its figure and its note, shared by `Stat` and `StatLink`. The spaces between them,
- * which the tile's layout drops, part their words in a link's name.
+ * which the tile's layout drops, part their words in a link's name. A titled tile may go without
+ * its figure.
  */
 export function StatParts({ label, value, note, mark, tone, layout, semantics }: StatPartsProps) {
   const { term: Term, detail: Detail } = TAGS[semantics];
@@ -40,8 +41,13 @@ export function StatParts({ label, value, note, mark, tone, layout, semantics }:
       <Term className={STAT_LABEL_CLASSES[layout]}>
         {mark}
         {label}
-      </Term>{' '}
-      <Detail className={STAT_FIGURE_CLASSES[tone]}>{value}</Detail>
+      </Term>
+      {hasContent(value) && (
+        <>
+          {' '}
+          <Detail className={statFigureClassesOf(layout, tone)}>{value}</Detail>
+        </>
+      )}
       {hasContent(note) && (
         <>
           {' '}

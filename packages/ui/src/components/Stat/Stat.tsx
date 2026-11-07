@@ -8,13 +8,16 @@ import { StatTone } from './stat-tone.ts';
 export interface StatProps {
   /** What is counted: "Proposal". */
   readonly label: ReactNode;
-  /** The figure, in tabular figures: "2", "3 h 40". */
-  readonly value: ReactNode;
+  /** The figure, in tabular figures: "2", "3 h 40". A `titled` tile may go without it. */
+  readonly value?: ReactNode;
   /** A line under the figure that situates it: "the oldest: 3 h". */
   readonly note?: ReactNode;
   /** `plain` by default; `attention` for the figure that awaits the reader, rarely. */
   readonly tone?: StatTone;
-  /** `labelFirst` by default, as a pipeline counts; `figureFirst` for a page's figures. */
+  /**
+   * `labelFirst` by default, as a pipeline counts; `figureFirst` for a page's figures; `titled` for
+   * a folder's categories, the label as the title under an ink rule.
+   */
   readonly layout?: StatLayout;
   /**
    * A mark before the label, for a figure measured against a norm: a `StatusMark` without its own
@@ -40,7 +43,7 @@ export function Stat({
   return (
     <div
       data-tone={tone}
-      className={classNames(STAT_TILE_CLASSES[layout], STAT_TONE_CLASSES[tone], className)}
+      className={classNames(STAT_TILE_CLASSES[layout], STAT_TONE_CLASSES[layout][tone], className)}
     >
       <StatParts
         label={label}
