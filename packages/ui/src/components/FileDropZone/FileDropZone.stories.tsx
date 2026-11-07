@@ -15,13 +15,9 @@ const PHOTO = new File(['A photo of the shop'], 'shop-front.jpg', { type: 'image
 const MENU = new File(['The holiday menu'], 'holiday-menu.pdf', { type: 'application/pdf' });
 const LOGO = new File(['The logo'], 'logo-final-v3.pdf', { type: 'application/pdf' });
 const BACKUP = new File(['The site'], 'site-backup.zip', { type: 'application/zip' });
-// Named by what it shows: its label, then its description where it shows.
+// Named by what it shows: its label, then its description.
 const ZONE = new RegExp(`^${LABEL}`);
 const COMPACT_ZONE = new RegExp(`^${BACKUP_LABEL}`);
-
-async function expectNamedByWhatItShows(zone: HTMLElement, label: string, description: string) {
-  await expect(zone).toHaveAccessibleName(isOnAComputer() ? `${label} ${description}` : label);
-}
 
 function fileInputOf(canvasElement: HTMLElement): HTMLInputElement {
   const input = canvasElement.querySelector('input[type="file"]');
@@ -135,7 +131,8 @@ export const DragOver: Story = {
   },
 };
 
-// Inside the card of what depends on the client: one dashed line, its types beside its label.
+// T14-S8: inside the card of what depends on the client, lower than the page's zone, its types
+// under its label on a computer and on a phone.
 export const Compact: Story = {
   args: {
     size: FileDropZoneSize.compact,
@@ -150,25 +147,26 @@ export const Compact: Story = {
   ),
   play: async ({ canvas, canvasElement, args }) => {
     const zone = canvas.getByRole('button', { name: COMPACT_ZONE });
-    await expectNamedByWhatItShows(zone, BACKUP_LABEL, BACKUP_TYPES);
+    await expect(zone).toHaveAccessibleName(`${BACKUP_LABEL} ${BACKUP_TYPES}`);
     await expect(fileInputOf(canvasElement)).toHaveAttribute('accept', '.zip,.sql,.gz');
     const { borderTopStyle, backgroundColor } = getComputedStyle(zone);
     await expect({ borderTopStyle, backgroundColor }).toEqual({
       borderTopStyle: 'dashed',
       backgroundColor: tokenColor('bg', zone),
     });
+    await expect(heightOf(zone)).toBeGreaterThanOrEqual(tokenPixels('drop-zone-compact-height'));
     const label = canvas.getByText(BACKUP_LABEL);
-    if (isOnAComputer()) {
-      await expect(heightOf(zone)).toBe(tokenPixels('drop-zone-compact-height'));
-      const description = canvas.getByText(BACKUP_TYPES);
-      await expect(description.getBoundingClientRect().top).toBeLessThan(
-        label.getBoundingClientRect().bottom,
-      );
-    } else {
-      await expect(heightOf(zone)).toBe(tokenPixels('drop-zone-compact-phone-height'));
-      await expect(heightOf(zone)).toBeGreaterThanOrEqual(tokenPixels('target-min'));
-      await expect(canvas.getByText(BACKUP_TYPES)).not.toBeVisible();
-    }
+    const description = canvas.getByText(BACKUP_TYPES);
+    await expect(description).toBeVisible();
+    await expect(description.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      label.getBoundingClientRect().bottom,
+    );
+    const labelStyle = getComputedStyle(label);
+    await expect({ fontSize: labelStyle.fontSize, fontWeight: labelStyle.fontWeight }).toEqual({
+      fontSize: '16px',
+      fontWeight: '600',
+    });
+    await expect(getComputedStyle(description).color).toBe(tokenColor('ink-muted', zone));
     await userEvent.upload(fileInputOf(canvasElement), [BACKUP]);
     await expect(args.onFilesChoose).toHaveBeenLastCalledWith([BACKUP]);
   },
