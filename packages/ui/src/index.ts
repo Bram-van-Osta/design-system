@@ -75,6 +75,7 @@ export {
 } from './components/DocumentList/DocumentList.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
+export { FieldLabelSize } from './components/Field/field-label-size.ts';
 export { FieldMarker } from './components/Field/field-marker.ts';
 export {
   FileDropZone,
