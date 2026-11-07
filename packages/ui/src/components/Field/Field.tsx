@@ -2,6 +2,7 @@ import { Field as BaseField } from '@base-ui/react/field';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
+import { AgentMark } from '../AgentMark/AgentMark.tsx';
 import { FieldError } from './FieldError.tsx';
 import { FieldMarkerText } from './FieldMarkerText.tsx';
 import type { FieldMarker } from './field-marker.ts';
@@ -13,6 +14,12 @@ export interface FieldProps {
   /** What is wrong, in words: shown under the field, which becomes invalid. */
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
+  /**
+   * The value is the agent's draft, which the reader has not changed: its words beside the label
+   * ("drafted by the agent, to edit") and the agent's rule at the control's left, for the operator
+   * alone. The app leaves it out once the value changes.
+   */
+  readonly agentDraft?: ReactNode;
   readonly name?: string;
   readonly disabled?: boolean;
   readonly className?: string;
@@ -26,14 +33,17 @@ export function Field({
   description,
   error,
   marker,
+  agentDraft,
   name,
   disabled,
   className,
   children,
 }: FieldProps) {
   const isInvalid = hasContent(error);
+  const isAgentDraft = hasContent(agentDraft);
   return (
     <BaseField.Root
+      data-agent-draft={isAgentDraft || undefined}
       name={name}
       disabled={disabled}
       invalid={isInvalid}
@@ -43,10 +53,21 @@ export function Field({
       <BaseField.Label
         nativeLabel={false}
         render={<div />}
-        className="text-label text-ink data-disabled:text-ink-muted"
+        className={classNames(
+          'text-label text-ink data-disabled:text-ink-muted',
+          isAgentDraft && 'flex flex-wrap items-baseline justify-between gap-x-space-3',
+        )}
       >
-        {label}
-        {marker && <FieldMarkerText marker={marker} />}
+        <span>
+          {label}
+          {marker && <FieldMarkerText marker={marker} />}
+        </span>
+        {isAgentDraft && (
+          <>
+            {' '}
+            <AgentMark>{agentDraft}</AgentMark>
+          </>
+        )}
       </BaseField.Label>
       {children}
       {isInvalid && <FieldError>{error}</FieldError>}

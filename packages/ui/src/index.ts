@@ -34,6 +34,9 @@ export {
   type AccountMenuProps,
 } from './components/AccountMenu/AccountMenu.tsx';
 export { ActionCard, type ActionCardProps } from './components/ActionCard/ActionCard.tsx';
+export { AgentAdvice, type AgentAdviceProps } from './components/AgentMark/AgentAdvice.tsx';
+export { AgentMark, type AgentMarkProps } from './components/AgentMark/AgentMark.tsx';
+export { AgentWords, type AgentWordsProps } from './components/AgentMark/AgentWords.tsx';
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar.tsx';
 export { Badge, type BadgeProps, BadgeTone } from './components/Badge/Badge.tsx';
 export { Button, type ButtonProps, ButtonVariant } from './components/Button/Button.tsx';

@@ -1,5 +1,6 @@
 export type ColorToken =
   | 'agent'
+  | 'agent-pale'
   | 'bg'
   | 'delft'
   | 'delft-pale'
