@@ -111,3 +111,25 @@ export const Launched: Story = {
     }
   },
 };
+
+const PAUSED = 'paused, at your request';
+
+// The project on hold: the current step without "right now" nor its lead, its line saying so.
+export const Paused: Story = {
+  args: { currentIndex: 3, pausedNote: PAUSED },
+  play: async ({ canvas, globals }) => {
+    const messages = messagesOf(globals.locale);
+    const list = canvas.getByRole('list', { name: LABEL });
+    const proposal = within(list).getAllByRole('listitem')[3];
+    if (proposal === undefined) {
+      throw new Error('The six steps are drawn.');
+    }
+    await expect(proposal).toHaveAttribute('aria-current', 'step');
+    await expect(proposal).toHaveTextContent(`The proposal ${PAUSED}`);
+    await expect(proposal).not.toHaveTextContent(messages['stepList.now']);
+    await expect(proposal).not.toHaveTextContent('about ten days after your answers');
+    const note = within(proposal).getByText(PAUSED);
+    await expect(getComputedStyle(note).color).toBe(tokenColor('ink-muted', note));
+    await expect(canvas.getByText('around mid-January')).toBeVisible();
+  },
+};

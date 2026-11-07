@@ -25,6 +25,11 @@ export interface StepListProps {
   readonly steps: readonly StepListStep[];
   /** The current step's index, from 0; the steps before it are done, every one past the last. */
   readonly currentIndex: number;
+  /**
+   * The journey is paused: the line under the current step that says so, in the app's words, in
+   * place of "right now" and of its lead time: "paused, at your request".
+   */
+  readonly pausedNote?: ReactNode;
   readonly className?: string;
 }
 
@@ -44,9 +49,10 @@ const NAME_CLASSES: Readonly<Record<StepPartState, string>> = {
  * A journey's steps as its client follows them: each a numbered box, its name and its usual lead
  * time, in a row on a computer and a column on a phone. A done step's box in Delft with its check,
  * "done" under its name; the current one's in a Delft border, the vermilion diamond before its name
- * and "right now" in vermilion under it, on the page's own background; the steps to come muted.
+ * and "right now" in vermilion under it, on the page's own background, or the line that says the
+ * journey is paused; the steps to come muted.
  */
-export function StepList({ label, steps, currentIndex, className }: StepListProps) {
+export function StepList({ label, steps, currentIndex, pausedNote, className }: StepListProps) {
   return (
     <ol
       aria-label={label}
@@ -61,6 +67,7 @@ export function StepList({ label, steps, currentIndex, className }: StepListProp
           step={step}
           number={index + 1}
           state={stepStateAt(index, currentIndex)}
+          pausedNote={pausedNote}
         />
       ))}
     </ol>
@@ -71,11 +78,13 @@ interface StepProps {
   readonly step: StepListStep;
   readonly number: number;
   readonly state: StepPartState;
+  readonly pausedNote: ReactNode;
 }
 
-function Step({ step, number, state }: StepProps) {
+function Step({ step, number, state, pausedNote }: StepProps) {
   const messages = useMessages();
   const isCurrent = state === StepPartState.current;
+  const isPaused = isCurrent && hasContent(pausedNote);
   return (
     <li
       data-state={state}
@@ -101,14 +110,18 @@ function Step({ step, number, state }: StepProps) {
           {isCurrent && <CurrentStepDiamond />}
           {step.label}
         </span>{' '}
-        {isCurrent && (
+        {isCurrent && !isPaused && (
           <>
             <span className="font-mono text-meta text-vermillion">
               {messages['stepList.now']}
             </span>{' '}
           </>
         )}
-        <StepLine state={state} lead={step.lead} doneText={messages['stepProgress.done']} />
+        <StepLine
+          state={state}
+          lead={isPaused ? pausedNote : step.lead}
+          doneText={messages['stepProgress.done']}
+        />
       </span>
     </li>
   );
