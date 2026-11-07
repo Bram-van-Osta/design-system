@@ -1,8 +1,9 @@
 import { expect } from 'storybook/test';
 import { expectFocusRing } from './expect-focus-ring.ts';
 import { expectHeightAtLeast } from './expect-height.ts';
+import { isOnAComputer } from './is-on-a-computer.ts';
 import { tokenColor } from './token-color.ts';
-import { type SizeToken, tokenPixels } from './token-pixels.ts';
+import { tokenPixels } from './token-pixels.ts';
 
 /**
  * The group on its Delft band: square, no shadow, in a white hair, its segments touching, each one
@@ -93,22 +94,34 @@ function checkOf(answer: HTMLElement): Element {
   return check;
 }
 
+function expectNear(actual: number, expected: number): Promise<void> {
+  return expect(Math.abs(actual - expected)).toBeLessThan(SUBPIXEL_TOLERANCE);
+}
+
+// On a computer, each its own equal column on one row, the gap between two; on a phone, stacked at
+// the group's width, the smaller gap between two.
+async function expectPlacedAfter(answer: HTMLElement, previous: HTMLElement): Promise<void> {
+  const box = answer.getBoundingClientRect();
+  const previousBox = previous.getBoundingClientRect();
+  if (isOnAComputer()) {
+    await expect(box.top).toBe(previousBox.top);
+    await expectNear(box.left - previousBox.right, tokenPixels('space-3'));
+    return;
+  }
+  await expect(box.left).toBe(previousBox.left);
+  await expectNear(box.top - previousBox.bottom, tokenPixels('space-2'));
+}
+
 /**
- * A question's answers: each its own equal column on one row, apart by the gap, a primary button
- * high, square, no shadow, in an ink hair, none pressed. The pointer's hover cannot be simulated,
- * so its surface is pinned by its class.
+ * A question's answers: each its own equal column on one row on a computer, stacked at the whole
+ * width on a phone, apart by the gap, a primary button high, square, no shadow, in an ink hair. The
+ * pointer's hover cannot be simulated, so its surface is pinned by its class.
  */
-export async function expectAnswerRow(
-  answers: readonly HTMLElement[],
-  gap: SizeToken,
-): Promise<void> {
+export async function expectAnswers(answers: readonly HTMLElement[]): Promise<void> {
   const [first] = answers;
   for (const [index, answer] of answers.entries()) {
     const box = answer.getBoundingClientRect();
-    await expect(Math.abs(box.width - (first?.getBoundingClientRect().width ?? 0))).toBeLessThan(
-      SUBPIXEL_TOLERANCE,
-    );
-    await expect(box.top).toBe(first?.getBoundingClientRect().top);
+    await expectNear(box.width, first?.getBoundingClientRect().width ?? 0);
     await expectHeightAtLeast(answer, 'button-height');
     const style = getComputedStyle(answer);
     await expect({
@@ -125,20 +138,18 @@ export async function expectAnswerRow(
     await expect(answer).toHaveClass('hover:not-data-pressed:not-data-disabled:bg-surface');
     const previous = answers[index - 1];
     if (previous !== undefined) {
-      const apart = box.left - previous.getBoundingClientRect().right;
-      await expect(Math.abs(apart - tokenPixels(gap))).toBeLessThan(SUBPIXEL_TOLERANCE);
+      await expectPlacedAfter(answer, previous);
     }
   }
 }
 
 /**
- * The pressed answer in Delft blue with white text, its check shown on a computer only; the others
- * in white with ink text, without a check. No pressed one when it is null.
+ * The pressed answer in Delft blue with white text and its check; the others in white with ink
+ * text, without a check. No pressed one when it is null.
  */
 export async function expectAnswerPressed(
   pressed: HTMLElement | null,
   others: readonly HTMLElement[],
-  { isCheckShown }: { readonly isCheckShown: boolean },
 ): Promise<void> {
   if (pressed !== null) {
     await expect(pressed).toHaveAttribute('aria-pressed', 'true');
@@ -147,7 +158,7 @@ export async function expectAnswerPressed(
       backgroundColor: tokenColor('delft', pressed),
       color: tokenColor('on-delft', pressed),
     });
-    await expect(getComputedStyle(checkOf(pressed)).display).toBe(isCheckShown ? 'block' : 'none');
+    await expect(getComputedStyle(checkOf(pressed)).display).toBe('block');
   }
   for (const other of others) {
     await expect(other).toHaveAttribute('aria-pressed', 'false');

@@ -36,14 +36,16 @@ const DISABLED_CLASSES =
 const GROUP_CLASSES: Readonly<Record<ToggleGroupTone, string>> = {
   delft: 'inline-flex border-hair border-on-delft data-disabled:border-line',
   ink: 'flex w-full border-hair border-ink data-disabled:border-line md:inline-flex md:w-auto',
-  answer: 'grid auto-cols-fr grid-flow-col gap-space-2 md:gap-space-3',
+  answer:
+    'grid grid-cols-1 gap-space-2 md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:gap-space-3',
   plain: 'flex flex-wrap gap-x-space-5 gap-y-space-1',
   segments: 'inline-flex border-hair border-field data-disabled:border-line',
 };
 // The group draws the outer hair, each segment after the first the one before it.
 const SEGMENT_BASE_CLASSES = `inline-flex min-h-target-min cursor-pointer items-center justify-center whitespace-nowrap px-space-3 text-body-s font-semibold not-first:border-l-hair ${DISABLED_CLASSES}`;
-// Each answer in its own hair; its label may take two lines on a phone, centered in its column.
-const ANSWER_CLASSES = `group inline-flex min-h-button-height min-w-0 cursor-pointer items-center justify-center gap-space-2 border-hair border-ink bg-bg px-space-2 py-space-2 text-center text-body-s font-medium text-ink md:px-space-4 md:text-body md:font-medium hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-delft data-pressed:font-semibold data-pressed:text-on-delft hover:data-pressed:not-data-disabled:bg-delft-deep ${DISABLED_CLASSES}`;
+// Each answer in its own hair, its label centered: its column on a computer, the whole width on a
+// phone.
+const ANSWER_CLASSES = `group inline-flex min-h-button-height min-w-0 cursor-pointer items-center justify-center gap-space-2 border-hair border-ink bg-bg px-space-4 py-space-2 text-center text-body font-medium text-ink hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-delft data-pressed:font-semibold data-pressed:text-on-delft hover:data-pressed:not-data-disabled:bg-delft-deep ${DISABLED_CLASSES}`;
 // The pressed word underlined as a navigation's current link (Link's isCurrent).
 const PLAIN_CLASSES =
   'inline-flex min-h-target-min cursor-pointer items-center text-body-s text-ink hover:not-data-pressed:not-data-disabled:text-ink-muted data-pressed:font-semibold data-pressed:underline data-pressed:decoration-delft data-pressed:decoration-2 data-pressed:underline-offset-8 data-disabled:cursor-not-allowed data-disabled:text-ink-muted';
@@ -103,7 +105,7 @@ export function ToggleGroup({
             <CheckIcon
               size={ICON_SIZE.inline}
               weight={ICON_WEIGHT}
-              className="hidden shrink-0 md:group-data-pressed:block"
+              className="hidden shrink-0 group-data-pressed:block"
               aria-hidden
             />
           )}
