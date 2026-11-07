@@ -156,6 +156,15 @@ export {
   type StatusMarkProps,
 } from './components/StatusMark/StatusMark.tsx';
 export {
+  StepBand,
+  type StepBandProps,
+  type StepBandStep,
+} from './components/StepBand/StepBand.tsx';
+export {
+  StepBandCompact,
+  type StepBandCompactProps,
+} from './components/StepBand/StepBandCompact.tsx';
+export {
   StepProgress,
   type StepProgressPart,
   type StepProgressProps,
