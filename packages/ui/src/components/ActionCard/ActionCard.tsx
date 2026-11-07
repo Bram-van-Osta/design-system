@@ -1,4 +1,5 @@
 import { type ReactNode, useId } from 'react';
+import { CARD_ACTIONS_CLASSES } from '../../utils/card-actions.ts';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
 import { Heading, type HeadingLevel, HeadingSize } from '../Heading/Heading.tsx';
@@ -10,7 +11,7 @@ export interface ActionCardProps {
   /** What the reader has to do, as a sentence; the card is named by it, or by its band without it. */
   readonly heading?: ReactNode;
   readonly headingLevel?: HeadingLevel;
-  /** The buttons, and the line that says what follows them. */
+  /** The buttons, and the line that says what follows them; the first, its main action, takes the whole width on a phone. */
   readonly actions?: ReactNode;
   readonly className?: string;
   /** The facts the action needs: a text, details, a list to copy. */
@@ -46,9 +47,7 @@ export function ActionCard({
         </Heading>
       )}
       {children}
-      {hasContent(actions) && (
-        <div className="flex flex-wrap items-center gap-x-space-5 gap-y-space-3">{actions}</div>
-      )}
+      {hasContent(actions) && <div className={CARD_ACTIONS_CLASSES}>{actions}</div>}
     </section>
   );
 }

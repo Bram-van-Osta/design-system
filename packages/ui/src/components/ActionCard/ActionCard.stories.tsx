@@ -106,3 +106,26 @@ export const UnderASection: Story = {
     );
   },
 };
+
+// T14-S1-Acompte-M: on a phone, the card's main action takes its whole width.
+export const MainActionOnAPhone: Story = {
+  args: {
+    kicker: 'What depends on you · whenever you like',
+    heading: 'Pay the deposit by transfer.',
+    actions: <Button onClick={fn()}>See the transfer details</Button>,
+  },
+  play: async ({ canvas }) => {
+    const card = canvas.getByRole('region', { name: 'Pay the deposit by transfer.' });
+    const button = canvas.getByRole('button', { name: 'See the transfer details' });
+    const style = getComputedStyle(card);
+    const inner =
+      card.getBoundingClientRect().width -
+      Number.parseFloat(style.paddingLeft) -
+      Number.parseFloat(style.paddingRight);
+    if (isOnAComputer()) {
+      await expect(button.getBoundingClientRect().width).toBeLessThan(inner);
+    } else {
+      await expect(button.getBoundingClientRect().width).toBe(inner);
+    }
+  },
+};
