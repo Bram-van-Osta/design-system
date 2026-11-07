@@ -23,6 +23,11 @@ export const StepProgressTone = {
    * page that follows where something stands for the person, such as a request.
    */
   ink: 'ink',
+  /**
+   * The done segments in Delft blue, the current one in pale Delft: a journey in sections, such as
+   * a questionnaire, one segment per section.
+   */
+  sections: 'sections',
 } as const;
 export type StepProgressTone = (typeof StepProgressTone)[keyof typeof StepProgressTone];
 

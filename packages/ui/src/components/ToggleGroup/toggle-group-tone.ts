@@ -20,5 +20,11 @@ export const ToggleGroupTone = {
    * semibold, underlined in Delft blue, as a navigation's current link.
    */
   plain: 'plain',
+  /**
+   * A row's answer among two to four, as what to keep of a page: segments side by side in a hair of
+   * the field color, each 44 px high, none pressed until one is chosen, the pressed one in Delft
+   * blue with white text.
+   */
+  segments: 'segments',
 } as const;
 export type ToggleGroupTone = (typeof ToggleGroupTone)[keyof typeof ToggleGroupTone];

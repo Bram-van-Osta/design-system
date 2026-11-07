@@ -371,3 +371,93 @@ export const PlainKeyboard: Story = {
     await expectPlainPressed(exchanges, [all]);
   },
 };
+
+const PAGE = 'Home';
+const KEEP_OPTIONS = [
+  { value: 'keep', label: 'Keep' },
+  { value: 'change', label: 'Change' },
+  { value: 'remove', label: 'Remove' },
+] as const;
+
+async function expectSegmentsPressed(
+  pressed: HTMLElement | null,
+  others: readonly HTMLElement[],
+): Promise<void> {
+  if (pressed !== null) {
+    await expect(pressed).toHaveAttribute('aria-pressed', 'true');
+    const { backgroundColor, color } = getComputedStyle(pressed);
+    await expect({ backgroundColor, color }).toEqual({
+      backgroundColor: tokenColor('delft', pressed),
+      color: tokenColor('on-delft', pressed),
+    });
+  }
+  for (const other of others) {
+    await expect(other).toHaveAttribute('aria-pressed', 'false');
+    const { backgroundColor, color } = getComputedStyle(other);
+    await expect({ backgroundColor, color }).toEqual({
+      backgroundColor: tokenColor('bg', other),
+      color: tokenColor('ink', other),
+    });
+  }
+}
+
+// T14-Q06-Garder-D and -M: what to keep of a page, named by the row it answers, none pressed first.
+export const Segments: Story = {
+  render: (args) => (
+    <div className="flex items-center justify-between gap-space-3 border-line border-t-hair py-space-3">
+      <span id="page-home" className="font-semibold">
+        {PAGE}
+      </span>
+      <ToggleGroup {...args} />
+    </div>
+  ),
+  args: {
+    tone: ToggleGroupTone.segments,
+    label: undefined,
+    labelledBy: 'page-home',
+    options: KEEP_OPTIONS,
+  },
+  play: async ({ canvas, args }) => {
+    const group = canvas.getByRole('group', { name: PAGE });
+    const style = getComputedStyle(group);
+    await expect({
+      borderTopWidth: style.borderTopWidth,
+      borderTopColor: style.borderTopColor,
+      borderRadius: style.borderRadius,
+    }).toEqual({
+      borderTopWidth: '1px',
+      borderTopColor: tokenColor('field', group),
+      borderRadius: '0px',
+    });
+    const [keep, change, remove] = KEEP_OPTIONS.map(({ label }) =>
+      canvas.getByRole('button', { name: label }),
+    );
+    if (keep === undefined || change === undefined || remove === undefined) {
+      throw new Error('The three answers are drawn.');
+    }
+    await expectSegmentsPressed(null, [keep, change, remove]);
+    for (const option of [keep, change, remove]) {
+      await expectHeightAtLeast(option, 'target-min');
+    }
+    await expect(change.getBoundingClientRect().left).toBe(keep.getBoundingClientRect().right);
+    await userEvent.click(change);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('change');
+    await expectSegmentsPressed(change, [keep, remove]);
+  },
+};
+
+export const SegmentsKeyboard: Story = {
+  render: Segments.render,
+  args: Segments.args,
+  play: async ({ canvas, args }) => {
+    const keep = canvas.getByRole('button', { name: 'Keep' });
+    const change = canvas.getByRole('button', { name: 'Change' });
+    await userEvent.tab();
+    await expectFocusRing(keep);
+    await userEvent.keyboard('{ArrowRight}');
+    await expectFocusRing(change);
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('change');
+    await expectSegmentsPressed(change, [keep]);
+  },
+};

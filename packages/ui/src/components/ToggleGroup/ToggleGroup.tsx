@@ -23,7 +23,7 @@ export interface ToggleGroupProps {
   /** The option pressed at first: the first option's when none is given, except for answers. */
   readonly defaultValue?: string;
   readonly onValueChange?: (value: string) => void;
-  /** Delft for a Delft band, the default; ink on the page's own background; answer for a question's answers; plain for a list's filters. */
+  /** Delft for a Delft band, the default; ink on the page's own background; answer for a question's answers; segments for a row's answer; plain for a list's filters. */
   readonly tone?: ToggleGroupTone;
   /** The whole group unavailable, in the line color, its pressed option kept. */
   readonly disabled?: boolean;
@@ -38,6 +38,7 @@ const GROUP_CLASSES: Readonly<Record<ToggleGroupTone, string>> = {
   ink: 'flex w-full border-hair border-ink data-disabled:border-line md:inline-flex md:w-auto',
   answer: 'grid auto-cols-fr grid-flow-col gap-space-2 md:gap-space-3',
   plain: 'flex flex-wrap gap-x-space-5 gap-y-space-1',
+  segments: 'inline-flex border-hair border-field data-disabled:border-line',
 };
 // The group draws the outer hair, each segment after the first the one before it.
 const SEGMENT_BASE_CLASSES = `inline-flex min-h-target-min cursor-pointer items-center justify-center whitespace-nowrap px-space-3 text-body-s font-semibold not-first:border-l-hair ${DISABLED_CLASSES}`;
@@ -51,14 +52,18 @@ const SEGMENT_CLASSES: Readonly<Record<ToggleGroupTone, string>> = {
   ink: `${SEGMENT_BASE_CLASSES} flex-1 border-ink bg-bg text-ink md:flex-none hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-ink data-pressed:text-bg`,
   answer: ANSWER_CLASSES,
   plain: PLAIN_CLASSES,
+  segments: `${SEGMENT_BASE_CLASSES} border-field bg-bg text-ink hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-delft data-pressed:text-on-delft hover:data-pressed:not-data-disabled:bg-delft-deep`,
 };
+
+// Answers wait for the reader's: none pressed at first.
+const ANSWER_TONES: readonly ToggleGroupTone[] = [ToggleGroupTone.answer, ToggleGroupTone.segments];
 
 /** The first option is pressed at first, except among answers, which wait for the reader's. */
 function firstPressedValueOf(
   tone: ToggleGroupTone,
   options: readonly ToggleGroupOption[],
 ): string | undefined {
-  return tone === ToggleGroupTone.answer ? undefined : options[0]?.value;
+  return ANSWER_TONES.includes(tone) ? undefined : options[0]?.value;
 }
 
 /**
