@@ -90,3 +90,34 @@ export const Keyboard: Story = {
     await expect(document.activeElement).toBe(document.body);
   },
 };
+
+// Longer than the reading column in any monospace font, so that it never fits beside its name.
+const LONG_META =
+  'handed in on Tuesday at 9:14, read again on Wednesday after the two notes the visitor added, then touched up on Thursday after your remark';
+
+// A meta too long to sit beside its name wraps under it, at the row's start, inside the row.
+export const LongMeta: Story = {
+  args: {
+    documents: [
+      { id: 'pre-analysis', name: 'The pre-analysis', meta: LONG_META, href: '#pre-analysis' },
+      { id: 'offer', name: 'The offer', meta: LONG_META, isLater: true },
+    ],
+  },
+  play: async ({ canvas }) => {
+    const metas = canvas.getAllByText(LONG_META);
+    await expect(metas).toHaveLength(2);
+    for (const meta of metas) {
+      const row = meta.parentElement;
+      const name = meta.previousElementSibling;
+      if (row === null || name === null) {
+        throw new Error('A meta follows its name in its row.');
+      }
+      const nameBox = name.getBoundingClientRect();
+      const metaBox = meta.getBoundingClientRect();
+      await expect(metaBox.top).toBeGreaterThanOrEqual(nameBox.bottom);
+      await expect(metaBox.left).toBe(nameBox.left);
+      await expect(metaBox.right).toBeLessThanOrEqual(row.getBoundingClientRect().right);
+      await expect(row.scrollWidth).toBe(row.clientWidth);
+    }
+  },
+};

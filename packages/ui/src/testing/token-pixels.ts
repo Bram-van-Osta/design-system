@@ -23,7 +23,6 @@ export type SizeToken =
   | 'progress-bar-height'
   | 'drop-zone-height'
   | 'drop-zone-compact-height'
-  | 'drop-zone-compact-phone-height'
   | 'switch-width'
   | 'switch-height'
   | 'switch-knob'

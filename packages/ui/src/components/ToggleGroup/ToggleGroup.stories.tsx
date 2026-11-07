@@ -4,14 +4,13 @@ import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import {
   expectAnswerPressed,
-  expectAnswerRow,
+  expectAnswers,
   expectDisabledOptions,
   expectFocusOnDelft,
   expectInkGroup,
   expectPressed,
   expectSegmentedGroup,
 } from '../../testing/expect-toggle-group.ts';
-import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { ToggleGroup } from './ToggleGroup.tsx';
 import { ToggleGroupTone } from './toggle-group-tone.ts';
@@ -176,41 +175,36 @@ function answersOf(canvasElement: HTMLElement) {
   };
 }
 
-function answerGap() {
-  return isOnAComputer() ? 'space-3' : 'space-2';
-}
-
-// REF-T6-Q41-Juger-D and -M: a sentence to judge, three answers side by side, none pressed at
-// first, three equal columns on a phone too.
+// REF-T6-Q41-Juger-D and T14-Q05-Juger-M: a sentence to judge, three answers side by side on a
+// computer and stacked on a phone, none pressed at first.
 export const Answers: Story = {
   args: { tone: ToggleGroupTone.answer, label: QUESTION, options: ANSWERS },
   play: async ({ canvas, canvasElement }) => {
     await expect(canvas.getByRole('group', { name: QUESTION })).toBeVisible();
     const { yes, inBetween, notForMe } = answersOf(canvasElement);
-    await expectAnswerRow([yes, inBetween, notForMe], answerGap());
-    await expectAnswerPressed(null, [yes, inBetween, notForMe], { isCheckShown: false });
+    await expectAnswers([yes, inBetween, notForMe]);
+    await expectAnswerPressed(null, [yes, inBetween, notForMe]);
   },
 };
 
-// Choosing an answer presses it in Delft blue, with its check on a computer; choosing it again
+// Choosing an answer presses it in Delft blue, with its check; choosing it again
 // keeps it, as "Skip this question" is the page's way to leave it unanswered.
 export const AnswerChosen: Story = {
   args: Answers.args,
   play: async ({ canvasElement, args }) => {
     const { yes, inBetween, notForMe } = answersOf(canvasElement);
-    const isCheckShown = isOnAComputer();
     await userEvent.click(notForMe);
     await expect(args.onValueChange).toHaveBeenCalledOnce();
     await expect(args.onValueChange).toHaveBeenLastCalledWith('not-for-me');
-    await expectAnswerPressed(notForMe, [yes, inBetween], { isCheckShown });
+    await expectAnswerPressed(notForMe, [yes, inBetween]);
     await expect(notForMe).toHaveClass('hover:data-pressed:not-data-disabled:bg-delft-deep');
     await userEvent.click(notForMe);
     await expect(args.onValueChange).toHaveBeenCalledOnce();
-    await expectAnswerPressed(notForMe, [yes, inBetween], { isCheckShown });
+    await expectAnswerPressed(notForMe, [yes, inBetween]);
     await userEvent.click(inBetween);
     await expect(args.onValueChange).toHaveBeenLastCalledWith('in-between');
-    await expectAnswerPressed(inBetween, [yes, notForMe], { isCheckShown });
-    await expectAnswerRow([yes, inBetween, notForMe], answerGap());
+    await expectAnswerPressed(inBetween, [yes, notForMe]);
+    await expectAnswers([yes, inBetween, notForMe]);
   },
 };
 
@@ -219,7 +213,7 @@ export const AnswerPressedAtFirst: Story = {
   args: { ...Answers.args, defaultValue: 'not-for-me' },
   play: async ({ canvasElement }) => {
     const { yes, inBetween, notForMe } = answersOf(canvasElement);
-    await expectAnswerPressed(notForMe, [yes, inBetween], { isCheckShown: isOnAComputer() });
+    await expectAnswerPressed(notForMe, [yes, inBetween]);
   },
 };
 
@@ -230,7 +224,7 @@ export const AnswerControlled: Story = {
     const { yes, inBetween, notForMe } = answersOf(canvasElement);
     await userEvent.click(yes);
     await expect(args.onValueChange).toHaveBeenLastCalledWith('yes');
-    await expectAnswerPressed(null, [yes, inBetween, notForMe], { isCheckShown: false });
+    await expectAnswerPressed(null, [yes, inBetween, notForMe]);
   },
 };
 
@@ -247,7 +241,7 @@ export const AnswerKeyboard: Story = {
     await expectFocusRing(inBetween);
     await userEvent.keyboard(' ');
     await expect(args.onValueChange).toHaveBeenLastCalledWith('in-between');
-    await expectAnswerPressed(inBetween, [yes, notForMe], { isCheckShown: isOnAComputer() });
+    await expectAnswerPressed(inBetween, [yes, notForMe]);
     await expectFocusRing(inBetween);
     await userEvent.keyboard('{ArrowRight}');
     await userEvent.keyboard('{Enter}');
@@ -280,7 +274,7 @@ export const AnswersNamedByTheQuestion: Story = {
     const group = canvas.getByRole('group', { name: `${QUESTION} ${SENTENCE}` });
     await expect(group).not.toHaveAttribute('aria-label');
     const { yes, inBetween, notForMe } = answersOf(canvasElement);
-    await expectAnswerRow([yes, inBetween, notForMe], answerGap());
+    await expectAnswers([yes, inBetween, notForMe]);
   },
 };
 

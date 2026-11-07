@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.37.0
+
+### Minor Changes
+
+- Adds `StatLayout.titled` (the label as the tile's title under a 2 px ink rule, the figure optional at its right, the note under them) and `StatGrid`'s `tileLayout` (20 by 16 px between titled tiles), `CalmCard`'s `kicker` and `size={CalmCardSize.compact}` (its heading at the label size), `StepList`'s `pausedNote` (the current step's line in place of "right now" and its lead time), `Field`'s `labelSize={FieldLabelSize.small}` (a search field's label in muted mono), and `size={ChoiceSize.compact}` on `CheckboxCards` and `RadioCards` with `ChoiceColumns.three` (48 px cards in semibold small text, two then three columns); the compact `FileDropZone` now stacks its description under its label, 64 px high on every screen, a `DocumentList` meta too long for its row wraps under its name, `Dialog` stacks its actions at the whole width on a phone, `StepProgressTone.sections` is 4 px high, and `ToggleGroupTone.answer` stacks its answers at the whole width on a phone, the pressed one's check shown there too.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.11.0
+
 ## 0.36.0
 
 ### Minor Changes

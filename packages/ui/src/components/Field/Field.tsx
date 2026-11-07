@@ -5,10 +5,23 @@ import { hasContent } from '../../utils/has-content.ts';
 import { AgentMark } from '../AgentMark/AgentMark.tsx';
 import { FieldError } from './FieldError.tsx';
 import { FieldMarkerText } from './FieldMarkerText.tsx';
+import { FieldLabelSize } from './field-label-size.ts';
 import type { FieldMarker } from './field-marker.ts';
+
+const ROOT_CLASSES: Readonly<Record<FieldLabelSize, string>> = {
+  regular: 'flex flex-col gap-space-2',
+  small: 'flex flex-col gap-space-1',
+};
+
+const LABEL_CLASSES: Readonly<Record<FieldLabelSize, string>> = {
+  regular: 'text-label text-ink data-disabled:text-ink-muted',
+  small: 'font-mono text-kicker text-ink-muted',
+};
 
 export interface FieldProps {
   readonly label: ReactNode;
+  /** `regular` by default; `small` for a search field's label, in muted mono. */
+  readonly labelSize?: FieldLabelSize;
   /** The help under the field. */
   readonly description?: ReactNode;
   /** What is wrong, in words: shown under the field, which becomes invalid. */
@@ -30,6 +43,7 @@ export interface FieldProps {
 /** A control with its label above, then its error and its help under it, all wired for screen readers. */
 export function Field({
   label,
+  labelSize = FieldLabelSize.regular,
   description,
   error,
   marker,
@@ -47,14 +61,14 @@ export function Field({
       name={name}
       disabled={disabled}
       invalid={isInvalid}
-      className={classNames('flex flex-col gap-space-2', className)}
+      className={classNames(ROOT_CLASSES[labelSize], className)}
     >
       {/* Not a <label>: the control may be a Select's button, which a native label would press. */}
       <BaseField.Label
         nativeLabel={false}
         render={<div />}
         className={classNames(
-          'text-label text-ink data-disabled:text-ink-muted',
+          LABEL_CLASSES[labelSize],
           isAgentDraft && 'flex flex-wrap items-baseline justify-between gap-x-space-3',
         )}
       >

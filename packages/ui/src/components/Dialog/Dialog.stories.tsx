@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, screen, userEvent, waitFor } from 'storybook/test';
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
+import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { Button, ButtonVariant } from '../Button/Button.tsx';
 import { Dialog, type DialogProps } from './Dialog.tsx';
 
@@ -58,12 +59,33 @@ export const Question: Story = {
   },
 };
 
+// T13-G1-Ecrire-M: on a phone, the action and its cancel stacked at the whole width, the action
+// first; on a computer, side by side at the right, the action last.
 export const Open: Story = {
   play: async () => {
-    await expect(
-      await screen.findByRole('alertdialog', { name: 'Remove this file?' }),
-    ).toBeVisible();
-    await expect(screen.getByRole('button', { name: /cancel|annuler/i })).toBeVisible();
+    const dialog = await screen.findByRole('alertdialog', { name: 'Remove this file?' });
+    await expect(dialog).toBeVisible();
+    const cancel = screen.getByRole('button', { name: /cancel|annuler/i });
+    await expect(cancel).toBeVisible();
+    const remove = screen.getByRole('button', { name: 'Remove' }).getBoundingClientRect();
+    const cancelBox = cancel.getBoundingClientRect();
+    const actions = cancel.parentElement?.getBoundingClientRect();
+    if (actions === undefined) {
+      throw new Error('The actions share their row.');
+    }
+    if (isOnAComputer()) {
+      await expect(remove.top + remove.height / 2).toBe(cancelBox.top + cancelBox.height / 2);
+      await expect(remove.left).toBeGreaterThan(cancelBox.right);
+      await expect(remove.right).toBe(actions.right);
+    } else {
+      await expect(remove.bottom).toBeLessThanOrEqual(cancelBox.top);
+      for (const button of [remove, cancelBox]) {
+        await expect({ left: button.left, width: button.width }).toEqual({
+          left: actions.left,
+          width: actions.width,
+        });
+      }
+    }
   },
 };
 

@@ -49,7 +49,8 @@ export function Dialog({
             )}
           </div>
           {children}
-          <div className="flex flex-wrap items-center justify-end gap-space-3">
+          {/* On a phone, stacked at the whole width, the action above its cancel. */}
+          <div className="flex flex-col-reverse gap-space-2 *:w-full md:flex-row md:flex-wrap md:items-center md:justify-end md:gap-space-3 md:*:w-auto">
             <AlertDialog.Close render={<Button variant={ButtonVariant.secondary} />}>
               {cancelLabel ?? messages['dialog.cancel']}
             </AlertDialog.Close>

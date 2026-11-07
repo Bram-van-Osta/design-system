@@ -24,8 +24,8 @@ export const StepProgressTone = {
    */
   ink: 'ink',
   /**
-   * The done segments in Delft blue, the current one in pale Delft: a journey in sections, such as
-   * a questionnaire, one segment per section.
+   * The done segments in Delft blue, the current one in pale Delft, 4 px high: a journey in
+   * sections, such as a questionnaire, one segment per section.
    */
   sections: 'sections',
 } as const;

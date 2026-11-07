@@ -9,7 +9,7 @@ export { FileDropZoneSize } from './file-drop-zone-size.ts';
 export interface FileDropZoneProps {
   /** What to drop, which names the zone: "Drop files". */
   readonly label: ReactNode;
-  /** Under the label, the types it takes among them: "or drag them here · .svg, .pdf or .png". Beside it in a compact zone, on a computer only. */
+  /** Under the label, the types it takes among them: "or drag them here · .svg, .pdf or .png". */
   readonly description?: ReactNode;
   /** The files chosen or dropped, which the app checks and sends: never sent by the zone. */
   readonly onFilesChoose: (files: readonly File[]) => void;

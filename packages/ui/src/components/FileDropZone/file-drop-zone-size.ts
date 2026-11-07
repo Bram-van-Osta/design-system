@@ -5,7 +5,10 @@ export const FileDropZoneSize = {
    * computer and on a phone.
    */
   large: 'large',
-  /** A zone inside a card: one dashed line on a computer and on a phone. */
+  /**
+   * A zone inside a card, lower: a dashed frame, its label over its description, on a computer and
+   * on a phone.
+   */
   compact: 'compact',
 } as const;
 export type FileDropZoneSize = (typeof FileDropZoneSize)[keyof typeof FileDropZoneSize];
@@ -18,7 +21,7 @@ const LARGE_ZONE_CLASSES =
   'min-h-drop-zone-height flex-col gap-space-1 border-hair border-dashed border-ink bg-bg px-space-5 py-space-4 hover:not-disabled:bg-surface data-dragging:border-delft data-dragging:bg-surface disabled:border-line disabled:text-ink-muted';
 
 const COMPACT_ZONE_CLASSES =
-  'min-h-drop-zone-compact-phone-height flex-wrap gap-x-space-2 border-hair border-dashed border-ink bg-bg px-space-4 py-space-2 hover:not-disabled:bg-surface data-dragging:border-delft data-dragging:bg-surface disabled:border-line disabled:text-ink-muted md:min-h-drop-zone-compact-height';
+  'min-h-drop-zone-compact-height flex-col gap-space-1 border-hair border-dashed border-ink bg-bg px-space-4 py-space-1 hover:not-disabled:bg-surface data-dragging:border-delft data-dragging:bg-surface disabled:border-line disabled:text-ink-muted';
 
 export const FILE_DROP_ZONE_CLASSES: Readonly<
   Record<
@@ -33,7 +36,7 @@ export const FILE_DROP_ZONE_CLASSES: Readonly<
   },
   compact: {
     zone: `${ZONE_CLASSES} ${COMPACT_ZONE_CLASSES}`,
-    label: 'text-body-s font-semibold',
-    description: 'hidden text-body-s text-ink-muted md:inline',
+    label: 'text-body font-semibold',
+    description: 'text-small text-ink-muted',
   },
 };

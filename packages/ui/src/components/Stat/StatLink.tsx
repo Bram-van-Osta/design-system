@@ -7,8 +7,13 @@ import { STAT_TILE_CLASSES, STAT_TONE_CLASSES } from './stat-classes.ts';
 import { StatLayout } from './stat-layout.ts';
 import { StatTone } from './stat-tone.ts';
 
-// A target of 44 px even on a phone, where the tile is one line; the surface under the pointer.
-const LINK_CLASSES = 'min-h-target-min cursor-pointer hover:bg-surface';
+// A target of 44 px even on a phone, where the tile is one line; under the pointer, the surface,
+// or a titled tile's label underlined, the tile having no frame for the surface to fill.
+const LINK_CLASSES: Readonly<Record<StatLayout, string>> = {
+  labelFirst: 'min-h-target-min cursor-pointer hover:bg-surface',
+  figureFirst: 'min-h-target-min cursor-pointer hover:bg-surface',
+  titled: 'group/stat min-h-target-min cursor-pointer',
+};
 
 export interface StatLinkProps
   extends Omit<useRender.ComponentProps<'a'>, 'className' | 'children'>,
@@ -37,8 +42,8 @@ export function StatLink({
       {
         className: classNames(
           STAT_TILE_CLASSES[layout],
-          STAT_TONE_CLASSES[tone],
-          LINK_CLASSES,
+          STAT_TONE_CLASSES[layout][tone],
+          LINK_CLASSES[layout],
           className,
         ),
         children: (

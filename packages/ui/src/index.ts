@@ -51,7 +51,7 @@ export {
   type ChoiceDetail,
   ChoiceDetailPlacement,
 } from './components/ChoiceCard/choice-card.ts';
-export { ChoiceColumns } from './components/ChoiceCard/choice-grid.ts';
+export { ChoiceColumns, ChoiceSize } from './components/ChoiceCard/choice-grid.ts';
 export { CodeInput, type CodeInputProps } from './components/CodeInput/CodeInput.tsx';
 export { CODE_LENGTH } from './components/CodeInput/code-digits.ts';
 export { Container, type ContainerProps } from './components/Container/Container.tsx';
@@ -75,6 +75,7 @@ export {
 } from './components/DocumentList/DocumentList.tsx';
 export { EmptyState, type EmptyStateProps } from './components/EmptyState/EmptyState.tsx';
 export { Field, type FieldProps } from './components/Field/Field.tsx';
+export { FieldLabelSize } from './components/Field/field-label-size.ts';
 export { FieldMarker } from './components/Field/field-marker.ts';
 export {
   FileDropZone,
@@ -260,6 +261,7 @@ export {
 } from './components/ToggleGroup/ToggleGroup.tsx';
 export { ToggleGroupTone } from './components/ToggleGroup/toggle-group-tone.ts';
 export { CalmCard, type CalmCardProps } from './components/WaitingCard/CalmCard.tsx';
+export { CalmCardSize } from './components/WaitingCard/calm-card-size.ts';
 export {
   WaitingCard,
   type WaitingCardProps,
