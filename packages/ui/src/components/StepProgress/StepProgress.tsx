@@ -50,6 +50,13 @@ const SEGMENT_CLASSES: Readonly<Record<StepProgressTone, Readonly<Record<StepPar
     sections: { done: 'bg-delft', current: 'bg-delft-pale', upcoming: 'bg-line' },
   };
 
+// A journey in sections draws its segments as thick as a step band's bars.
+const SEGMENT_HEIGHT_CLASSES: Readonly<Record<StepProgressTone, string>> = {
+  delft: 'h-progress-height',
+  ink: 'h-progress-height',
+  sections: 'h-progress-bar-height',
+};
+
 const PART_STATE_CLASSES: Readonly<Record<StepPartState, string>> = {
   done: 'text-ink',
   current: 'font-medium text-vermillion',
@@ -154,7 +161,7 @@ function Segments({ steps, filledCount, tone }: SegmentsProps) {
       <span
         key={step}
         data-state={state}
-        className={classNames('h-progress-height flex-1', SEGMENT_CLASSES[tone][state])}
+        className={classNames('flex-1', SEGMENT_HEIGHT_CLASSES[tone], SEGMENT_CLASSES[tone][state])}
       />
     );
   });

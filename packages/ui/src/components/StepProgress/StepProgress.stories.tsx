@@ -199,7 +199,8 @@ export const FollowingInParts: Story = {
   },
 };
 
-// T14-Q06-Garder-D: the questionnaire's progress by section, six done, the seventh under way.
+// T14-Q06-Garder-D: the questionnaire's progress by section, six done, the seventh under way, its
+// segments 4 px high as every T14-Q board draws them.
 export const BySection: Story = {
   args: {
     label: 'Your questionnaire',
@@ -219,5 +220,8 @@ export const BySection: Story = {
       tokenColor('delft-pale', bar),
       tokenColor('line', bar),
     ]);
+    for (const segment of segments) {
+      await expect(segment.getBoundingClientRect().height).toBe(tokenPixels('progress-bar-height'));
+    }
   },
 };
