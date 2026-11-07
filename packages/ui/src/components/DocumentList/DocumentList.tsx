@@ -8,7 +8,10 @@ interface DocumentCommon {
   readonly id: string;
   /** Its name: "The pre-analysis". */
   readonly name: ReactNode;
-  /** Where it stands, in mono on the right: "handed in at 9:14", "after your decision". */
+  /**
+   * Where it stands, in mono on the right: "handed in at 9:14", "after your decision". Too long to
+   * sit beside the name, it wraps under it.
+   */
   readonly meta?: ReactNode;
 }
 
@@ -35,12 +38,15 @@ export interface DocumentListProps {
   readonly className?: string;
 }
 
-const ROW_CLASSES = 'flex min-h-13 items-center justify-between gap-space-3 py-space-2';
-const META_CLASSES = 'shrink-0 text-right font-mono text-meta text-ink-muted';
+// A meta too long to sit beside the name wraps under it, at the row's start, rather than overflow.
+const ROW_CLASSES =
+  'flex min-h-13 flex-wrap content-center items-center justify-between gap-x-space-3 gap-y-space-1 py-space-2';
+const META_CLASSES = 'min-w-0 font-mono text-meta text-ink-muted';
 
 /**
  * A journey's documents, one a row, a line between two: each a link, its name and where it stands
- * on the right; a document yet to come in grey, neither a link nor focusable.
+ * on the right, or under the name when it is too long; a document yet to come in grey, neither a
+ * link nor focusable.
  */
 export function DocumentList({ documents, label, className }: DocumentListProps) {
   return (
