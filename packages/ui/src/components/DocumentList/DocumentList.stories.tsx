@@ -91,8 +91,9 @@ export const Keyboard: Story = {
   },
 };
 
+// Longer than the reading column in any monospace font, so that it never fits beside its name.
 const LONG_META =
-  'handed in on Tuesday at 9:14, read again on Wednesday after the two notes the visitor added';
+  'handed in on Tuesday at 9:14, read again on Wednesday after the two notes the visitor added, then touched up on Thursday after your remark';
 
 // A meta too long to sit beside its name wraps under it, at the row's start, inside the row.
 export const LongMeta: Story = {
