@@ -260,6 +260,7 @@ export {
 } from './components/ToggleGroup/ToggleGroup.tsx';
 export { ToggleGroupTone } from './components/ToggleGroup/toggle-group-tone.ts';
 export { CalmCard, type CalmCardProps } from './components/WaitingCard/CalmCard.tsx';
+export { CalmCardSize } from './components/WaitingCard/calm-card-size.ts';
 export {
   WaitingCard,
   type WaitingCardProps,

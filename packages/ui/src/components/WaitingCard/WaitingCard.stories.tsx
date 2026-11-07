@@ -9,6 +9,7 @@ import { Button, ButtonVariant } from '../Button/Button.tsx';
 import { Link } from '../Link/Link.tsx';
 import { Text, TextTone, TextVariant } from '../Text/Text.tsx';
 import { CalmCard } from './CalmCard.tsx';
+import { CalmCardSize } from './calm-card-size.ts';
 import { WaitingCard } from './WaitingCard.tsx';
 
 const READ = 'Read the pre-analysis';
@@ -146,5 +147,50 @@ export const Calm: Story = {
     await expectHeightAtLeast(offer, 'target-min');
     await userEvent.tab();
     await expectFocusRing(offer);
+  },
+};
+
+// T14-S3-Analyse-D: beside the page's heading, what depends on the client, nothing for now: its
+// kicker in muted mono, its heading at the label size.
+export const CalmCompactWithAKicker: Story = {
+  render: () => (
+    <CalmCard
+      kicker="What depends on you"
+      heading="Nothing for now."
+      size={CalmCardSize.compact}
+      actions={<Link href="#files">Add a file</Link>}
+    >
+      <Text variant={TextVariant.small} tone={TextTone.muted}>
+        An idea, a photo that comes back to you? Add it to your files: we will take it into account.
+      </Text>
+    </CalmCard>
+  ),
+  play: async ({ canvas }) => {
+    const card = canvas.getByRole('region', { name: 'Nothing for now.' });
+    await expect(getComputedStyle(card).padding).toBe(`${tokenPixels('space-5')}px`);
+    const kicker = canvas.getByText('What depends on you');
+    const kickerStyle = getComputedStyle(kicker);
+    await expect({
+      fontFamily: kickerStyle.fontFamily.includes('IBM Plex Mono'),
+      fontSize: kickerStyle.fontSize,
+      color: kickerStyle.color,
+    }).toEqual({ fontFamily: true, fontSize: '13px', color: tokenColor('ink-muted', card) });
+    const heading = canvas.getByRole('heading', { level: 3, name: 'Nothing for now.' });
+    await expect(kicker.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      heading.getBoundingClientRect().top,
+    );
+    const headingStyle = getComputedStyle(heading);
+    await expect({
+      fontSize: headingStyle.fontSize,
+      fontWeight: headingStyle.fontWeight,
+      color: headingStyle.color,
+      isDisplay: headingStyle.fontFamily.includes('Inter Tight'),
+    }).toEqual({
+      fontSize: `${tokenPixels('text-label')}px`,
+      fontWeight: '600',
+      color: tokenColor('ink', card),
+      isDisplay: false,
+    });
+    await expectHeightAtLeast(canvas.getByRole('link', { name: 'Add a file' }), 'target-min');
   },
 };
