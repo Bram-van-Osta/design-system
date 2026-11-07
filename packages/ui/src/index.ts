@@ -192,6 +192,9 @@ export { Tag, type TagProps, TagTone } from './components/Tag/Tag.tsx';
 export { Text, type TextProps, TextTone, TextVariant } from './components/Text/Text.tsx';
 export { TextArea, type TextAreaProps } from './components/TextArea/TextArea.tsx';
 export { TextInput, type TextInputProps } from './components/TextInput/TextInput.tsx';
+export { Thread, type ThreadProps } from './components/Thread/Thread.tsx';
+export { ThreadDay, type ThreadDayProps } from './components/Thread/ThreadDay.tsx';
+export { ThreadLine, type ThreadLineProps } from './components/Thread/ThreadLine.tsx';
 export { Thumbnail, type ThumbnailProps } from './components/Thumbnail/Thumbnail.tsx';
 export {
   ThumbnailAwaited,
