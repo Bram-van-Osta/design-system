@@ -47,9 +47,10 @@ const NAME_CLASSES: Readonly<Record<StepPartState, string>> = {
 
 /**
  * A journey's steps as its client follows them, for a page's column: one a line at every width,
- * their boxes joined, each name at its box's height and what is worth saying of it at the right. A
+ * their boxes joined, each name at its box's height and what is worth saying of it under it, small
+ * and in the mono face. A
  * done step's box in Delft with its check; the current one's in a Delft border, with the vermilion
- * diamond in place of its number and "your turn" at the right when it is the reader's to do, or
+ * diamond in place of its number and "your turn" under its name when it is the reader's to do, or
  * what says where it stands when it is not; the steps to come muted, with their lead time.
  */
 export function StepList({ label, steps, currentIndex, currentNote, className }: StepListProps) {
@@ -84,7 +85,7 @@ function Step({ step, number, state, currentNote, isLast }: StepProps) {
     <li
       data-state={state}
       aria-current={isCurrent ? 'step' : undefined}
-      className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-space-3 text-small"
+      className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-space-3 text-small"
     >
       <span
         aria-hidden
@@ -96,8 +97,10 @@ function Step({ step, number, state, currentNote, isLast }: StepProps) {
       >
         <StepBoxMark state={state} number={number} isReaders={isReaders} />
       </span>
-      <span className={NAME_CLASSES[state]}>{step.label}</span>{' '}
-      <StepNote state={state} isReaders={isReaders} currentNote={currentNote} lead={step.lead} />
+      <span className="flex min-w-0 flex-col">
+        <span className={NAME_CLASSES[state]}>{step.label}</span>{' '}
+        <StepNote state={state} isReaders={isReaders} currentNote={currentNote} lead={step.lead} />
+      </span>
       {!isLast && (
         <span
           aria-hidden
@@ -140,11 +143,11 @@ function StepNote({ state, isReaders, currentNote, lead }: StepNoteProps) {
   }
   if (isReaders) {
     return (
-      <span className="text-right font-semibold text-vermillion">
-        {messages['stepList.yourTurn']}
-      </span>
+      <span className="font-mono text-meta text-vermillion">{messages['stepList.yourTurn']}</span>
     );
   }
   const note = state === StepPartState.current ? currentNote : lead;
-  return hasContent(note) ? <span className="text-right text-ink-muted">{note}</span> : null;
+  return hasContent(note) ? (
+    <span className="font-mono text-meta text-ink-muted">{note}</span>
+  ) : null;
 }
