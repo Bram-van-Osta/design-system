@@ -5,6 +5,7 @@ import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { Button, ButtonVariant } from '../Button/Button.tsx';
 import { Dialog, type DialogProps } from './Dialog.tsx';
+import { DialogPlacement } from './dialog-placement.ts';
 
 type DialogStoryArgs = Omit<DialogProps, 'open' | 'onOpenChange'>;
 
@@ -105,5 +106,33 @@ export const WithOwnCancelLabel: Story = {
     description: 'You will not be able to change it afterwards.',
     actionLabel: 'Send',
     cancelLabel: 'Keep writing',
+  },
+};
+
+// T15-I-Inspirations-D, variant C: why the reader likes an image, rising from the bottom at the
+// whole width on a phone, in the middle of the screen on a computer.
+export const Sheet: Story = {
+  args: {
+    title: 'What you like in it',
+    description: undefined,
+    actionLabel: 'Save',
+    cancelLabel: 'Later',
+    placement: DialogPlacement.sheet,
+  },
+  play: async () => {
+    const dialog = await screen.findByRole('alertdialog', { name: 'What you like in it' });
+    const box = dialog.getBoundingClientRect();
+    if (isOnAComputer()) {
+      await expect(box.top + box.height / 2).toBeCloseTo(window.innerHeight / 2, 0);
+      await expect(getComputedStyle(dialog).borderLeftWidth).toBe('1px');
+    } else {
+      await expect({ left: box.left, right: box.right, bottom: box.bottom }).toEqual({
+        left: 0,
+        right: window.innerWidth,
+        bottom: window.innerHeight,
+      });
+      await expect(getComputedStyle(dialog).borderLeftWidth).toBe('0px');
+      await expect(getComputedStyle(dialog).borderTopWidth).toBe('1px');
+    }
   },
 };

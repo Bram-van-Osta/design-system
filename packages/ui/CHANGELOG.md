@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.41.0
+
+### Minor Changes
+
+- ToggleGroup's `tile` tone answers under a narrow tile, its segments sharing the tile's width by their words, and Dialog's `placement` `sheet` rises from the bottom at the whole width on a phone.
+
 ## 0.40.0
 
 ### Minor Changes
