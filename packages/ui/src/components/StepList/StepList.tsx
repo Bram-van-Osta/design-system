@@ -14,7 +14,7 @@ export interface StepListStep {
   readonly id: string;
   /** Its name: "The questionnaire". */
   readonly label: ReactNode;
-  /** Its usual lead time, never a date: "about 20 minutes, at your pace". Not shown once done. */
+  /** Its usual lead time or its aim, never a date: "around mid-January". Only while it is to come. */
   readonly lead?: ReactNode;
 }
 
@@ -26,9 +26,8 @@ export interface StepListProps {
   /** The current step's index, from 0; the steps before it are done, every one past the last. */
   readonly currentIndex: number;
   /**
-   * The current step is not the reader's to do: the line under it that says where it stands, in
-   * the app's words and muted, in place of "your turn" and of its lead time: "we're preparing it",
-   * "paused, at your request".
+   * The current step is not the reader's to do: what says where it stands, in the app's words and
+   * muted, in place of "your turn": "we're preparing it", "paused, at your request".
    */
   readonly currentNote?: ReactNode;
   readonly className?: string;
@@ -47,21 +46,15 @@ const NAME_CLASSES: Readonly<Record<StepPartState, string>> = {
 };
 
 /**
- * A journey's steps as its client follows them: each a numbered box, its name and its usual lead
- * time, in a row on a computer and a column on a phone. A done step's box in Delft with its check,
- * "done" under its name; the current one's in a Delft border, and under its name the vermilion
- * diamond and "your turn" on the page's own background when it is the reader's to do, or the line
- * that says where it stands when it is not; the steps to come muted.
+ * A journey's steps as its client follows them, for a page's column: one a line at every width,
+ * their boxes joined, each name at its box's height and what is worth saying of it at the right. A
+ * done step's box in Delft with its check; the current one's in a Delft border, with the vermilion
+ * diamond in place of its number and "your turn" at the right when it is the reader's to do, or
+ * what says where it stands when it is not; the steps to come muted, with their lead time.
  */
 export function StepList({ label, steps, currentIndex, currentNote, className }: StepListProps) {
   return (
-    <ol
-      aria-label={label}
-      className={classNames(
-        'flex flex-col md:grid md:auto-cols-fr md:grid-flow-col md:gap-space-3',
-        className,
-      )}
-    >
+    <ol aria-label={label} className={classNames('flex flex-col', className)}>
       {steps.map((step, index) => (
         <Step
           key={step.id}
@@ -69,6 +62,7 @@ export function StepList({ label, steps, currentIndex, currentNote, className }:
           number={index + 1}
           state={stepStateAt(index, currentIndex)}
           currentNote={currentNote}
+          isLast={index === steps.length - 1}
         />
       ))}
     </ol>
@@ -80,17 +74,17 @@ interface StepProps {
   readonly number: number;
   readonly state: StepPartState;
   readonly currentNote: ReactNode;
+  readonly isLast: boolean;
 }
 
-function Step({ step, number, state, currentNote }: StepProps) {
-  const messages = useMessages();
+function Step({ step, number, state, currentNote, isLast }: StepProps) {
   const isCurrent = state === StepPartState.current;
-  const hasNote = isCurrent && hasContent(currentNote);
+  const isReaders = isCurrent && !hasContent(currentNote);
   return (
     <li
       data-state={state}
       aria-current={isCurrent ? 'step' : undefined}
-      className="flex items-center gap-space-3 py-space-2 text-small md:flex-col md:items-start md:gap-space-2 md:py-0"
+      className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-space-3 text-small"
     >
       <span
         aria-hidden
@@ -100,41 +94,57 @@ function Step({ step, number, state, currentNote }: StepProps) {
           BOX_CLASSES[state],
         )}
       >
-        {state === StepPartState.done ? (
-          <CheckIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} />
-        ) : (
-          number
-        )}
+        <StepBoxMark state={state} number={number} isReaders={isReaders} />
       </span>
-      <span className="flex min-w-0 flex-col">
-        <span className={NAME_CLASSES[state]}>{step.label}</span>{' '}
-        {isCurrent && !hasNote && (
-          <>
-            <span className="inline-flex items-center gap-space-2 font-mono text-meta text-vermillion">
-              <CurrentStepDiamond />
-              {messages['stepList.yourTurn']}
-            </span>{' '}
-          </>
-        )}
-        <StepLine
-          state={state}
-          lead={hasNote ? currentNote : step.lead}
-          doneText={messages['stepProgress.done']}
+      <span className={NAME_CLASSES[state]}>{step.label}</span>{' '}
+      <StepNote state={state} isReaders={isReaders} currentNote={currentNote} lead={step.lead} />
+      {!isLast && (
+        <span
+          aria-hidden
+          data-step-link
+          className={classNames(
+            'col-start-1 h-space-3 justify-self-center border-l-select',
+            state === StepPartState.done ? 'border-delft' : 'border-line',
+          )}
         />
-      </span>
+      )}
     </li>
   );
 }
 
-interface StepLineProps {
+interface StepBoxMarkProps {
   readonly state: StepPartState;
-  readonly lead: ReactNode;
-  readonly doneText: string;
+  readonly number: number;
+  readonly isReaders: boolean;
 }
 
-function StepLine({ state, lead, doneText }: StepLineProps) {
+function StepBoxMark({ state, number, isReaders }: StepBoxMarkProps) {
   if (state === StepPartState.done) {
-    return <span className="text-ink-muted">{doneText}</span>;
+    return <CheckIcon size={ICON_SIZE.inline} weight={ICON_WEIGHT} />;
   }
-  return hasContent(lead) ? <span className="text-ink-muted">{lead}</span> : null;
+  return isReaders ? <CurrentStepDiamond className="size-2.25" /> : number;
+}
+
+interface StepNoteProps {
+  readonly state: StepPartState;
+  readonly isReaders: boolean;
+  readonly currentNote: ReactNode;
+  readonly lead: ReactNode;
+}
+
+// A done step's check says it to the eye: its word is for a screen reader.
+function StepNote({ state, isReaders, currentNote, lead }: StepNoteProps) {
+  const messages = useMessages();
+  if (state === StepPartState.done) {
+    return <span className="sr-only">{messages['stepProgress.done']}</span>;
+  }
+  if (isReaders) {
+    return (
+      <span className="text-right font-semibold text-vermillion">
+        {messages['stepList.yourTurn']}
+      </span>
+    );
+  }
+  const note = state === StepPartState.current ? currentNote : lead;
+  return hasContent(note) ? <span className="text-right text-ink-muted">{note}</span> : null;
 }

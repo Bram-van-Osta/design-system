@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
-import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { messagesOf } from '../../testing/messages-of.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { StepList, type StepListStep } from './StepList.tsx';
@@ -57,8 +56,9 @@ export const AtTheQuestionnaire: Story = {
 
     await expect(questionnaire).toHaveAttribute('aria-current', 'step');
     await expect(questionnaire).toHaveTextContent(
-      `The questionnaire ${messages['stepList.yourTurn']} about 20 minutes, at your pace`,
+      `The questionnaire ${messages['stepList.yourTurn']}`,
     );
+    await expect(questionnaire).not.toHaveTextContent('about 20 minutes, at your pace');
     const now = within(questionnaire).getByText(messages['stepList.yourTurn']);
     await expect(getComputedStyle(now).color).toBe(tokenColor('vermillion', now));
     const currentBox = boxOf(questionnaire);
@@ -67,7 +67,8 @@ export const AtTheQuestionnaire: Story = {
       borderTopWidth: currentStyle.borderTopWidth,
       borderTopColor: currentStyle.borderTopColor,
     }).toEqual({ borderTopWidth: '2px', borderTopColor: tokenColor('delft', currentBox) });
-    await expect(currentBox).toHaveTextContent('3');
+    await expect(currentBox).not.toHaveTextContent('3');
+    await expect(currentBox.querySelector('[data-current-step-diamond]')).not.toBeNull();
 
     await expect(proposal).not.toHaveAttribute('aria-current');
     await expect(boxOf(proposal)).toHaveTextContent('4');
@@ -85,18 +86,15 @@ export const AtTheQuestionnaire: Story = {
   },
 };
 
-// In a row on a computer, a column on a phone.
-export const RowOrColumn: Story = {
+// One step a line at every width, each joined to the next.
+export const OneStepALine: Story = {
   play: async ({ canvas }) => {
     const items = within(canvas.getByRole('list', { name: LABEL })).getAllByRole('listitem');
     const [first, second] = items.map((item) => item.getBoundingClientRect());
-    if (isOnAComputer()) {
-      await expect(second?.top).toBe(first?.top);
-      await expect(second?.left ?? 0).toBeGreaterThan(first?.left ?? 0);
-    } else {
-      await expect(second?.left).toBe(first?.left);
-      await expect(second?.top ?? 0).toBeGreaterThan(first?.top ?? 0);
-    }
+    await expect(second?.left).toBe(first?.left);
+    await expect(second?.top ?? 0).toBeGreaterThan(first?.top ?? 0);
+    await expect(items.at(0)?.querySelector('[data-step-link]')).not.toBeNull();
+    await expect(items.at(-1)?.querySelector('[data-step-link]')).toBeNull();
   },
 };
 
@@ -114,8 +112,8 @@ export const Launched: Story = {
 
 const PAUSED = 'paused, at your request';
 
-// Not the reader's to do: the current step without the diamond, "your turn" nor its lead, its line
-// saying where it stands.
+// Not the reader's to do: the current step keeps its number, without the diamond, "your turn" nor
+// its lead, its note saying where it stands.
 export const Paused: Story = {
   args: { currentIndex: 3, currentNote: PAUSED },
   play: async ({ canvas, globals }) => {
@@ -129,7 +127,8 @@ export const Paused: Story = {
     await expect(proposal).toHaveTextContent(`The proposal ${PAUSED}`);
     await expect(proposal).not.toHaveTextContent(messages['stepList.yourTurn']);
     await expect(proposal).not.toHaveTextContent('about ten days after your answers');
-    await expect(proposal.querySelector('[data-step-box] ~ span svg')).toBeNull();
+    await expect(proposal.querySelector('[data-current-step-diamond]')).toBeNull();
+    await expect(boxOf(proposal)).toHaveTextContent('4');
     const note = within(proposal).getByText(PAUSED);
     await expect(getComputedStyle(note).color).toBe(tokenColor('ink-muted', note));
     await expect(canvas.getByText('around mid-January')).toBeVisible();
