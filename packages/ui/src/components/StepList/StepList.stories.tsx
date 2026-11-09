@@ -57,9 +57,9 @@ export const AtTheQuestionnaire: Story = {
 
     await expect(questionnaire).toHaveAttribute('aria-current', 'step');
     await expect(questionnaire).toHaveTextContent(
-      `The questionnaire ${messages['stepList.now']} about 20 minutes, at your pace`,
+      `The questionnaire ${messages['stepList.yourTurn']} about 20 minutes, at your pace`,
     );
-    const now = within(questionnaire).getByText(messages['stepList.now']);
+    const now = within(questionnaire).getByText(messages['stepList.yourTurn']);
     await expect(getComputedStyle(now).color).toBe(tokenColor('vermillion', now));
     const currentBox = boxOf(questionnaire);
     const currentStyle = getComputedStyle(currentBox);
@@ -85,21 +85,17 @@ export const AtTheQuestionnaire: Story = {
   },
 };
 
-// One step a line at every width; its lead time beside its name on a computer, under it on a phone.
-export const OneStepALine: Story = {
+// In a row on a computer, a column on a phone.
+export const RowOrColumn: Story = {
   play: async ({ canvas }) => {
     const items = within(canvas.getByRole('list', { name: LABEL })).getAllByRole('listitem');
     const [first, second] = items.map((item) => item.getBoundingClientRect());
-    await expect(second?.left).toBe(first?.left);
-    await expect(second?.top ?? 0).toBeGreaterThanOrEqual(first?.bottom ?? 0);
-
-    const name = canvas.getByText('The proposal').getBoundingClientRect();
-    const lead = canvas.getByText('about ten days after your answers').getBoundingClientRect();
     if (isOnAComputer()) {
-      await expect(lead.left).toBeGreaterThan(name.right);
-      await expect(lead.top).toBeLessThan(name.bottom);
+      await expect(second?.top).toBe(first?.top);
+      await expect(second?.left ?? 0).toBeGreaterThan(first?.left ?? 0);
     } else {
-      await expect(lead.top).toBeGreaterThanOrEqual(name.bottom);
+      await expect(second?.left).toBe(first?.left);
+      await expect(second?.top ?? 0).toBeGreaterThan(first?.top ?? 0);
     }
   },
 };
@@ -118,9 +114,10 @@ export const Launched: Story = {
 
 const PAUSED = 'paused, at your request';
 
-// The project on hold: the current step without "right now" nor its lead, its line saying so.
+// Not the reader's to do: the current step without the diamond, "your turn" nor its lead, its line
+// saying where it stands.
 export const Paused: Story = {
-  args: { currentIndex: 3, pausedNote: PAUSED },
+  args: { currentIndex: 3, currentNote: PAUSED },
   play: async ({ canvas, globals }) => {
     const messages = messagesOf(globals.locale);
     const list = canvas.getByRole('list', { name: LABEL });
@@ -130,8 +127,9 @@ export const Paused: Story = {
     }
     await expect(proposal).toHaveAttribute('aria-current', 'step');
     await expect(proposal).toHaveTextContent(`The proposal ${PAUSED}`);
-    await expect(proposal).not.toHaveTextContent(messages['stepList.now']);
+    await expect(proposal).not.toHaveTextContent(messages['stepList.yourTurn']);
     await expect(proposal).not.toHaveTextContent('about ten days after your answers');
+    await expect(proposal.querySelector('[data-step-box] ~ span svg')).toBeNull();
     const note = within(proposal).getByText(PAUSED);
     await expect(getComputedStyle(note).color).toBe(tokenColor('ink-muted', note));
     await expect(canvas.getByText('around mid-January')).toBeVisible();
