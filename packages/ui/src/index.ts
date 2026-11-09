@@ -88,6 +88,7 @@ export {
   FileDropZoneSize,
 } from './components/FileDropZone/FileDropZone.tsx';
 export { FileInput, type FileInputProps } from './components/FileInput/FileInput.tsx';
+export { FollowUp, type FollowUpProps } from './components/FollowUp/FollowUp.tsx';
 export { FormAlert, type FormAlertProps } from './components/FormAlert/FormAlert.tsx';
 export {
   Heading,
@@ -95,6 +96,15 @@ export {
   type HeadingProps,
   HeadingSize,
 } from './components/Heading/Heading.tsx';
+export {
+  HighlightedQuote,
+  type HighlightedQuoteProps,
+} from './components/HighlightedQuote/HighlightedQuote.tsx';
+export {
+  HighlightedTextArea,
+  type HighlightedTextAreaProps,
+} from './components/HighlightedTextArea/HighlightedTextArea.tsx';
+export type { TextPassage } from './components/HighlightedTextArea/passage-ranges.ts';
 export {
   IconButton,
   type IconButtonProps,
@@ -127,6 +137,9 @@ export {
   PasswordInput,
   type PasswordInputProps,
 } from './components/PasswordInput/PasswordInput.tsx';
+export { PointBand, type PointBandProps } from './components/PointBand/PointBand.tsx';
+export type { NotedPoint } from './components/PointColumn/noted-point.ts';
+export { PointColumn, type PointColumnProps } from './components/PointColumn/PointColumn.tsx';
 export {
   ProgressBar,
   type ProgressBarProps,
@@ -156,6 +169,12 @@ export {
   type SkeletonProps,
   SkeletonShape,
 } from './components/Skeleton/Skeleton.tsx';
+export { SourcedFact, type SourcedFactProps } from './components/SourcedFact/SourcedFact.tsx';
+export {
+  SourcedFactList,
+  type SourcedFactListProps,
+} from './components/SourcedFact/SourcedFactList.tsx';
+export { SourceMark, type SourceMarkProps } from './components/SourceMark/SourceMark.tsx';
 export { Stack, type StackProps } from './components/Stack/Stack.tsx';
 export {
   type Space,

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { FIRST_LINE_SLOT_CLASSES } from '../../utils/first-line.ts';
 import { hasContent } from '../../utils/has-content.ts';
+import { SourceMark } from '../SourceMark/SourceMark.tsx';
 import type { ChoiceCardOption } from './choice-card.ts';
 import type { ChoiceSize } from './choice-grid.ts';
 
@@ -44,6 +45,8 @@ interface ChoiceCardProps {
 /** One answer of a grid of cards: the whole card is the target. */
 export function ChoiceCard({ option, control, size }: ChoiceCardProps) {
   const hasDescription = hasContent(option.description);
+  const hasSource = hasContent(option.source);
+  const isLarge = hasDescription || hasSource;
   const sizeClasses = SIZE_CLASSES[size];
   return (
     <BaseField.Item
@@ -53,17 +56,18 @@ export function ChoiceCard({ option, control, size }: ChoiceCardProps) {
       <BaseField.Label
         className={classNames(
           CARD_CLASSES,
-          hasDescription ? sizeClasses.described : sizeClasses.labelOnly,
+          isLarge ? sizeClasses.described : sizeClasses.labelOnly,
           option.isSetApart && SET_APART_CLASSES,
         )}
       >
-        <span className={hasDescription ? FIRST_LINE_SLOT_CLASSES : 'flex shrink-0'}>
-          {control}
-        </span>
-        {hasDescription ? (
+        <span className={isLarge ? FIRST_LINE_SLOT_CLASSES : 'flex shrink-0'}>{control}</span>
+        {isLarge ? (
           <span className="flex flex-col gap-space-1">
             {option.label}
-            <span className={sizeClasses.description}>{option.description}</span>
+            {hasDescription && (
+              <span className={sizeClasses.description}>{option.description}</span>
+            )}
+            {hasSource && <SourceMark>{option.source}</SourceMark>}
           </span>
         ) : (
           option.label

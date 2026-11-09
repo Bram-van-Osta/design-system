@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
 import { AgentMark } from '../AgentMark/AgentMark.tsx';
+import { SOURCE_MARK_CLASSES } from '../SourceMark/source-mark.ts';
 import { FieldError } from './FieldError.tsx';
 import { FieldMarkerText } from './FieldMarkerText.tsx';
 import { FieldLabelSize } from './field-label-size.ts';
@@ -24,6 +25,12 @@ export interface FieldProps {
   readonly labelSize?: FieldLabelSize;
   /** The help under the field. */
   readonly description?: ReactNode;
+  /**
+   * Where the value comes from, in a SourceMark right under the control, which it describes: "from
+   * your text", on a value filled for the reader from their own words. The app leaves it out once
+   * the reader changes the value.
+   */
+  readonly source?: ReactNode;
   /** What is wrong, in words: shown under the field, which becomes invalid. */
   readonly error?: ReactNode;
   readonly marker?: FieldMarker;
@@ -45,6 +52,7 @@ export function Field({
   label,
   labelSize = FieldLabelSize.regular,
   description,
+  source,
   error,
   marker,
   agentDraft,
@@ -84,6 +92,11 @@ export function Field({
         )}
       </BaseField.Label>
       {children}
+      {hasContent(source) && (
+        <BaseField.Description render={<span />} data-source-mark className={SOURCE_MARK_CLASSES}>
+          {source}
+        </BaseField.Description>
+      )}
       {isInvalid && <FieldError>{error}</FieldError>}
       {hasContent(description) && (
         <BaseField.Description render={<div />} className="text-body-s text-ink-muted">

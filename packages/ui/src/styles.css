@@ -11,3 +11,54 @@
     outline-offset: 2px;
   }
 }
+
+/* The motion of the first contact (T12-C1-Animations-D), each used behind motion-safe: a value that
+   rises 8 px as it fades in, a rule drawn from the left, the reading's squares in a wave, and a
+   passage tinted, then underlined from the left. */
+@theme {
+  --animate-rise: rise 240ms ease-out backwards;
+  --animate-grow: grow 400ms ease-out backwards;
+  --animate-wave: wave 900ms ease-in-out infinite;
+  --animate-passage:
+    passage-tint 300ms ease-out backwards, passage-underline 400ms ease-out 120ms backwards;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(var(--space-2));
+    }
+  }
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes wave {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes passage-tint {
+    from {
+      background-color: transparent;
+    }
+  }
+  @keyframes passage-underline {
+    from {
+      background-size: 0% var(--border-select);
+    }
+  }
+}
+
+/* A passage's underline, delft and as thick as a selected border, drawn under each of its lines. */
+@utility passage-underline {
+  background-image: linear-gradient(var(--delft), var(--delft));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% var(--border-select);
+  box-decoration-break: clone;
+}
