@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.42.0
+
+### Minor Changes
+
+- `ColorSwatches` shows a few colors side by side, equal squares in a hairline frame without their codes, such as a site's own colors.
+
 ## 0.41.0
 
 ### Minor Changes
