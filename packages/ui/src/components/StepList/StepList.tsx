@@ -26,10 +26,11 @@ export interface StepListProps {
   /** The current step's index, from 0; the steps before it are done, every one past the last. */
   readonly currentIndex: number;
   /**
-   * The journey is paused: the line under the current step that says so, in the app's words, in
-   * place of "right now" and of its lead time: "paused, at your request".
+   * The current step is not the reader's to do: the line under it that says where it stands, in
+   * the app's words and muted, in place of "your turn" and of its lead time: "we're preparing it",
+   * "paused, at your request".
    */
-  readonly pausedNote?: ReactNode;
+  readonly currentNote?: ReactNode;
   readonly className?: string;
 }
 
@@ -47,21 +48,27 @@ const NAME_CLASSES: Readonly<Record<StepPartState, string>> = {
 
 /**
  * A journey's steps as its client follows them: each a numbered box, its name and its usual lead
- * time, one step a line; on a computer its lead time beside its name, on a phone under it. A done step's box in Delft with its check,
- * "done" under its name; the current one's in a Delft border, the vermilion diamond before its name
- * and "right now" in vermilion under it, on the page's own background, or the line that says the
- * journey is paused; the steps to come muted.
+ * time, in a row on a computer and a column on a phone. A done step's box in Delft with its check,
+ * "done" under its name; the current one's in a Delft border, and under its name the vermilion
+ * diamond and "your turn" on the page's own background when it is the reader's to do, or the line
+ * that says where it stands when it is not; the steps to come muted.
  */
-export function StepList({ label, steps, currentIndex, pausedNote, className }: StepListProps) {
+export function StepList({ label, steps, currentIndex, currentNote, className }: StepListProps) {
   return (
-    <ol aria-label={label} className={classNames('flex flex-col', className)}>
+    <ol
+      aria-label={label}
+      className={classNames(
+        'flex flex-col md:grid md:auto-cols-fr md:grid-flow-col md:gap-space-3',
+        className,
+      )}
+    >
       {steps.map((step, index) => (
         <Step
           key={step.id}
           step={step}
           number={index + 1}
           state={stepStateAt(index, currentIndex)}
-          pausedNote={pausedNote}
+          currentNote={currentNote}
         />
       ))}
     </ol>
@@ -72,18 +79,18 @@ interface StepProps {
   readonly step: StepListStep;
   readonly number: number;
   readonly state: StepPartState;
-  readonly pausedNote: ReactNode;
+  readonly currentNote: ReactNode;
 }
 
-function Step({ step, number, state, pausedNote }: StepProps) {
+function Step({ step, number, state, currentNote }: StepProps) {
   const messages = useMessages();
   const isCurrent = state === StepPartState.current;
-  const isPaused = isCurrent && hasContent(pausedNote);
+  const hasNote = isCurrent && hasContent(currentNote);
   return (
     <li
       data-state={state}
       aria-current={isCurrent ? 'step' : undefined}
-      className="flex items-center gap-space-3 py-space-2 text-small"
+      className="flex items-center gap-space-3 py-space-2 text-small md:flex-col md:items-start md:gap-space-2 md:py-0"
     >
       <span
         aria-hidden
@@ -99,25 +106,21 @@ function Step({ step, number, state, pausedNote }: StepProps) {
           number
         )}
       </span>
-      <span className="flex min-w-0 flex-1 flex-col md:grid md:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] md:items-baseline md:gap-x-space-4">
-        <span className={classNames('inline-flex items-center gap-space-2', NAME_CLASSES[state])}>
-          {isCurrent && <CurrentStepDiamond />}
-          {step.label}
-        </span>{' '}
-        <span className="flex min-w-0 flex-col">
-          {isCurrent && !isPaused && (
-            <>
-              <span className="font-mono text-meta text-vermillion">
-                {messages['stepList.now']}
-              </span>{' '}
-            </>
-          )}
-          <StepLine
-            state={state}
-            lead={isPaused ? pausedNote : step.lead}
-            doneText={messages['stepProgress.done']}
-          />
-        </span>
+      <span className="flex min-w-0 flex-col">
+        <span className={NAME_CLASSES[state]}>{step.label}</span>{' '}
+        {isCurrent && !hasNote && (
+          <>
+            <span className="inline-flex items-center gap-space-2 font-mono text-meta text-vermillion">
+              <CurrentStepDiamond />
+              {messages['stepList.yourTurn']}
+            </span>{' '}
+          </>
+        )}
+        <StepLine
+          state={state}
+          lead={hasNote ? currentNote : step.lead}
+          doneText={messages['stepProgress.done']}
+        />
       </span>
     </li>
   );

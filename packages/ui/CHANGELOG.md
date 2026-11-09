@@ -1,5 +1,18 @@
 # @bram-van-osta/ui
 
+## 0.38.0
+
+### Minor Changes
+
+- `StepList` says whose turn the current step is: `currentNote` replaces `pausedNote`, without the diamond, and the diamond with "your turn" stands under the step's name when it is the reader's to do.
+
+## 0.37.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.12.0
+
 ## 0.37.1
 
 ### Patch Changes

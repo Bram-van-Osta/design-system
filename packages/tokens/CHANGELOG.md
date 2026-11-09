@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.12.0
+
+### Minor Changes
+
+- Two layout tokens: `page-width`, a page's frame shared with its header, and `aside-width`, the column beside a reading column.
+
 ## 0.11.0
 
 ### Minor Changes

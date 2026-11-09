@@ -14,7 +14,7 @@
   "stepProgress.current": "in progress",
   "stepProgress.upcoming": "to come",
   "stepBand.position": "step {position} of {count}",
-  "stepList.now": "right now",
+  "stepList.yourTurn": "your turn",
   "fileInput.choose": "Add a file",
   "fileInput.remove": "Remove",
   "codeInput.slot": "Digit {position} of {count}",
