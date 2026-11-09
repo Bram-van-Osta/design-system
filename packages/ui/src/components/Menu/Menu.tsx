@@ -21,11 +21,17 @@ export interface MenuProps {
   /** The button's name, read by screen readers, when what it shows has none. */
   readonly label?: string;
   readonly items: readonly MenuItem[];
+  /** The button takes its container's width, its content at its left, as a navigation's row. */
+  readonly isFullWidth?: boolean;
 }
 
 // The group lets an Avatar inside the button leave the surface it shows on hover and while open.
 const TRIGGER_CLASSES =
-  'group/menu-trigger inline-flex min-h-target-min min-w-target-min shrink-0 cursor-pointer items-center justify-center hover:bg-surface data-popup-open:bg-surface';
+  'group/menu-trigger min-h-target-min min-w-target-min shrink-0 cursor-pointer items-center hover:bg-surface data-popup-open:bg-surface';
+const TRIGGER_WIDTH_CLASSES = {
+  inline: 'inline-flex justify-center',
+  full: 'flex w-full justify-start',
+} as const;
 const ITEM_CLASSES =
   'flex min-h-target-min cursor-pointer items-center gap-space-2 whitespace-nowrap px-space-4 text-body text-ink focus-visible:-outline-offset-2 data-highlighted:bg-surface';
 
@@ -37,14 +43,21 @@ function popupGap(): number {
 }
 
 /** A few actions behind one button, such as the account's behind its avatar, with the pointer or the keyboard. */
-export function Menu({ trigger, label, items }: MenuProps) {
+export function Menu({ trigger, label, items, isFullWidth = false }: MenuProps) {
   return (
     <BaseMenu.Root>
-      <BaseMenu.Trigger aria-label={label} className={TRIGGER_CLASSES}>
+      <BaseMenu.Trigger
+        aria-label={label}
+        className={`${TRIGGER_CLASSES} ${TRIGGER_WIDTH_CLASSES[isFullWidth ? 'full' : 'inline']}`}
+      >
         {trigger}
       </BaseMenu.Trigger>
       <BaseMenu.Portal>
-        <BaseMenu.Positioner align="end" sideOffset={popupGap} className="z-10">
+        <BaseMenu.Positioner
+          align={isFullWidth ? 'start' : 'end'}
+          sideOffset={popupGap}
+          className="z-10"
+        >
           <BaseMenu.Popup className="border-hair border-line bg-bg py-space-1">
             {items.map(({ id, label: itemLabel, onSelect, icon: ItemIcon, lang }) => (
               <BaseMenu.Item key={id} lang={lang} onClick={onSelect} className={ITEM_CLASSES}>

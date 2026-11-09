@@ -103,3 +103,25 @@ export const LongName: Story = {
     }
   },
 };
+
+// A navigation column's row: its column's width, the avatar at its left, the name shown everywhere.
+export const FullWidth: Story = {
+  args: { isFullWidth: true },
+  decorators: [
+    (Story) => (
+      <div className="w-58">
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvas, canvasElement }) => {
+    const trigger = canvas.getByRole('button', { name: NAME });
+    const column = canvasElement.querySelector('.w-58');
+    if (!(column instanceof HTMLElement)) {
+      throw new Error('The story draws its column.');
+    }
+    await expect(trigger.getBoundingClientRect().width).toBe(column.getBoundingClientRect().width);
+    await expect(shownName(trigger, NAME)).toBeDefined();
+    await expect(getComputedStyle(trigger).justifyContent).toBe('flex-start');
+  },
+};

@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.40.0
+
+### Minor Changes
+
+- AccountMenu and Menu take `isFullWidth`: the button as a navigation column's row, its content at its left, the name shown at every width.
+
 ## 0.39.3
 
 ### Patch Changes
