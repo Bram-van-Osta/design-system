@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.43.0
+
+### Minor Changes
+
+- The first contact's components: `HighlightedTextArea`, the reader's words with the passages a reading found tinted and underlined, found by their words; `HighlightedQuote`, the same words read only; `PointColumn`, fixed places that fill as readings note points, with its reading indicator, its grey box and its announcement; `PointBand`, their count stuck to the field on a phone; `SourceMark`, where an answer comes from, as a choice card option's `source` and a Field's `source`; `SourcedFact` and `SourcedFactList`, an answer with its source and its correction; and `FollowUp`, a short question nested under a question's choices.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.13.0
+
 ## 0.42.0
 
 ### Minor Changes
