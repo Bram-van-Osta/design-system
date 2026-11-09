@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.39.2
+
+### Patch Changes
+
+- StepList joins the steps to come with the color of their boxes, so that its line reads up to the last.
+
 ## 0.39.1
 
 ### Patch Changes
