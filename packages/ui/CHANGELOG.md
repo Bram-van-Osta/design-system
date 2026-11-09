@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.39.3
+
+### Patch Changes
+
+- StepList's rule joins each box to the next, however tall a step's name and note make it.
+
 ## 0.39.2
 
 ### Patch Changes

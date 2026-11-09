@@ -47,7 +47,7 @@ const NAME_CLASSES: Readonly<Record<StepPartState, string>> = {
 
 /**
  * A journey's steps as its client follows them, for a page's column: one a line at every width,
- * their boxes joined, each name at its box's height and what is worth saying of it under it, small
+ * their boxes joined from one to the next however tall a step's lines, each name at its box's height and what is worth saying of it under it, small
  * and in the mono face. A
  * done step's box in Delft with its check; the current one's in a Delft border, with the vermilion
  * diamond in place of its number and "your turn" under its name when it is the reader's to do, or
@@ -85,13 +85,16 @@ function Step({ step, number, state, currentNote, isLast }: StepProps) {
     <li
       data-state={state}
       aria-current={isCurrent ? 'step' : undefined}
-      className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-space-3 text-small"
+      className={classNames(
+        'relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-space-3 text-small',
+        !isLast && 'pb-space-3',
+      )}
     >
       <span
         aria-hidden
         data-step-box
         className={classNames(
-          'flex size-9 shrink-0 items-center justify-center font-mono text-kicker',
+          'flex size-9 shrink-0 items-center justify-center self-start font-mono text-kicker',
           BOX_CLASSES[state],
         )}
       >
@@ -102,14 +105,16 @@ function Step({ step, number, state, currentNote, isLast }: StepProps) {
         <StepNote state={state} isReaders={isReaders} currentNote={currentNote} lead={step.lead} />
       </span>
       {!isLast && (
-        <span
-          aria-hidden
-          data-step-link
-          className={classNames(
-            'col-start-1 h-space-3 justify-self-center border-l-select',
-            state === StepPartState.done ? 'border-delft' : 'border-field',
-          )}
-        />
+        // From the box's foot to the next one's top, however tall the step's lines make it.
+        <span aria-hidden className="absolute top-9 bottom-0 left-0 flex w-9 justify-center">
+          <span
+            data-step-link
+            className={classNames(
+              'h-full border-l-select',
+              state === StepPartState.done ? 'border-delft' : 'border-field',
+            )}
+          />
+        </span>
       )}
     </li>
   );

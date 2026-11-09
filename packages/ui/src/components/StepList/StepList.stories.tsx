@@ -104,6 +104,28 @@ export const OneStepALine: Story = {
   },
 };
 
+// The rule joins each box to the next, also under a step whose note makes it taller.
+export const JoinedBoxes: Story = {
+  args: { currentNote: "we're preparing it" },
+  play: async ({ canvas }) => {
+    const items = within(canvas.getByRole('list', { name: LABEL })).getAllByRole('listitem');
+    for (const [index, item] of items.slice(0, -1).entries()) {
+      const link = item.querySelector('[data-step-link]');
+      const next = items[index + 1];
+      if (!(link instanceof HTMLElement) || next === undefined) {
+        throw new Error('Each step but the last is joined to the next.');
+      }
+      const rule = link.getBoundingClientRect();
+      await expect(Math.round(rule.top)).toBe(
+        Math.round(boxOf(item).getBoundingClientRect().bottom),
+      );
+      await expect(Math.round(rule.bottom)).toBe(
+        Math.round(boxOf(next).getBoundingClientRect().top),
+      );
+    }
+  },
+};
+
 // The launch done: every step done, none current.
 export const Launched: Story = {
   args: { currentIndex: STEPS.length },
