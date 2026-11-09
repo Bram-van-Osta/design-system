@@ -455,3 +455,87 @@ export const SegmentsKeyboard: Story = {
     await expectSegmentsPressed(change, [keep]);
   },
 };
+
+const SITE = 'Example site';
+const VERDICT_OPTIONS = [
+  { value: 'liked', label: 'I like it' },
+  { value: 'not_for_me', label: 'Not for me' },
+  { value: 'no_opinion', label: 'No opinion' },
+] as const;
+const OTHER_SITES = ['Second site', 'Third site'] as const;
+
+// T15-I-Inspirations-D, variant C: a verdict under each example site's capture, three a row in the
+// reading column.
+export const Tile: Story = {
+  render: (args) => (
+    <div className="grid max-w-reading-width grid-cols-3 gap-space-3">
+      <div className="flex min-w-0 flex-col gap-space-2">
+        <span id="example-site" className="text-small text-ink-muted">
+          {SITE}
+        </span>
+        <ToggleGroup {...args} />
+      </div>
+      {OTHER_SITES.map((site, index) => (
+        <div key={site} className="flex min-w-0 flex-col gap-space-2">
+          <span id={`other-site-${index}`} className="text-small text-ink-muted">
+            {site}
+          </span>
+          <ToggleGroup {...args} labelledBy={`other-site-${index}`} />
+        </div>
+      ))}
+    </div>
+  ),
+  args: {
+    tone: ToggleGroupTone.tile,
+    label: undefined,
+    labelledBy: 'example-site',
+    options: VERDICT_OPTIONS,
+  },
+  play: async ({ canvas, args }) => {
+    const group = canvas.getByRole('group', { name: SITE });
+    const tile = group.parentElement?.getBoundingClientRect();
+    const segments = VERDICT_OPTIONS.map(({ label }) =>
+      within(group).getByRole('button', { name: label }),
+    );
+    const [liked, notForMe, noOpinion] = segments;
+    if (
+      tile === undefined ||
+      liked === undefined ||
+      notForMe === undefined ||
+      noOpinion === undefined
+    ) {
+      throw new Error('The three verdicts are drawn under their tile.');
+    }
+    await expect(getComputedStyle(group).borderTopColor).toBe(tokenColor('field', group));
+    await expect(group.getBoundingClientRect().width).toBe(tile.width);
+    await expectSegmentsPressed(null, segments);
+    for (const segment of segments) {
+      await expectHeightAtLeast(segment, 'target-min');
+      await expect(segment.getBoundingClientRect().right).toBeLessThanOrEqual(tile.right);
+    }
+    await expect(notForMe.getBoundingClientRect().left).toBe(liked.getBoundingClientRect().right);
+    await expect(notForMe.getBoundingClientRect().width).toBeGreaterThan(
+      liked.getBoundingClientRect().width,
+    );
+    await userEvent.click(liked);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('liked');
+    await expectSegmentsPressed(liked, [notForMe, noOpinion]);
+  },
+};
+
+export const TileKeyboard: Story = {
+  render: Tile.render,
+  args: Tile.args,
+  play: async ({ canvas, args }) => {
+    const group = within(canvas.getByRole('group', { name: SITE }));
+    const liked = group.getByRole('button', { name: 'I like it' });
+    const notForMe = group.getByRole('button', { name: 'Not for me' });
+    await userEvent.tab();
+    await expectFocusRing(liked);
+    await userEvent.keyboard('{ArrowRight}');
+    await expectFocusRing(notForMe);
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('not_for_me');
+    await expectSegmentsPressed(notForMe, [liked]);
+  },
+};

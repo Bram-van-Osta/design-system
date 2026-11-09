@@ -59,6 +59,7 @@ export { CopyButton, type CopyButtonProps } from './components/CopyButton/CopyBu
 export { CopyList, type CopyListProps } from './components/CopyList/CopyList.tsx';
 export type { CopyListItem } from './components/CopyList/copy-list.ts';
 export { Dialog, type DialogProps } from './components/Dialog/Dialog.tsx';
+export { DialogPlacement } from './components/Dialog/dialog-placement.ts';
 export {
   Disclosure,
   type DisclosureBoxProps,

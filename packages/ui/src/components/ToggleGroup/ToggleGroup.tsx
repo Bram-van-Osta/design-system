@@ -23,7 +23,7 @@ export interface ToggleGroupProps {
   /** The option pressed at first: the first option's when none is given, except for answers. */
   readonly defaultValue?: string;
   readonly onValueChange?: (value: string) => void;
-  /** Delft for a Delft band, the default; ink on the page's own background; answer for a question's answers; segments for a row's answer; plain for a list's filters. */
+  /** Delft for a Delft band, the default; ink on the page's own background; answer for a question's answers; segments for a row's answer; tile for an answer under a narrow tile; plain for a list's filters. */
   readonly tone?: ToggleGroupTone;
   /** The whole group unavailable, in the line color, its pressed option kept. */
   readonly disabled?: boolean;
@@ -40,12 +40,16 @@ const GROUP_CLASSES: Readonly<Record<ToggleGroupTone, string>> = {
     'grid grid-cols-1 gap-space-2 md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:gap-space-3',
   plain: 'flex flex-wrap gap-x-space-5 gap-y-space-1',
   segments: 'inline-flex border-hair border-field data-disabled:border-line',
+  tile: 'flex w-full border-hair border-field data-disabled:border-line',
 };
 // The group draws the outer hair, each segment after the first the one before it.
 const SEGMENT_BASE_CLASSES = `inline-flex min-h-target-min cursor-pointer items-center justify-center whitespace-nowrap px-space-3 text-body-s font-semibold not-first:border-l-hair ${DISABLED_CLASSES}`;
 // Each answer in its own hair, its label centered: its column on a computer, the whole width on a
 // phone.
 const ANSWER_CLASSES = `group inline-flex min-h-button-height min-w-0 cursor-pointer items-center justify-center gap-space-2 border-hair border-ink bg-bg px-space-4 py-space-2 text-center text-body font-medium text-ink hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-delft data-pressed:font-semibold data-pressed:text-on-delft hover:data-pressed:not-data-disabled:bg-delft-deep ${DISABLED_CLASSES}`;
+// Each segment as wide as its words, the tile's width shared out among them, its text small; a
+// label longer than its share wraps rather than leaving the tile.
+const TILE_CLASSES = `inline-flex min-h-target-min min-w-0 flex-auto cursor-pointer items-center justify-center border-field bg-bg px-space-1 text-center text-small font-semibold text-ink not-first:border-l-hair hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-delft data-pressed:text-on-delft hover:data-pressed:not-data-disabled:bg-delft-deep ${DISABLED_CLASSES}`;
 // The pressed word underlined as a navigation's current link (Link's isCurrent).
 const PLAIN_CLASSES =
   'inline-flex min-h-target-min cursor-pointer items-center text-body-s text-ink hover:not-data-pressed:not-data-disabled:text-ink-muted data-pressed:font-semibold data-pressed:underline data-pressed:decoration-delft data-pressed:decoration-2 data-pressed:underline-offset-8 data-disabled:cursor-not-allowed data-disabled:text-ink-muted';
@@ -55,10 +59,15 @@ const SEGMENT_CLASSES: Readonly<Record<ToggleGroupTone, string>> = {
   answer: ANSWER_CLASSES,
   plain: PLAIN_CLASSES,
   segments: `${SEGMENT_BASE_CLASSES} border-field bg-bg text-ink hover:not-data-pressed:not-data-disabled:bg-surface data-pressed:bg-delft data-pressed:text-on-delft hover:data-pressed:not-data-disabled:bg-delft-deep`,
+  tile: TILE_CLASSES,
 };
 
 // Answers wait for the reader's: none pressed at first.
-const ANSWER_TONES: readonly ToggleGroupTone[] = [ToggleGroupTone.answer, ToggleGroupTone.segments];
+const ANSWER_TONES: readonly ToggleGroupTone[] = [
+  ToggleGroupTone.answer,
+  ToggleGroupTone.segments,
+  ToggleGroupTone.tile,
+];
 
 /** The first option is pressed at first, except among answers, which wait for the reader's. */
 function firstPressedValueOf(

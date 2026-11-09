@@ -26,5 +26,12 @@ export const ToggleGroupTone = {
    * blue with white text.
    */
   segments: 'segments',
+  /**
+   * An answer under a narrow tile, as a verdict under an image among three a row: segments filling
+   * the tile's width, each as wide as its words, in the small text, 44 px high, a long word going to
+   * a second line rather than past the tile; none pressed until one is chosen, the pressed one in
+   * Delft blue with white text.
+   */
+  tile: 'tile',
 } as const;
 export type ToggleGroupTone = (typeof ToggleGroupTone)[keyof typeof ToggleGroupTone];
