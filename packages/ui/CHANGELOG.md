@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.39.0
+
+### Minor Changes
+
+- StepList draws one step a line for a page's column, its boxes joined and its notes at the right; FileDropZone gains its prominent size.
+
 ## 0.38.0
 
 ### Minor Changes

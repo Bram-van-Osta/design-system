@@ -10,6 +10,11 @@ export const FileDropZoneSize = {
    * on a phone.
    */
   compact: 'compact',
+  /**
+   * The page's main gesture: on the surface, its label drawn as the page's primary button with its
+   * upload icon, its description under it.
+   */
+  prominent: 'prominent',
 } as const;
 export type FileDropZoneSize = (typeof FileDropZoneSize)[keyof typeof FileDropZoneSize];
 
@@ -22,6 +27,9 @@ const LARGE_ZONE_CLASSES =
 
 const COMPACT_ZONE_CLASSES =
   'min-h-drop-zone-compact-height flex-col gap-space-1 border-hair border-dashed border-ink bg-bg px-space-4 py-space-1 hover:not-disabled:bg-surface data-dragging:border-delft data-dragging:bg-surface disabled:border-line disabled:text-ink-muted';
+
+const PROMINENT_ZONE_CLASSES =
+  'group flex-col gap-space-3 border-hair border-dashed border-ink bg-surface px-space-5 py-space-7 hover:not-disabled:border-delft data-dragging:border-delft data-dragging:bg-bg disabled:border-line disabled:text-ink-muted';
 
 export const FILE_DROP_ZONE_CLASSES: Readonly<
   Record<
@@ -37,6 +45,12 @@ export const FILE_DROP_ZONE_CLASSES: Readonly<
   compact: {
     zone: `${ZONE_CLASSES} ${COMPACT_ZONE_CLASSES}`,
     label: 'text-body font-semibold',
+    description: 'text-small text-ink-muted',
+  },
+  prominent: {
+    zone: `${ZONE_CLASSES} ${PROMINENT_ZONE_CLASSES}`,
+    label:
+      'inline-flex min-h-target-min items-center gap-space-2 bg-delft px-space-5 py-space-3 text-label text-on-delft group-hover:group-enabled:bg-delft-deep group-disabled:bg-line group-disabled:text-ink-muted',
     description: 'text-small text-ink-muted',
   },
 };

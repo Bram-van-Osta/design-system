@@ -1,6 +1,8 @@
+import { UploadSimpleIcon } from '@phosphor-icons/react';
 import type { ReactNode } from 'react';
 import { classNames } from '../../utils/class-names.ts';
 import { hasContent } from '../../utils/has-content.ts';
+import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
 import { FILE_DROP_ZONE_CLASSES, FileDropZoneSize } from './file-drop-zone-size.ts';
 import { useFileDropZone } from './use-file-drop-zone.ts';
 
@@ -17,7 +19,7 @@ export interface FileDropZoneProps {
   readonly isMultiple?: boolean;
   /** The types the picker offers, as for an input: `.zip,.sql,.gz`. A drop is not filtered. */
   readonly accept?: string;
-  /** `large` by default, the page's own zone; `compact` inside a card. */
+  /** `large` by default, the page's own zone; `compact` inside a card; `prominent`, the page's main gesture. */
   readonly size?: FileDropZoneSize;
   readonly name?: string;
   readonly disabled?: boolean;
@@ -63,7 +65,12 @@ export function FileDropZone({
         onClick={zone.openPicker}
         className={classNames(classes.zone, className)}
       >
-        <span className={classes.label}>{label}</span>
+        <span className={classes.label}>
+          {size === FileDropZoneSize.prominent && (
+            <UploadSimpleIcon aria-hidden size={ICON_SIZE.inline} weight={ICON_WEIGHT} />
+          )}
+          {label}
+        </span>
         {hasContent(description) && <span className={classes.description}>{description}</span>}
       </button>
     </>

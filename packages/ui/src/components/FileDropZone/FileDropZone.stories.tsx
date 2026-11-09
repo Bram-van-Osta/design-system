@@ -131,6 +131,23 @@ export const DragOver: Story = {
   },
 };
 
+// T15-F: the page's main gesture, on the surface, its label drawn as the primary button.
+export const Prominent: Story = {
+  args: { size: FileDropZoneSize.prominent },
+  render: (args) => (
+    <div className="max-w-aside-width">
+      <FileDropZone {...args} />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const zone = canvas.getByRole('button', { name: ZONE });
+    await expect(getComputedStyle(zone).backgroundColor).toBe(tokenColor('surface', zone));
+    const label = canvas.getByText(LABEL);
+    await expect(getComputedStyle(label).backgroundColor).toBe(tokenColor('delft', label));
+    await expect(label.querySelector('svg')).not.toBeNull();
+  },
+};
+
 // T14-S8: inside the card of what depends on the client, lower than the page's zone, its types
 // under its label on a computer and on a phone.
 export const Compact: Story = {
