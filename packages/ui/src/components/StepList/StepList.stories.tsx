@@ -85,17 +85,21 @@ export const AtTheQuestionnaire: Story = {
   },
 };
 
-// In a row on a computer, a column on a phone.
-export const RowOrColumn: Story = {
+// One step a line at every width; its lead time beside its name on a computer, under it on a phone.
+export const OneStepALine: Story = {
   play: async ({ canvas }) => {
     const items = within(canvas.getByRole('list', { name: LABEL })).getAllByRole('listitem');
     const [first, second] = items.map((item) => item.getBoundingClientRect());
+    await expect(second?.left).toBe(first?.left);
+    await expect(second?.top ?? 0).toBeGreaterThanOrEqual(first?.bottom ?? 0);
+
+    const name = canvas.getByText('The proposal').getBoundingClientRect();
+    const lead = canvas.getByText('about ten days after your answers').getBoundingClientRect();
     if (isOnAComputer()) {
-      await expect(second?.top).toBe(first?.top);
-      await expect(second?.left ?? 0).toBeGreaterThan(first?.left ?? 0);
+      await expect(lead.left).toBeGreaterThan(name.right);
+      await expect(lead.top).toBeLessThan(name.bottom);
     } else {
-      await expect(second?.left).toBe(first?.left);
-      await expect(second?.top ?? 0).toBeGreaterThan(first?.top ?? 0);
+      await expect(lead.top).toBeGreaterThanOrEqual(name.bottom);
     }
   },
 };

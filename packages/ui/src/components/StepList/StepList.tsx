@@ -47,20 +47,14 @@ const NAME_CLASSES: Readonly<Record<StepPartState, string>> = {
 
 /**
  * A journey's steps as its client follows them: each a numbered box, its name and its usual lead
- * time, in a row on a computer and a column on a phone. A done step's box in Delft with its check,
+ * time, one step a line; on a computer its lead time beside its name, on a phone under it. A done step's box in Delft with its check,
  * "done" under its name; the current one's in a Delft border, the vermilion diamond before its name
  * and "right now" in vermilion under it, on the page's own background, or the line that says the
  * journey is paused; the steps to come muted.
  */
 export function StepList({ label, steps, currentIndex, pausedNote, className }: StepListProps) {
   return (
-    <ol
-      aria-label={label}
-      className={classNames(
-        'flex flex-col md:grid md:auto-cols-fr md:grid-flow-col md:gap-space-3',
-        className,
-      )}
-    >
+    <ol aria-label={label} className={classNames('flex flex-col', className)}>
       {steps.map((step, index) => (
         <Step
           key={step.id}
@@ -89,7 +83,7 @@ function Step({ step, number, state, pausedNote }: StepProps) {
     <li
       data-state={state}
       aria-current={isCurrent ? 'step' : undefined}
-      className="flex items-center gap-space-3 py-space-2 text-small md:flex-col md:items-start md:gap-space-2 md:py-0"
+      className="flex items-center gap-space-3 py-space-2 text-small"
     >
       <span
         aria-hidden
@@ -105,23 +99,25 @@ function Step({ step, number, state, pausedNote }: StepProps) {
           number
         )}
       </span>
-      <span className="flex min-w-0 flex-col">
+      <span className="flex min-w-0 flex-1 flex-col md:grid md:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] md:items-baseline md:gap-x-space-4">
         <span className={classNames('inline-flex items-center gap-space-2', NAME_CLASSES[state])}>
           {isCurrent && <CurrentStepDiamond />}
           {step.label}
         </span>{' '}
-        {isCurrent && !isPaused && (
-          <>
-            <span className="font-mono text-meta text-vermillion">
-              {messages['stepList.now']}
-            </span>{' '}
-          </>
-        )}
-        <StepLine
-          state={state}
-          lead={isPaused ? pausedNote : step.lead}
-          doneText={messages['stepProgress.done']}
-        />
+        <span className="flex min-w-0 flex-col">
+          {isCurrent && !isPaused && (
+            <>
+              <span className="font-mono text-meta text-vermillion">
+                {messages['stepList.now']}
+              </span>{' '}
+            </>
+          )}
+          <StepLine
+            state={state}
+            lead={isPaused ? pausedNote : step.lead}
+            doneText={messages['stepProgress.done']}
+          />
+        </span>
       </span>
     </li>
   );

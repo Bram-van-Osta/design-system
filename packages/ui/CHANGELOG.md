@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.37.1
+
+### Patch Changes
+
+- `StepList` draws one step a line at every width: on a computer its lead time stands beside its name, no longer squeezed into six columns.
+
 ## 0.37.0
 
 ### Minor Changes
