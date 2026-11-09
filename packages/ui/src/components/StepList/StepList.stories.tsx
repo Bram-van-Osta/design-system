@@ -95,6 +95,12 @@ export const OneStepALine: Story = {
     await expect(second?.top ?? 0).toBeGreaterThan(first?.top ?? 0);
     await expect(items.at(0)?.querySelector('[data-step-link]')).not.toBeNull();
     await expect(items.at(-1)?.querySelector('[data-step-link]')).toBeNull();
+    // The rest of the way as visible as the boxes it joins, up to the last.
+    const toCome = items.at(3)?.querySelector('[data-step-link]');
+    if (!(toCome instanceof HTMLElement)) {
+      throw new Error('A step to come is joined to the next.');
+    }
+    await expect(getComputedStyle(toCome).borderLeftColor).toBe(tokenColor('field', toCome));
   },
 };
 

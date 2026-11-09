@@ -107,7 +107,7 @@ function Step({ step, number, state, currentNote, isLast }: StepProps) {
           data-step-link
           className={classNames(
             'col-start-1 h-space-3 justify-self-center border-l-select',
-            state === StepPartState.done ? 'border-delft' : 'border-line',
+            state === StepPartState.done ? 'border-delft' : 'border-field',
           )}
         />
       )}
