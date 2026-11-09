@@ -15,6 +15,7 @@
   "stepProgress.upcoming": "to come",
   "stepBand.position": "step {position} of {count}",
   "stepList.yourTurn": "your turn",
+  "pointColumn.reading": "updating",
   "fileInput.choose": "Add a file",
   "fileInput.remove": "Remove",
   "codeInput.slot": "Digit {position} of {count}",

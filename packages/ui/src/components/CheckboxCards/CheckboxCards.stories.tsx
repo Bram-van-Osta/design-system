@@ -8,6 +8,7 @@ import {
 import { expectFocusRing } from '../../testing/expect-focus-ring.ts';
 import { expectHeightAtLeast } from '../../testing/expect-height.ts';
 import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
+import { tokenColor } from '../../testing/token-color.ts';
 import { ChoiceColumns, ChoiceSize } from '../ChoiceCard/choice-grid.ts';
 import { CheckboxCards } from './CheckboxCards.tsx';
 
@@ -248,5 +249,44 @@ export const CompactAspects: Story = {
       await expect(third).toBeGreaterThan(top('The colors'));
     }
     await expectCompactCard(canvas.getByRole('checkbox', { name: 'The colors' }));
+  },
+};
+
+// T12-M5-PlusLoin-D: the topics to go further, each card its title over why we ask.
+export const Topics: Story = {
+  args: {
+    legend: 'The topics to go further',
+    description: undefined,
+    defaultValue: ['pages', 'mood'],
+    options: [
+      {
+        value: 'pages',
+        label: 'The pages and the texts',
+        description: 'Their number makes a good part of the price; texts often delay a site.',
+      },
+      {
+        value: 'mood',
+        label: 'The mood',
+        description: 'Simple words are enough to find a style.',
+      },
+      { value: 'customers', label: 'Your customers', description: 'A site speaks to someone.' },
+      {
+        value: 'inspiration',
+        label: 'A site you like',
+        description: 'We draw on it, without copying.',
+      },
+    ],
+    detail: undefined,
+  },
+  play: async ({ canvas }) => {
+    const pages = canvas.getByRole('checkbox', { name: /The pages and the texts/ });
+    await expect(pages).toBeChecked();
+    const why = canvas.getByText('Simple words are enough to find a style.');
+    await expect(getComputedStyle(why).color).toBe(tokenColor('ink-muted', why));
+    const title = canvas.getByText('The mood');
+    await expect(getComputedStyle(title).fontWeight).toBe('600');
+    await expect(why.getBoundingClientRect().top).toBeGreaterThan(
+      title.getBoundingClientRect().top,
+    );
   },
 };

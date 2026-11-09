@@ -15,6 +15,7 @@
   "stepProgress.upcoming": "à venir",
   "stepBand.position": "étape {position} sur {count}",
   "stepList.yourTurn": "à vous",
+  "pointColumn.reading": "mise à jour",
   "fileInput.choose": "Déposer un fichier",
   "fileInput.remove": "Retirer",
   "codeInput.slot": "Chiffre {position} sur {count}",

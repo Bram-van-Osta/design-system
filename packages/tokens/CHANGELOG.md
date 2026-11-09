@@ -1,5 +1,11 @@
 # @bram-van-osta/tokens
 
+## 0.13.0
+
+### Minor Changes
+
+- Three color tokens for the reader's own words: `highlight` and `highlight-strong`, the tint of a passage a noted point comes from and its tint while the point is hovered or focused, and `band`, a band stuck to the bottom of a field.
+
 ## 0.12.0
 
 ### Minor Changes

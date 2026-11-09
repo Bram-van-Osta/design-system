@@ -5,6 +5,11 @@ export interface ChoiceCardOption {
   readonly label: ReactNode;
   /** An example under the label, which makes the card a large one. */
   readonly description?: ReactNode;
+  /**
+   * Where the answer comes from, in a SourceMark under the label: "from your text", on an answer
+   * ticked for the reader from their own words. It makes the card a large one.
+   */
+  readonly source?: ReactNode;
   /** An answer outside the usual path: dashed, on surface, across the grid. */
   readonly isSetApart?: boolean;
   readonly disabled?: boolean;

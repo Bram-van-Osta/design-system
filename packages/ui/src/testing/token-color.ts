@@ -1,10 +1,13 @@
 export type ColorToken =
   | 'agent'
   | 'agent-pale'
+  | 'band'
   | 'bg'
   | 'delft'
   | 'delft-pale'
   | 'field'
+  | 'highlight'
+  | 'highlight-strong'
   | 'ink'
   | 'ink-muted'
   | 'line'
