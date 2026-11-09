@@ -131,6 +131,12 @@ export const Paused: Story = {
     await expect(boxOf(proposal)).toHaveTextContent('4');
     const note = within(proposal).getByText(PAUSED);
     await expect(getComputedStyle(note).color).toBe(tokenColor('ink-muted', note));
+    // Under the name, so that a long name keeps its line.
+    const name = within(proposal).getByText('The proposal');
+    await expect(note.getBoundingClientRect().top).toBeGreaterThan(
+      name.getBoundingClientRect().top,
+    );
+    await expect(note.getBoundingClientRect().left).toBe(name.getBoundingClientRect().left);
     await expect(canvas.getByText('around mid-January')).toBeVisible();
   },
 };

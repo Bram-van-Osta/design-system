@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.39.1
+
+### Patch Changes
+
+- StepList says what is worth saying of a step under its name, small and in the mono face, so that a long name keeps its line.
+
 ## 0.39.0
 
 ### Minor Changes
