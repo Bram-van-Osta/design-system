@@ -5,6 +5,7 @@ import { classNames } from '../../utils/class-names.ts';
 import { FIRST_LINE_SLOT_CLASSES } from '../../utils/first-line.ts';
 import { ICON_SIZE, ICON_WEIGHT } from '../../utils/icon.ts';
 import {
+  checkSplitSteps,
   type PlacedStepPart,
   partColumnsOf,
   placeStepParts,
@@ -12,6 +13,7 @@ import {
   StepPartState,
   type StepProgressPart,
   StepProgressTone,
+  type StepSplitState,
   segmentStateOf,
 } from './step-parts.ts';
 
@@ -40,6 +42,11 @@ export interface StepProgressProps {
    * current one in pale Delft.
    */
   readonly tone?: StepProgressTone;
+  /**
+   * The current segment split into its questions, in order, as a part of the journey that asks a
+   * few: each answered, passed, the current one or to come. The bar still counts the segment once.
+   */
+  readonly currentSplit?: readonly StepSplitState[];
   readonly className?: string;
 }
 
@@ -55,6 +62,14 @@ const SEGMENT_HEIGHT_CLASSES: Readonly<Record<StepProgressTone, string>> = {
   delft: 'h-progress-height',
   ink: 'h-progress-height',
   sections: 'h-progress-bar-height',
+};
+
+// The answered questions in Delft blue, the passed ones in pale Delft, the current one thicker.
+const SPLIT_CLASSES: Readonly<Record<StepSplitState, string>> = {
+  answered: 'h-progress-height bg-delft',
+  passed: 'h-progress-height bg-delft-pale',
+  current: 'h-progress-current-height bg-delft',
+  upcoming: 'h-progress-height bg-line',
 };
 
 const PART_STATE_CLASSES: Readonly<Record<StepPartState, string>> = {
@@ -75,14 +90,19 @@ export function StepProgress({
   valueText,
   parts,
   tone = StepProgressTone.delft,
+  currentSplit,
   className,
 }: StepProgressProps) {
   const filledCount = Math.min(Math.max(value, 0), max);
   const bar = { max, filledCount, label, valueText };
+  const filling = { filledCount, tone, currentSplit };
+  if (currentSplit !== undefined) {
+    checkSplitSteps(currentSplit);
+  }
   if (parts === undefined) {
     return (
-      <ProgressBar {...bar} className={classNames('flex gap-space-1', className)}>
-        <Segments steps={stepsUpTo(max)} filledCount={filledCount} tone={tone} />
+      <ProgressBar {...bar} className={classNames('flex items-start gap-space-1', className)}>
+        <Segments steps={stepsUpTo(max)} {...filling} />
       </ProgressBar>
     );
   }
@@ -92,8 +112,8 @@ export function StepProgress({
     <div className={classNames('flex w-full flex-col gap-space-2', className)}>
       <ProgressBar {...bar} className="grid gap-space-3" style={columns}>
         {placedParts.map(({ part, steps }) => (
-          <span key={part.label} className="flex gap-space-1">
-            <Segments steps={steps} filledCount={filledCount} tone={tone} />
+          <span key={part.label} className="flex items-start gap-space-1">
+            <Segments steps={steps} {...filling} />
           </span>
         ))}
       </ProgressBar>
@@ -152,11 +172,15 @@ interface SegmentsProps {
   readonly steps: readonly number[];
   readonly filledCount: number;
   readonly tone: StepProgressTone;
+  readonly currentSplit: readonly StepSplitState[] | undefined;
 }
 
-function Segments({ steps, filledCount, tone }: SegmentsProps) {
+function Segments({ steps, filledCount, tone, currentSplit }: SegmentsProps) {
   return steps.map((step) => {
     const state = segmentStateOf(step, filledCount);
+    if (state === StepPartState.current && currentSplit !== undefined) {
+      return <SplitSegment key={step} states={currentSplit} />;
+    }
     return (
       <span
         key={step}
@@ -165,6 +189,25 @@ function Segments({ steps, filledCount, tone }: SegmentsProps) {
       />
     );
   });
+}
+
+// The current segment as its questions, each known by its place in it.
+function SplitSegment({ states }: { readonly states: readonly StepSplitState[] }) {
+  const questions = states.map((state, index) => ({ state, place: index + 1 }));
+  return (
+    <span
+      data-state={StepPartState.current}
+      className="flex flex-1 items-start gap-progress-split-gap"
+    >
+      {questions.map(({ state, place }) => (
+        <span
+          key={place}
+          data-state={state}
+          className={classNames('flex-1', SPLIT_CLASSES[state])}
+        />
+      ))}
+    </span>
+  );
 }
 
 interface PartNameProps {

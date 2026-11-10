@@ -212,7 +212,7 @@ export {
   type StepProgressPart,
   type StepProgressProps,
 } from './components/StepProgress/StepProgress.tsx';
-export { StepProgressTone } from './components/StepProgress/step-parts.ts';
+export { StepProgressTone, StepSplitState } from './components/StepProgress/step-parts.ts';
 export { Switch, type SwitchProps } from './components/Switch/Switch.tsx';
 export {
   Table,

@@ -21,6 +21,8 @@ export type SizeToken =
   | 'account-name-width'
   | 'progress-height'
   | 'progress-bar-height'
+  | 'progress-current-height'
+  | 'progress-split-gap'
   | 'drop-zone-height'
   | 'drop-zone-compact-height'
   | 'switch-width'

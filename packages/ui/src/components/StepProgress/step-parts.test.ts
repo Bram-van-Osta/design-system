@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
+  checkSplitSteps,
   partColumnsOf,
   placeStepParts,
   StepPartState,
   type StepProgressPart,
+  StepSplitState,
   segmentStateOf,
 } from './step-parts.ts';
 
@@ -96,5 +98,18 @@ describe('segmentStateOf', () => {
 
   it('should make the last segment current on the last step', () => {
     expect([1, 2, 3].map((step) => segmentStateOf(step, 3))).toEqual([done, done, current]);
+  });
+});
+
+describe('checkSplitSteps', () => {
+  it('should take questions answered, passed, the current one and those to come', () => {
+    const { answered, passed, current: on, upcoming: next } = StepSplitState;
+    expect(() => checkSplitSteps([answered, passed, on, next])).not.toThrow();
+    expect(() => checkSplitSteps([answered, passed])).not.toThrow();
+  });
+
+  it('should refuse a split without questions, or with two current ones', () => {
+    expect(() => checkSplitSteps([])).toThrow();
+    expect(() => checkSplitSteps([StepSplitState.current, StepSplitState.current])).toThrow();
   });
 });
