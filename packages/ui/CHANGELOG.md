@@ -1,5 +1,11 @@
 # @bram-van-osta/ui
 
+## 0.43.1
+
+### Patch Changes
+
+- PointColumn's reading indicator keeps its place, hidden, while no reading runs, on the title's line: the column no longer moves as a reading comes and goes.
+
 ## 0.43.0
 
 ### Minor Changes

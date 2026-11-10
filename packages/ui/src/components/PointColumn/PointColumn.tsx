@@ -15,7 +15,7 @@ export interface PointColumnProps {
   readonly description?: ReactNode;
   /** Its fixed places, in their order: a point never moves. */
   readonly points: readonly NotedPoint[];
-  /** A reading runs: its squares and its word beside the title. */
+  /** A reading runs: its squares and its word beside the title, on the title's line. */
   readonly isReading?: boolean;
   /** The reading's word, the package's by default: "updating". */
   readonly readingLabel?: string;
@@ -58,11 +58,11 @@ export function PointColumn({
       className={classNames('flex flex-col gap-space-5', className)}
     >
       <div className="flex flex-col gap-space-2">
-        <div className="flex min-h-7 flex-wrap items-center justify-between gap-space-3">
-          <Heading id={headingId} level={headingLevel} size={HeadingSize.xs}>
+        <div className="flex min-h-7 items-center justify-between gap-space-3">
+          <Heading id={headingId} level={headingLevel} size={HeadingSize.xs} className="min-w-0">
             {title}
           </Heading>
-          {isReading && <ReadingIndicator label={readingLabel} />}
+          <ReadingIndicator isReading={isReading} label={readingLabel} />
         </div>
         {hasContent(description) && <p className="text-body-s text-ink-muted">{description}</p>}
       </div>
