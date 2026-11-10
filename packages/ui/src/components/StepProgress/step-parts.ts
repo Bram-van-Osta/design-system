@@ -110,3 +110,28 @@ export function placeStepParts({
 export function partColumnsOf(parts: readonly StepProgressPart[]): string {
   return parts.map((part) => `minmax(0, ${part.steps}fr)`).join(' ');
 }
+
+/**
+ * A question's state in a split segment: answered and passed behind the person, the one they are on,
+ * those to come.
+ */
+export const StepSplitState = {
+  answered: 'answered',
+  passed: 'passed',
+  current: 'current',
+  upcoming: 'upcoming',
+} as const;
+export type StepSplitState = (typeof StepSplitState)[keyof typeof StepSplitState];
+
+/**
+ * A current segment split into its questions holds one at least, and one current at most: a split
+ * that does not is a mistake of the app, refused as soon as it renders it.
+ */
+export function checkSplitSteps(states: readonly StepSplitState[]): void {
+  if (states.length === 0) {
+    throw new Error('A StepProgress splits its current segment into one question at least.');
+  }
+  if (states.filter((state) => state === StepSplitState.current).length > 1) {
+    throw new Error('A StepProgress splits its current segment with one current question at most.');
+  }
+}

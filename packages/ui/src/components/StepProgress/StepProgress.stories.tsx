@@ -9,7 +9,12 @@ import { isOnAComputer } from '../../testing/is-on-a-computer.ts';
 import { tokenColor } from '../../testing/token-color.ts';
 import { tokenPixels } from '../../testing/token-pixels.ts';
 import { StepProgress } from './StepProgress.tsx';
-import { StepPartState, type StepProgressPart, StepProgressTone } from './step-parts.ts';
+import {
+  StepPartState,
+  type StepProgressPart,
+  StepProgressTone,
+  StepSplitState,
+} from './step-parts.ts';
 
 const LABEL = "Your request's progress";
 
@@ -23,6 +28,49 @@ const BRIEF_PARTS: readonly StepProgressPart[] = [
 const BRIEF_QUESTIONS = 8;
 const PHONE = { value: 'mobile1' };
 const { done, current, upcoming } = StepPartState;
+
+// T12-Q3-Logo-D: the brief's fourth part split into its eight optional questions, on the fourth.
+const SPLIT_QUESTIONS: readonly StepSplitState[] = [
+  StepSplitState.answered,
+  StepSplitState.passed,
+  StepSplitState.answered,
+  StepSplitState.current,
+  StepSplitState.upcoming,
+  StepSplitState.upcoming,
+  StepSplitState.upcoming,
+  StepSplitState.upcoming,
+];
+const SPLIT_COLORS: Readonly<Record<StepSplitState, 'delft' | 'delft-pale' | 'line'>> = {
+  answered: 'delft',
+  passed: 'delft-pale',
+  current: 'delft',
+  upcoming: 'line',
+};
+
+// The split segment in the bar's fourth place, as wide as the others, its questions in their
+// colors, the current one twice as thick, half the bar's gap between two.
+async function expectSplitSegment(bar: Element, states: readonly StepSplitState[]): Promise<void> {
+  const segments = [...bar.children];
+  await expect(segments).toHaveLength(5);
+  const [first, , , split] = segments;
+  await expect(split?.getBoundingClientRect().width).toBeCloseTo(
+    first?.getBoundingClientRect().width ?? 0,
+    0,
+  );
+  const questions = [...(split?.children ?? [])];
+  await expect(questions).toHaveLength(states.length);
+  for (const [index, question] of questions.entries()) {
+    const state = states[index] ?? StepSplitState.upcoming;
+    const height = state === StepSplitState.current ? 'progress-current-height' : 'progress-height';
+    await expect(getComputedStyle(question).backgroundColor).toBe(
+      tokenColor(SPLIT_COLORS[state], bar),
+    );
+    await expect(question.getBoundingClientRect().height).toBe(tokenPixels(height));
+  }
+  const [one, two] = questions;
+  const gap = (two?.getBoundingClientRect().left ?? 0) - (one?.getBoundingClientRect().right ?? 0);
+  await expect(gap).toBeCloseTo(tokenPixels('progress-split-gap'), 0);
+}
 
 // REF-T6-B01-Accueil-D to REF-T6-B08-Delai-D: across the page, under the header.
 const meta = {
@@ -223,5 +271,50 @@ export const BySection: Story = {
     for (const segment of segments) {
       await expect(segment.getBoundingClientRect().height).toBe(tokenPixels('progress-bar-height'));
     }
+  },
+};
+
+// T12-Q3-Logo-D: on the brief's optional questions, its fourth part split into the eight of them,
+// two answered, one passed, the fourth under way; the bar still counts four parts of five.
+export const SplitIntoQuestions: Story = {
+  args: {
+    max: 5,
+    value: 4,
+    valueText: 'To go further, question 4 of 8',
+    currentSplit: SPLIT_QUESTIONS,
+  },
+  play: async ({ canvas }) => {
+    const bar = canvas.getByRole('progressbar', { name: LABEL });
+    await expect(bar).toHaveAttribute('aria-valuemax', '5');
+    await expect(bar).toHaveAttribute('aria-valuenow', '4');
+    await expect(bar).toHaveAttribute('aria-valuetext', 'To go further, question 4 of 8');
+    await expectSplitSegment(bar, SPLIT_QUESTIONS);
+  },
+};
+
+// T12-Q2-Pages-D: the first of the questions, the others to come.
+export const SplitAtTheFirstQuestion: Story = {
+  args: {
+    max: 5,
+    value: 4,
+    valueText: 'To go further, question 1 of 8',
+    currentSplit: [
+      StepSplitState.current,
+      ...Array.from({ length: 7 }, () => StepSplitState.upcoming),
+    ],
+  },
+  play: async ({ canvas, args }) => {
+    const bar = canvas.getByRole('progressbar', { name: LABEL });
+    await expectSplitSegment(bar, args.currentSplit ?? []);
+  },
+};
+
+// T12-Q3-Logo-M: the same split on a phone.
+export const SplitOnAPhone: Story = {
+  args: SplitIntoQuestions.args,
+  globals: { viewport: PHONE },
+  play: async ({ canvas }) => {
+    await expect(isOnAComputer()).toBe(false);
+    await expectSplitSegment(canvas.getByRole('progressbar', { name: LABEL }), SPLIT_QUESTIONS);
   },
 };

@@ -1,5 +1,16 @@
 # @bram-van-osta/ui
 
+## 0.44.0
+
+### Minor Changes
+
+- `StepProgress` takes `currentSplit`, its current segment split into its questions (answered, passed, current, to come), drawn with the new `progress-current-height` and `progress-split-gap` tokens.
+
+### Patch Changes
+
+- Updated dependencies
+  - @bram-van-osta/tokens@0.14.0
+
 ## 0.43.1
 
 ### Patch Changes
